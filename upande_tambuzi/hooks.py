@@ -5,7 +5,7 @@ app_description = "ERPNext project for Tambuzi Ltd, a dealer in flower operation
 app_email = "newton@upande.com"
 app_license = "mit"
 # required_apps = []
-#david
+
 # Includes in <head>
 # ------------------
 
