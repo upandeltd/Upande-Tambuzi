@@ -227,3 +227,10 @@ app_license = "mit"
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
 
+fixtures = [
+    {
+        "dt": "Server Script",
+        "filters": [["name", "like", "Stock Entry Script%"]]
+    }
+]
+
