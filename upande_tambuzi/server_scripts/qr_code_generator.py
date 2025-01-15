@@ -26,8 +26,7 @@ def generate_qr_code(stock_entry_name):
 
     file_doc = frappe.get_doc({
         "doctype": "File",
-        "file_url": f"/files/qr_codes/{stock_entry_name}.png",  # Correct path for the QR code file in 'qr_codes' folder
-        "file_name": f"{stock_entry_name}.png",
+        "file_url": f"/files/qr_codes/{stock_entry_name}.png",
         "attached_to_doctype": "Stock Entry",
         "attached_to_name": stock_entry_name,
         "is_private": 0
