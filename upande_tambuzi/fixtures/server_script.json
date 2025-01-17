@@ -9,13 +9,13 @@
   "doctype_event": "Before Save",
   "enable_rate_limit": 0,
   "event_frequency": "All",
-  "modified": "2025-01-14 16:05:32.989852",
+  "modified": "2025-01-17 18:39:22.524993",
   "module": "Upande Tambuzi",
   "name": "Stock Entry Script",
   "rate_limit_count": 5,
   "rate_limit_seconds": 86400,
   "reference_doctype": "Stock Entry",
-  "script": "if not doc.custom_qr_code:\n    qr_code_url = frappe.call(\n        \"upande_tambuzi.server_scripts.qr_code_generator.generate_qr_code\",\n        stock_entry_name=doc.name, \n    )\n    doc.custom_qr_code = qr_code_url",
+  "script": "all_target_WH_rejects = True\n\nfor row in doc.items:\n    if row.t_warehouse != \"Field Rejects - TL\":\n        all_target_WH_rejects = False\n        break\n        \n\nif not doc.custom_qr_code and not all_target_WH_rejects:\n    qr_code_url = frappe.call(\n        \"upande_tambuzi.server_scripts.qr_code_generator.generate_qr_code\",\n        stock_entry_name=doc.name, \n    )\n    doc.custom_qr_code = qr_code_url",
   "script_type": "DocType Event"
  }
 ]
