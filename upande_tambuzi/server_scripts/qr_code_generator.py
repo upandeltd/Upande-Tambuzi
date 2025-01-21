@@ -3,18 +3,28 @@ import frappe
 import os
 
 @frappe.whitelist()
-def generate_qr_code(stock_entry_name):
-    url = frappe.utils.get_url()
+def generate_qr_code_with_bucket_details(stock_entry_details):
+    # url = frappe.utils.get_url()
 
-    stock_entry_url = f"{url}/app/stock-entry/{stock_entry_name}"
-    
+    # stock_entry_url = f"{url}/app/stock-entry/{stock_entry_name}"
+
+    stock_entry_name = stock_entry_details['name']
+
+    bucket_details = {
+        "Source Greenhouse": stock_entry_details.get('source_greenhouse'),
+        "Variety": stock_entry_details.get('variety'),
+        "Number of Stems": stock_entry_details.get('number_of_stems'),
+    }
+
+    bucket_details_text = "\n".join([f"{key}: {value}" for key, value in bucket_details.items()])
+     
     qr = qrcode.QRCode(
         version=1,
         error_correction=qrcode.constants.ERROR_CORRECT_L,
         box_size=10,
         border=4,
     )
-    qr.add_data(stock_entry_url)
+    qr.add_data(bucket_details_text)
     qr.make(fit=True)
     img = qr.make_image(fill='black', back_color='white')
 
