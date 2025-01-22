@@ -230,7 +230,7 @@ app_license = "mit"
 fixtures = [
     {
         "dt": "Server Script",
-        "filters": [["name", "in", ["Stock Entry Script", "Scan Timestamp"]]]
+        "filters": [["name", "in", ["Stock Entry Script", "Stock Entry After Save", "Scan Timestamp"]]]
     },
     {
         "dt": "Client Script",
@@ -238,7 +238,7 @@ fixtures = [
     },
     {
         "dt": "DocType",
-        "filters": [["name", "in", ["Scan Location", "Scan"]]]
+        "filters": [["name", "in", ["Scan Location", "QR Code", "Scan"]]]
     }
 ]
 

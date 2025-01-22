@@ -7,16 +7,19 @@ import time
 
 @frappe.whitelist()
 def generate_qr_code_with_bucket_details(stock_entry_details):
-    # url = frappe.utils.get_url()
+    url = frappe.utils.get_url()
 
-    # stock_entry_url = f"{url}/app/stock-entry/{stock_entry_name}"
-    unique_id = int(time.time())
     stock_entry_name = stock_entry_details['name']
+    stock_entry_url = f"{url}/app/stock-entry/{stock_entry_name}"
+    unique_id = int(time.time())
 
     bucket_details = {
-        "Source Greenhouse": stock_entry_details.get('source_greenhouse'),
+        "Source Warehouse": stock_entry_details.get('source_warehouse'),
         "Variety": stock_entry_details.get('variety'),
         "Number of Stems": stock_entry_details.get('number_of_stems'),
+        "Breeder": stock_entry_details.get('breeder'),
+        "Grower": stock_entry_details.get('grower'),
+        "Stock Entry URL": stock_entry_url
     }
 
     variety = bucket_details.get("Variety", "Unknown Variety")
@@ -51,7 +54,9 @@ def generate_qr_code_with_bucket_details(stock_entry_details):
     stock_entry_height = stock_entry_bbox[3] - stock_entry_bbox[1]
     label_height = variety_height + stock_entry_height + spacing
 
-    standard_width = 400
+    
+    standard_width = 550
+
     canvas_height = label_height + qr_height
 
     canvas = Image.new("RGB", (standard_width, canvas_height), "white")
@@ -87,5 +92,6 @@ def generate_qr_code_with_bucket_details(stock_entry_details):
     file_doc.insert()
 
     final_qr_code_url = f"{file_doc.file_url}"
+
 
     return final_qr_code_url
