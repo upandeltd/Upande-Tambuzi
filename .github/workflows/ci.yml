@@ -91,7 +91,7 @@ jobs:
         run: |
           python -m venv venv
           source venv/bin/activate
-          pip install -r ${{ github.workspace }}/upande_tambuzi/requirements.txt
+          pip install -r apps/upande_tambuzi/requirements.txt
           bench get-app upande_tambuzi $GITHUB_WORKSPACE
           bench setup requirements --dev
           bench new-site --db-root-password root --admin-password admin test_site
