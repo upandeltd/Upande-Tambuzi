@@ -89,6 +89,9 @@ jobs:
       - name: Install
         working-directory: /home/runner/frappe-bench
         run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install -r requirements.txt
           bench get-app upande_tambuzi $GITHUB_WORKSPACE
           bench setup requirements --dev
           bench new-site --db-root-password root --admin-password admin test_site
@@ -100,6 +103,7 @@ jobs:
       - name: Run Tests
         working-directory: /home/runner/frappe-bench
         run: |
+          source venv/bin/activate
           bench --site test_site set-config allow_tests true
           bench --site test_site run-tests --app upande_tambuzi
         env:
