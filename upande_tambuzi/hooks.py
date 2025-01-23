@@ -234,3 +234,10 @@ fixtures = [
     }
 ]
 
+
+
+doc_events = {
+   "Sales Order": {
+    "on_submit": "upande_tambuzi.server_scripts.pick_list_automation.auto_create_pick_list_on_sales_order_submit"
+}
+}
