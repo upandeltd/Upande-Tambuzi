@@ -37,7 +37,7 @@ def generate_qr_code_with_bucket_details(stock_entry_details):
     qr_img = qr.make_image(fill='black', back_color='white')
 
     qr_width, qr_height = qr_img.size
-    label_font_size = 25
+    label_font_size = 45
     spacing = 10
 
     try:
