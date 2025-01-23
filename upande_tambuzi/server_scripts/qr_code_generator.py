@@ -37,13 +37,15 @@ def generate_qr_code_with_bucket_details(stock_entry_details):
     qr_img = qr.make_image(fill='black', back_color='white')
 
     qr_width, qr_height = qr_img.size
-    label_font_size = 45
     spacing = 10
+    standard_width = 550
+
+    label_font_size = int(standard_width * 0.08)
 
     try:
         font = ImageFont.truetype("arial.ttf", label_font_size)  
     except IOError:
-        font = ImageFont.load_default()
+        font = ImageFont.load_default(label_font_size)
 
     variety_bbox = font.getbbox(variety)
     stock_entry_bbox = font.getbbox(stock_entry_name)
@@ -53,9 +55,6 @@ def generate_qr_code_with_bucket_details(stock_entry_details):
     variety_height = variety_bbox[3] - variety_bbox[1]
     stock_entry_height = stock_entry_bbox[3] - stock_entry_bbox[1]
     label_height = variety_height + stock_entry_height + spacing
-
-    
-    standard_width = 550
 
     canvas_height = label_height + qr_height
 
