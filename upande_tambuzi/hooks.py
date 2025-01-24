@@ -238,7 +238,7 @@ fixtures = [
     },
     {
         "dt": "DocType",
-        "filters": [["name", "in", ["Scan Location", "QR Code", "Scan"]]]
+        "filters": [["name", "in", ["Scan Location", "Breeders","QR Code", "Packing List", "Pack List Item", "Scan"]]]
     }
 ]
 
