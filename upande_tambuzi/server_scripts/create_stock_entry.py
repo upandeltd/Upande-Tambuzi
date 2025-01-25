@@ -5,7 +5,6 @@ import frappe
 def create_stock_entry(stock_entry_data):
     stock_entry_data = json.loads(stock_entry_data)
 
-    print("stock_entry_data:", stock_entry_data)
     stock_entry = frappe.new_doc("Stock Entry")
 
     stock_entry_type = stock_entry_data["stock entry type"]
