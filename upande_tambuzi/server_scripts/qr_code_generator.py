@@ -4,7 +4,6 @@ import os
 from PIL import Image, ImageDraw, ImageFont
 import time
 
-
 @frappe.whitelist()
 def generate_qr_code_with_bucket_details(stock_entry_details):
     url = frappe.utils.get_url()
@@ -43,7 +42,7 @@ def generate_qr_code_with_bucket_details(stock_entry_details):
     label_font_size = int(standard_width * 0.08)
 
     try:
-        font = ImageFont.truetype("arial.ttf", label_font_size)  
+        font = ImageFont.truetype("arial.ttf", label_font_size)
     except IOError:
         font = ImageFont.load_default(label_font_size)
 
