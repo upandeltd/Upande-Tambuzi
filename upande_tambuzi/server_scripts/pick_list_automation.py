@@ -42,7 +42,7 @@ def create_pick_list_for_sales_order(doc, method=None):
             "stock_uom",
             "uom",
             "qty",
-            "source_warehouse",
+            "custom_source_warehouse",
             "conversion_factor",
             "stock_qty",
             "against_blanket_order"
