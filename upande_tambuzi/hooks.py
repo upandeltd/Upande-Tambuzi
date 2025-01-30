@@ -227,3 +227,30 @@ app_license = "mit"
 # 	"Logging DocType Name": 30  # days to retain logs
 # }
 
+fixtures = [
+    {
+        "dt": "Server Script",
+        "filters": [["name", "in", ["Stock Entry Script", "Stock Entry After Save", "Scan Timestamp"]]]
+    },
+    {
+        "dt": "Client Script",
+        "filters": [["name", "in", ["Scan QR Button", "Populate Number of Items"]]]
+    },
+    {
+        "dt": "DocType",
+        "filters": [["name", "in", ["Scan Location", "Breeders","QR Code", "Packing List", "Pack List Item", "Scan"]]]
+    }
+]
+
+# doc_events = {
+#     "Consolidated Pack List": {
+#         "on_update": "upande_tambuzi.server_scripts.consolidated_pack_list_notifications.schedule_cpl_notifications"
+#     }
+# }
+
+
+doc_events = {
+    "Sales Order": {
+        "on_submit": "upande_tambuzi.server_scripts.pick_list_automation.create_pick_list_for_sales_order"
+    }
+}
