@@ -1,32 +1,43 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2025-01-25 14:39:41.557472",
+ "autoname": "naming_series:",
+ "creation": "2025-01-30 14:27:36.916216",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "consolidated_pack_list_id",
-  "table_rmwx",
-  "total_quantity",
+  "section_break_npj3",
+  "amended_from",
+  "naming_series",
+  "items",
   "approval_status"
  ],
  "fields": [
   {
-   "fieldname": "consolidated_pack_list_id",
+   "fieldname": "section_break_npj3",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Consolidated packing List",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "naming_series",
    "fieldtype": "Select",
-   "label": "Consolidated Pack List ID",
+   "label": "Naming Series",
    "options": "CPL-.YYYY.-"
   },
   {
-   "fieldname": "table_rmwx",
+   "fieldname": "items",
    "fieldtype": "Table",
+   "label": "Items",
    "options": "Packed List Items"
-  },
-  {
-   "description": "Auto-calculated sum of quantities from all Packing Lists.",
-   "fieldname": "total_quantity",
-   "fieldtype": "Read Only",
-   "label": "Total Quantity"
   },
   {
    "fieldname": "approval_status",
@@ -36,11 +47,13 @@
   }
  ],
  "index_web_pages_for_search": 1,
+ "is_submittable": 1,
  "links": [],
- "modified": "2025-01-25 15:24:58.088226",
+ "modified": "2025-01-30 14:30:01.322368",
  "modified_by": "Administrator",
  "module": "Upande Tambuzi",
- "name": "Consolidated Packing List",
+ "name": "Consolidated packing List",
+ "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {
@@ -53,6 +66,7 @@
    "report": 1,
    "role": "System Manager",
    "share": 1,
+   "submit": 1,
    "write": 1
   }
  ],
