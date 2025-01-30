@@ -5,5 +5,5 @@
 from frappe.tests.utils import FrappeTestCase
 
 
-class TestConsolidatedpackingList(FrappeTestCase):
+class TestStemLength(FrappeTestCase):
 	pass
