@@ -14,6 +14,8 @@ def create_stock_entry(stock_entry_data):
     grower = stock_entry_data.get("grower")
     location_data = stock_entry_data.get("location data")
     uom = stock_entry_data.get("uom")
+    harvester = stock_entry_data.get("harvester")
+    greenhouse = stock_entry_data.get("greenhouse")
     
     stock_entry.stock_entry_type = stock_entry_type 
 
@@ -26,6 +28,8 @@ def create_stock_entry(stock_entry_data):
         "t_warehouse": location_data["target"],
         "custom_breeder": breeder,
         "custom_grower": grower,
+        "custom_greenhouse": greenhouse,
+        "custom_harvester": harvester,
         "uom": uom
     })
     
