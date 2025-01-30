@@ -242,10 +242,15 @@ fixtures = [
     }
 ]
 
+# doc_events = {
+#     "Consolidated Pack List": {
+#         "on_update": "upande_tambuzi.server_scripts.consolidated_pack_list_notifications.schedule_cpl_notifications"
+#     }
+# }
 
 
 doc_events = {
-   "Sales Order": {
-    "on_submit": "upande_tambuzi.server_scripts.pick_list_automation.auto_create_pick_list_on_sales_order_submit"
-}
+    "Sales Order": {
+        "on_submit": "upande_tambuzi.server_scripts.pick_list_automation.create_pick_list_for_sales_order"
+    }
 }
