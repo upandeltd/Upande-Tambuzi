@@ -16,20 +16,21 @@ def create_stock_entry(stock_entry_data):
     uom = stock_entry_data.get("uom")
     harvester = stock_entry_data.get("harvester")
     greenhouse = stock_entry_data.get("greenhouse")
+    block__bed_number = stock_entry_data.get("block__bed_number")
     
     stock_entry.stock_entry_type = stock_entry_type 
+
+    stock_entry.custom_greenhouse = greenhouse
+    stock_entry.custom_breeder = breeder
+    stock_entry.custom_harvester = harvester
+    stock_entry.custom_grower = grower
+    stock_entry.custom_block__bed_number = block__bed_number
 
     stock_entry.append("items", {
         "item_code": variety,
         "qty": quantity,
-        # Assumption is that the UOM of the scanned item (flower) is stem
-        "custom_number_of_stems": quantity,
         "s_warehouse": location_data["source"],
         "t_warehouse": location_data["target"],
-        "custom_breeder": breeder,
-        "custom_grower": grower,
-        "custom_greenhouse": greenhouse,
-        "custom_harvester": harvester,
         "uom": uom
     })
     
