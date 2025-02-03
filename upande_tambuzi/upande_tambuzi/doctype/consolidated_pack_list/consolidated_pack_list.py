@@ -5,5 +5,5 @@
 from frappe.model.document import Document
 
 
-class PackedListItems(Document):
+class ConsolidatedPackList(Document):
 	pass
