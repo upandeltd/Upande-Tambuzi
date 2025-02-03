@@ -1,11 +1,8 @@
-
-# # from frappe.model.document import Document
-
-
-# # class FarmPackList(Document):
-# # 	pass
-
 # import frappe
+# from frappe.model.document import Document
+
+# class FarmPackList(Document):
+#     pass
 
 # @frappe.whitelist()
 # def create_consolidated_pack_list(farm_pack_list):
@@ -14,7 +11,7 @@
 #     consolidated_list = frappe.new_doc("Consolidated Pack List")
     
 #     # Add items from farm pack list
-#     for item in farm_doc.items:  # assuming 'items' is your child table name
+#     for item in farm_doc.pack_list_item:  # assuming 'items' is your child table name
 #         consolidated_list.append('items', {
 #             'sales_order_id': item.sales_order_id,
 #             'item_group': frappe.get_value('Item', item.item_code, 'item_group'),
@@ -24,7 +21,7 @@
 #             'length': item.length if hasattr(item, 'length') else None,
 #             'bunched_by': item.uom,
 #             'bunches': item.qty,
-#             'stems': item.qty * get_stems_per_bunch(item.uom),
+#             #'stems': item.qty * get_stems_per_bunch(item.uom),
 #             'packing_list': farm_pack_list
 #         })
     

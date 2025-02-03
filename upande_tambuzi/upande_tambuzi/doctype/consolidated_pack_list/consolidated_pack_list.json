@@ -22,7 +22,7 @@
    "fieldtype": "Link",
    "label": "Amended From",
    "no_copy": 1,
-   "options": "Consolidated packing List",
+   "options": "Consolidated Pack List",
    "print_hide": 1,
    "read_only": 1,
    "search_index": 1
@@ -49,10 +49,10 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-01-30 14:30:01.322368",
+ "modified": "2025-02-03 13:17:03.268443",
  "modified_by": "Administrator",
  "module": "Upande Tambuzi",
- "name": "Consolidated pack List",
+ "name": "Consolidated Pack List",
  "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
