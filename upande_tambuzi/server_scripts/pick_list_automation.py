@@ -50,13 +50,14 @@ def create_pick_list_for_sales_order(doc, method=None):
     )
 # Validate and group items
     for item in sales_order_items:
-        if not item.source_warehouse:
+        if not item.custom_source_warehouse:
             frappe.throw(f"Source warehouse not specified for item {item.item_code}")
+            
             
         if not item.qty or item.qty <= 0:
             frappe.throw(f"Item {item.item_code} has invalid quantity: {item.qty}")
             
-        warehouse_groups[item.source_warehouse].append(item)
+        warehouse_groups[item.custom_source_warehouse].append(item)
 
     if not warehouse_groups:
         frappe.throw("No valid items found in Sales Order for creating Pick Lists")
