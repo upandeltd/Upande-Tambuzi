@@ -95,7 +95,7 @@ def create_pick_list_for_sales_order(doc, method=None):
 
                 # If item is against blanket order, set the reference
                 if item.against_blanket_order:
-                    location.against_pick_list = item.against_blanket_order
+                    location.against_order_pick_list = item.against_blanket_order
 
                 print(item.custom_source_warehouse, item.qty)
 
@@ -107,11 +107,11 @@ def create_pick_list_for_sales_order(doc, method=None):
                 order_pick_list.submit()
                 order_pick_list_names.append(order_pick_list.name)
             except Exception as e:
-                frappe.log_error(f"Failed to create Pick List for warehouse {warehouse}: {str(e)}")
+                frappe.log_error(f"Failed to create Order Pick List for warehouse {warehouse}: {str(e)}")
                 raise
 
     except Exception as e:
-        frappe.log_error(f"Error creating Pick Lists for Sales Order {sales_order.name}: {str(e)}")
+        frappe.log_error(f"Error creating Order Pick Lists for Sales Order {sales_order.name}: {str(e)}")
         raise
 
     if order_pick_list_names:
