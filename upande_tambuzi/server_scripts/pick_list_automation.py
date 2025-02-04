@@ -11,23 +11,23 @@ def create_pick_list_for_sales_order(doc, method=None):
         sales_order = doc
 
     if not sales_order:
-        frappe.throw("Sales Order is required to create Pick Lists.")
+        frappe.throw("Sales Order is required to create Order Pick Lists.")
 
     # Check if Pick Lists already exist for this Sales Order
-    existing_pick_lists = frappe.get_all(
-        "Pick List",
+    existing_order_pick_lists = frappe.get_all(
+        "Order Pick List",
         filters={
             "sales_order": sales_order.name,
             "docstatus": ["!=", 2]  # Not cancelled
         }
     )
     
-    if existing_pick_lists:
-        frappe.throw(f"Pick Lists already exist for Sales Order {sales_order.name}")
+    if existing_order_pick_lists:
+        frappe.throw(f"Order Pick Lists already exist for Sales Order {sales_order.name}")
 
     # Ensure the Sales Order is submitted
     if sales_order.docstatus != 1:
-        frappe.throw("Pick List can only be created for submitted Sales Orders.")
+        frappe.throw("An Order Pick List can only be created for submitted Sales Orders.")
 
     # Group items by custom_source_warehouse
     warehouse_groups = defaultdict(list)
@@ -60,27 +60,27 @@ def create_pick_list_for_sales_order(doc, method=None):
         warehouse_groups[item.custom_source_warehouse].append(item)
 
     if not warehouse_groups:
-        frappe.throw("No valid items found in Sales Order for creating Pick Lists")
+        frappe.throw("No valid items found in Sales Order for creating Order Pick Lists")
 
     # Create separate Pick Lists for each source warehouse
-    pick_list_names = []
+    order_pick_list_names = []
     
     try:
         for warehouse, items in warehouse_groups.items():
-            pick_list = frappe.new_doc("Pick List")
-            pick_list.purpose = "Delivery"
-            pick_list.sales_order = sales_order.name
-            pick_list.company = sales_order.company
-            pick_list.customer = sales_order.customer
-            pick_list.posting_date = nowdate()
+            order_pick_list = frappe.new_doc("Order Pick List")
+            order_pick_list.purpose = "Delivery"
+            order_pick_list.sales_order = sales_order.name
+            # pick_list.company = sales_order.company
+            order_pick_list.customer = sales_order.customer
+            order_pick_list.posting_date = nowdate()
             
             # Calculate total quantity for this warehouse
             total_stock_qty = sales_order.total_qty
-            pick_list.for_qty = total_stock_qty
+            order_pick_list.for_qty = total_stock_qty
 
             # Add items to locations
             for item in items:
-                location = pick_list.append("locations", {
+                location = order_pick_list.append("locations", {
                     "item_code": item.item_code,
                     "item_name": item.item_name,
                     "stock_uom": item.stock_uom,
@@ -88,7 +88,7 @@ def create_pick_list_for_sales_order(doc, method=None):
                     "qty": item.qty,
                     "stock_qty": item.stock_qty,
                     "conversion_factor": item.conversion_factor,
-                    "warehouse": item.warehouse,
+                    "source_warehouse": item.custom_source_warehouse,
                     "sales_order": sales_order.name,
                     "sales_order_item": item.name
                 })
@@ -97,13 +97,15 @@ def create_pick_list_for_sales_order(doc, method=None):
                 if item.against_blanket_order:
                     location.against_pick_list = item.against_blanket_order
 
-            pick_list.flags.ignore_permissions = True
+                print(item.custom_source_warehouse, item.qty)
+
+            order_pick_list.flags.ignore_permissions = True
             
             # Save and submit with error handling
             try:
-                pick_list.save()
-                pick_list.submit()
-                pick_list_names.append(pick_list.name)
+                order_pick_list.save()
+                order_pick_list.submit()
+                order_pick_list_names.append(order_pick_list.name)
             except Exception as e:
                 frappe.log_error(f"Failed to create Pick List for warehouse {warehouse}: {str(e)}")
                 raise
@@ -112,11 +114,11 @@ def create_pick_list_for_sales_order(doc, method=None):
         frappe.log_error(f"Error creating Pick Lists for Sales Order {sales_order.name}: {str(e)}")
         raise
 
-    if pick_list_names:
+    if order_pick_list_names:
         frappe.msgprint(
-            msg=f"Created Pick Lists for Sales Order {sales_order.name}: {', '.join(pick_list_names)}",
+            msg=f"Created Pick Lists for Sales Order {sales_order.name}: {', '.join(order_pick_list_names)}",
             title="Pick Lists Created",
             indicator="green"
         )
         
-    return pick_list_names
+    return order_pick_list_names
