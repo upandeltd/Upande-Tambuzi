@@ -9,16 +9,15 @@
   "doctype_event": "After Save",
   "enable_rate_limit": 0,
   "event_frequency": "All",
-  "modified": "2025-02-03 20:33:41.012070",
+  "modified": "2025-02-04 14:13:45.323009",
   "module": "Upande Tambuzi",
   "name": "Stock Entry Script",
   "rate_limit_count": 5,
   "rate_limit_seconds": 86400,
   "reference_doctype": "Stock Entry",
-  "script": "if (doc.stock_entry_type == \"Harvesting\") or (doc.stock_entry_type == \"Grading\"):\n    doc.submit()\n    ",
+  "script": "if (doc.stock_entry_type == \"Harvesting\") or (doc.stock_entry_type == \"Grading\") or (doc.stock_entry_type == \"Receiving\"):\n    doc.submit()\n    ",
   "script_type": "DocType Event"
  },
- 
  {
   "allow_guest": 0,
   "api_method": null,
