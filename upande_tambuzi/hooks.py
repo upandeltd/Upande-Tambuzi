@@ -121,6 +121,13 @@ app_license = "mit"
 # Document Events
 # ---------------
 # Hook on document methods and events
+doc_events = {
+    "Sales Order": {
+        "on_submit": "upande_tambuzi.server_scripts.pick_list_automation.create_pick_list_for_sales_order",
+        "before_submit": "upande_tambuzi.upande_tambuzi.custom.sales_order_custom.validate_customer_check_limit"
+    }
+}
+
 
 # doc_events = {
 # 	"*": {
@@ -249,8 +256,3 @@ fixtures = [
 # }
 
 
-doc_events = {
-    "Sales Order": {
-        "on_submit": "upande_tambuzi.server_scripts.pick_list_automation.create_pick_list_for_sales_order"
-    }
-}
