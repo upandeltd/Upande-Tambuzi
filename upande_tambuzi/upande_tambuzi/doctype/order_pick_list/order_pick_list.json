@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "naming_series:",
  "creation": "2025-02-04 14:11:24.440875",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -12,8 +13,10 @@
   "column_break_fdik",
   "sales_order",
   "date_created",
+  "naming_series",
   "locations_section",
-  "locations"
+  "locations",
+  "amended_from"
  ],
  "fields": [
   {
@@ -23,13 +26,15 @@
   },
   {
    "fieldname": "source_warehouse",
-   "fieldtype": "Data",
-   "label": "Source Warehouse"
+   "fieldtype": "Link",
+   "label": "Source Warehouse",
+   "options": "Warehouse"
   },
   {
    "fieldname": "customer",
-   "fieldtype": "Data",
-   "label": "Customer"
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "Customer"
   },
   {
    "fieldname": "purpose",
@@ -43,8 +48,9 @@
   },
   {
    "fieldname": "sales_order",
-   "fieldtype": "Data",
-   "label": "Sales Order"
+   "fieldtype": "Link",
+   "label": "Sales Order",
+   "options": "Sales Order"
   },
   {
    "fieldname": "date_created",
@@ -61,15 +67,33 @@
    "fieldname": "locations_section",
    "fieldtype": "Section Break",
    "label": "Locations"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Naming Series",
+   "options": "OPL-.YYYY.-"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Order Pick List",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-02-04 14:28:45.451434",
+ "modified": "2025-02-04 23:39:32.617514",
  "modified_by": "Administrator",
  "module": "Upande Tambuzi",
  "name": "Order Pick List",
+ "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {
