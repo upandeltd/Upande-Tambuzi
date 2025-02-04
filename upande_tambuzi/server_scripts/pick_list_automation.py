@@ -97,7 +97,11 @@ def create_pick_list_for_sales_order(doc, method=None):
                 if item.against_blanket_order:
                     location.against_pick_list = item.against_blanket_order
 
+                print(item.qty)
+
             pick_list.flags.ignore_permissions = True
+
+            
             
             # Save and submit with error handling
             try:
