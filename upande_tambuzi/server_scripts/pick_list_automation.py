@@ -72,7 +72,7 @@ def create_pick_list_for_sales_order(doc, method=None):
             order_pick_list.sales_order = sales_order.name
             # pick_list.company = sales_order.company
             order_pick_list.customer = sales_order.customer
-            order_pick_list.posting_date = nowdate()
+            order_pick_list.date_created = nowdate()
             
             # Calculate total quantity for this warehouse
             total_stock_qty = sales_order.total_qty
