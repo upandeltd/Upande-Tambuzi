@@ -37,7 +37,7 @@ def create_stock_entry(stock_entry_data):
     stock_entry.insert()
     
     # Submit the stock entry
-    # stock_entry.submit()
+    stock_entry.submit()
     print(f'stock entry object: {stock_entry.name}')
 
     response_data = {
