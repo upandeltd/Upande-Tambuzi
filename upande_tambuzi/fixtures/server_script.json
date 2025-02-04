@@ -18,6 +18,7 @@
   "script": "if (doc.stock_entry_type == \"Harvesting\") or (doc.stock_entry_type == \"Grading\"):\n    doc.submit()\n    ",
   "script_type": "DocType Event"
  },
+ 
  {
   "allow_guest": 0,
   "api_method": null,
