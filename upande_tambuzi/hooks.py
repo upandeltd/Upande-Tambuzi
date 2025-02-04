@@ -254,3 +254,9 @@ doc_events = {
         "on_submit": "upande_tambuzi.server_scripts.pick_list_automation.create_pick_list_for_sales_order"
     }
 }
+
+doc_events = {
+    "Sales Order": {
+        "on_submit": "upande_tambuzi.server_scripts.stock_material_transfer.create_stock_transfer"
+    }
+}
