@@ -37,7 +37,7 @@
    "fieldname": "items",
    "fieldtype": "Table",
    "label": "Items",
-   "options": "Packed List Items"
+   "options": "Pack List Item"
   },
   {
    "fieldname": "approval_status",
@@ -49,7 +49,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-02-03 13:17:03.268443",
+ "modified": "2025-02-03 15:02:05.586758",
  "modified_by": "Administrator",
  "module": "Upande Tambuzi",
  "name": "Consolidated Pack List",
