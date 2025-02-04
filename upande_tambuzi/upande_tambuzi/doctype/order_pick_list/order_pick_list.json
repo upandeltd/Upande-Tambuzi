@@ -1,0 +1,92 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-02-04 14:11:24.440875",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_4j6i",
+  "source_warehouse",
+  "customer",
+  "purpose",
+  "column_break_fdik",
+  "sales_order",
+  "date_created",
+  "locations_section",
+  "locations"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_4j6i",
+   "fieldtype": "Section Break",
+   "label": "Overview"
+  },
+  {
+   "fieldname": "source_warehouse",
+   "fieldtype": "Data",
+   "label": "Source Warehouse"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Data",
+   "label": "Customer"
+  },
+  {
+   "fieldname": "purpose",
+   "fieldtype": "Select",
+   "label": "Purpose",
+   "options": "Material Transfer for Manufacture\nMaterial Transfer\nDelivery"
+  },
+  {
+   "fieldname": "column_break_fdik",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "sales_order",
+   "fieldtype": "Data",
+   "label": "Sales Order"
+  },
+  {
+   "fieldname": "date_created",
+   "fieldtype": "Date",
+   "label": "Date Created"
+  },
+  {
+   "fieldname": "locations",
+   "fieldtype": "Table",
+   "label": "Item Locations",
+   "options": "Pick List Item"
+  },
+  {
+   "fieldname": "locations_section",
+   "fieldtype": "Section Break",
+   "label": "Locations"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-02-04 14:28:45.451434",
+ "modified_by": "Administrator",
+ "module": "Upande Tambuzi",
+ "name": "Order Pick List",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
