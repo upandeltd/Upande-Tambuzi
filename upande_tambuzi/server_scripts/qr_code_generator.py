@@ -5,7 +5,7 @@ from PIL import Image, ImageDraw, ImageFont
 import time
 
 @frappe.whitelist()
-def generate_qr_code_with_bucket_details(stock_entry_details):
+def generate_qr_code(stock_entry_details):
     url = frappe.utils.get_url()
 
     stock_entry_name = stock_entry_details['name']
@@ -13,25 +13,19 @@ def generate_qr_code_with_bucket_details(stock_entry_details):
     unique_id = int(time.time())
 
     bucket_details = {
-        "Source Warehouse": stock_entry_details.get('source_warehouse'),
         "Variety": stock_entry_details.get('variety'),
-        "Number of Stems": stock_entry_details.get('number_of_stems'),
-        "Breeder": stock_entry_details.get('breeder'),
-        "Grower": stock_entry_details.get('grower'),
         "Stock Entry URL": stock_entry_url
     }
 
     variety = bucket_details.get("Variety", "Unknown Variety")
 
-    bucket_details_text = "\n".join([f"{key}: {value}" for key, value in bucket_details.items()])
-     
     qr = qrcode.QRCode(
         version=1,
         error_correction=qrcode.constants.ERROR_CORRECT_L,
         box_size=10,
         border=4,
     )
-    qr.add_data(bucket_details_text)
+    qr.add_data(stock_entry_url)
     qr.make(fit=True)
     qr_img = qr.make_image(fill='black', back_color='white')
 
