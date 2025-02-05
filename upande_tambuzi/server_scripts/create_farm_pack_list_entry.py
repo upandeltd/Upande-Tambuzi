@@ -1,5 +1,4 @@
 import frappe
-from frappe.model.document import Document
 
 @frappe.whitelist()
 def create_farm_pack_list_entry(bunch_label_data, box_label_data, farm):
@@ -21,7 +20,7 @@ def create_farm_pack_list_entry(bunch_label_data, box_label_data, farm):
         box_id = parsed_box_data.get("box_id")
 
         pack_list_doc = frappe.new_doc("Farm Pack List")
-        pack_list_doc.farm = farm 
+        pack_list_doc.custom_farm = farm 
         pack_list_doc.append("items", {
             "item_code": item_code,
             "uom": uom,
