@@ -5,7 +5,7 @@ class FarmPackList(Document):
     pass
 
 @frappe.whitelist()
-def create_consolidated_pack_list(farm_pack_list):
+def create_consolidated_pack_list(farm_pack_list):  
     farm_doc = frappe.get_doc("Farm Pack List", farm_pack_list)
     
     consolidated_list = frappe.new_doc("Consolidated Pack List")
@@ -27,7 +27,7 @@ def create_consolidated_pack_list(farm_pack_list):
         })
     
     consolidated_list.insert()
-    frappe.db.commit()
+    frappe.db.commit() # to update the database
     return consolidated_list.name
 
 def get_stems_per_bunch(uom):

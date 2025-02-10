@@ -88,7 +88,7 @@ def create_pick_list_for_sales_order(doc, method=None):
                     "qty": item.qty,
                     "stock_qty": item.stock_qty,
                     "conversion_factor": item.conversion_factor,
-                    "source_warehouse": item.source_warehouse,
+                    "source_warehouse": item.custom_source_warehouse,
                     "sales_order": sales_order.name,
                     "sales_order_item": item.name
                 })

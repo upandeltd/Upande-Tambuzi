@@ -2,12 +2,12 @@ frappe.ui.form.on('Farm Pack List', {
     refresh: function(frm) {
         console.log('docstatus:', frm.doc.docstatus);  // Debugging log
 
-        // Ensure button only appears for submitted documents
-        if (!frm.is_new() && frm.doc.docstatus === 1) {
+        // Ensure button only appears for submitted documents and is not already closed
+        if (!frm.is_new() && frm.doc.docstatus === 1 && !frm.doc.is_closed) {
             frm.clear_custom_buttons();  // Prevent duplicate buttons
             frm.add_custom_button(__('Close'), () => {
                 create_consolidated_pack_list(frm);
-            });
+            }).addClass('btn-primary close-btn');  // Add custom class
         }
     }
 });
@@ -24,7 +24,13 @@ function create_consolidated_pack_list(frm) {
                     message: __('Consolidated Pack List created successfully'),
                     indicator: 'green'
                 });
-                frm.reload_doc();  // Refresh the document
+
+                // Update button appearance and disable it
+                $(".close-btn").text("Closed").removeClass("btn-primary").addClass("btn-success").prop("disabled", true);
+
+                // Update the form field to mark it as closed
+                frm.set_value("custom_is_closed", 1);
+                frm.save();  // Save the status change
             }
         }
     });
