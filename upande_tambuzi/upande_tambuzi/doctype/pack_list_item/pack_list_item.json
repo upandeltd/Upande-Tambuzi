@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2025-02-05 09:39:04.913725",
+ "creation": "2025-02-10 12:01:14.682912",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
@@ -13,10 +13,13 @@
   "item_code",
   "uom",
   "column_break_seqr",
-  "stock_ledger_uom",
   "qty",
+  "stock_ledger_uom",
   "stock_ledger_qty",
-  "box_count",
+  "column_break_vrhb",
+  "shipmentcustomer",
+  "crop",
+  "noof_boxes",
   "delivery_point",
   "total_boxes_loaded"
  ],
@@ -30,7 +33,7 @@
   {
    "fieldname": "customer_id",
    "fieldtype": "Data",
-   "label": "Shipment/Customer"
+   "label": "Customer ID"
   },
   {
    "fieldname": "sales_order_id",
@@ -46,7 +49,7 @@
   {
    "fieldname": "item_code",
    "fieldtype": "Link",
-   "label": "Crop",
+   "label": "Item Code",
    "options": "Item"
   },
   {
@@ -75,9 +78,25 @@
    "label": "Stock Ledger Qty"
   },
   {
-   "fieldname": "box_count",
-   "fieldtype": "Data",
-   "label": "No. Of Boxes"
+   "fieldname": "column_break_vrhb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "shipmentcustomer",
+   "fieldtype": "Link",
+   "label": "Shipment/Customer",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "crop",
+   "fieldtype": "Link",
+   "label": "Crop",
+   "options": "Item"
+  },
+  {
+   "fieldname": "noof_boxes",
+   "fieldtype": "Int",
+   "label": "No.Of Boxes"
   },
   {
    "fieldname": "delivery_point",
@@ -93,7 +112,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-02-10 11:21:45.426318",
+ "modified": "2025-02-10 13:35:26.965522",
  "modified_by": "Administrator",
  "module": "Upande Tambuzi",
  "name": "Pack List Item",
