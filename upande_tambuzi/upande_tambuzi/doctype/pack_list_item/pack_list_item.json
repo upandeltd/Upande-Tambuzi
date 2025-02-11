@@ -1,0 +1,105 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-02-05 09:39:04.913725",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "source_warehouse",
+  "customer_id",
+  "sales_order_id",
+  "box_id",
+  "item_code",
+  "uom",
+  "column_break_seqr",
+  "stock_ledger_uom",
+  "qty",
+  "stock_ledger_qty",
+  "box_count",
+  "delivery_point",
+  "total_boxes_loaded"
+ ],
+ "fields": [
+  {
+   "fieldname": "source_warehouse",
+   "fieldtype": "Link",
+   "label": "Source Warehouse",
+   "options": "Warehouse"
+  },
+  {
+   "fieldname": "customer_id",
+   "fieldtype": "Data",
+   "label": "Shipment/Customer"
+  },
+  {
+   "fieldname": "sales_order_id",
+   "fieldtype": "Link",
+   "label": "Sales Order ID",
+   "options": "Sales Order"
+  },
+  {
+   "fieldname": "box_id",
+   "fieldtype": "Data",
+   "label": "Box ID"
+  },
+  {
+   "fieldname": "item_code",
+   "fieldtype": "Link",
+   "label": "Crop",
+   "options": "Item"
+  },
+  {
+   "fieldname": "uom",
+   "fieldtype": "Link",
+   "label": "UOM",
+   "options": "UOM"
+  },
+  {
+   "fieldname": "column_break_seqr",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "stock_ledger_uom",
+   "fieldtype": "Data",
+   "label": "Stock Ledger UOM"
+  },
+  {
+   "fieldname": "qty",
+   "fieldtype": "Int",
+   "label": "Qty"
+  },
+  {
+   "fieldname": "stock_ledger_qty",
+   "fieldtype": "Data",
+   "label": "Stock Ledger Qty"
+  },
+  {
+   "fieldname": "box_count",
+   "fieldtype": "Data",
+   "label": "No. Of Boxes"
+  },
+  {
+   "fieldname": "delivery_point",
+   "fieldtype": "Data",
+   "label": "Delivery Point"
+  },
+  {
+   "fieldname": "total_boxes_loaded",
+   "fieldtype": "Int",
+   "label": "Total Boxes Loaded"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-02-10 11:21:45.426318",
+ "modified_by": "Administrator",
+ "module": "Upande Tambuzi",
+ "name": "Pack List Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
