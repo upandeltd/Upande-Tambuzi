@@ -1,37 +1,62 @@
 frappe.ui.form.on('Farm Pack List', {
     refresh: function(frm) {
-        console.log('docstatus:', frm.doc.docstatus);  // Debugging log
-
-        // Ensure button only appears for submitted documents and is not already closed
-        if (!frm.is_new() && frm.doc.docstatus === 1 && !frm.doc.is_closed) {
-            frm.clear_custom_buttons();  // Prevent duplicate buttons
-            frm.add_custom_button(__('Close'), () => {
-                create_consolidated_pack_list(frm);
-            }).addClass('btn-primary close-btn');  // Add custom class
+        // Only show close button if document is submitted and not already closed
+        if(frm.doc.docstatus === 1 && frm.doc.custom_status !== 'Closed') {
+            let closeButton = frm.add_custom_button('Close', () => {
+                // Disable the button immediately to prevent multiple clicks
+                closeButton.prop('disabled', true);
+                
+                // Confirm before proceeding
+                frappe.confirm(
+                    'Are you sure you want to close this Farm Pack List? Closing it updates or creates a consolidated pack list',
+                    () => {
+                        frappe.call({
+                            method: 'upande_tambuzi.upande_tambuzi.doctype.farm_pack_list.farm_pack_list.close_farm_pack_list',
+                            args: {
+                                'farm_pack_list': frm.doc.name
+                            },
+                            callback: function(r) {
+                                if(!r.exc) {
+                                    // After closing, process the CPL
+                                    frappe.call({
+                                        method: 'upande_tambuzi.upande_tambuzi.doctype.farm_pack_list.farm_pack_list.process_consolidated_pack_list',
+                                        args: {
+                                            'farm_pack_list': frm.doc.name,
+                                            'sales_order': frm.doc.sales_order_id
+                                        },
+                                        callback: function(r) {
+                                            if(!r.exc) {
+                                                // Update the status in the UI
+                                                frm.set_value('custom_status', 'Closed');
+                                                frm.save();
+                                                frm.reload_doc();
+                                                
+                                                frappe.show_alert({
+                                                    message: 'Farm Pack List closed and Consolidated Pack List updated successfully',
+                                                    indicator: 'green'
+                                                });
+                                                
+                                                // Remove the close button
+                                                frm.remove_custom_button('Close');
+                                            } else {
+                                                // Re-enable the button if there was an error
+                                                closeButton.prop('disabled', false);
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    // Re-enable the button if there was an error
+                                    closeButton.prop('disabled', false);
+                                }
+                            }
+                        });
+                    },
+                    () => {
+                        // Re-enable the button if user cancels
+                        closeButton.prop('disabled', false);
+                    }
+                );
+            });
         }
     }
 });
-
-function create_consolidated_pack_list(frm) {
-    frappe.call({
-        method: 'upande_tambuzi.upande_tambuzi.doctype.farm_pack_list.farm_pack_list.create_consolidated_pack_list',
-        args: {
-            farm_pack_list: frm.doc.name
-        },
-        callback: function(r) {
-            if (!r.exc) {
-                frappe.show_alert({
-                    message: __('Consolidated Pack List created successfully'),
-                    indicator: 'green'
-                });
-
-                // Update button appearance and disable it
-                $(".close-btn").text("Closed").removeClass("btn-primary").addClass("btn-success").prop("disabled", true);
-
-                // Update the form field to mark it as closed
-                frm.set_value("custom_is_closed", 1);
-                frm.save();  // Save the status change
-            }
-        }
-    });
-}

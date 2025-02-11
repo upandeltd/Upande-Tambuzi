@@ -45,6 +45,7 @@ def create_pick_list_for_sales_order(doc, method=None):
             "custom_source_warehouse",
             "conversion_factor",
             "stock_qty",
+            "length",
             "against_blanket_order"
         ]
     )
@@ -86,9 +87,13 @@ def create_pick_list_for_sales_order(doc, method=None):
                     "stock_uom": item.stock_uom,
                     "uom": item.uom,
                     "qty": item.qty,
+                    "length":item.length,
                     "stock_qty": item.stock_qty,
                     "conversion_factor": item.conversion_factor,
                     "source_warehouse": item.custom_source_warehouse,
+                    "source_warehouse": item.source_warehouse,
+                    "warehouse": item.source_warehouse,
+                     "warehouse": item.warehouse,
                     "sales_order": sales_order.name,
                     "sales_order_item": item.name
                 })
