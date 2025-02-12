@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2025-02-10 12:01:14.682912",
+ "creation": "2025-02-11 16:10:42.806202",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
@@ -16,10 +16,10 @@
   "qty",
   "stock_ledger_uom",
   "stock_ledger_qty",
-  "column_break_vrhb",
+  "column_break_thst",
   "shipmentcustomer",
   "crop",
-  "noof_boxes",
+  "no_of_boxes",
   "delivery_point",
   "total_boxes_loaded"
  ],
@@ -78,7 +78,7 @@
    "label": "Stock Ledger Qty"
   },
   {
-   "fieldname": "column_break_vrhb",
+   "fieldname": "column_break_thst",
    "fieldtype": "Column Break"
   },
   {
@@ -94,9 +94,9 @@
    "options": "Item"
   },
   {
-   "fieldname": "noof_boxes",
+   "fieldname": "no_of_boxes",
    "fieldtype": "Int",
-   "label": "No.Of Boxes"
+   "label": "No Of Boxes"
   },
   {
    "fieldname": "delivery_point",
@@ -112,7 +112,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-02-10 13:35:26.965522",
+ "modified": "2025-02-11 16:15:48.515060",
  "modified_by": "Administrator",
  "module": "Upande Tambuzi",
  "name": "Pack List Item",
