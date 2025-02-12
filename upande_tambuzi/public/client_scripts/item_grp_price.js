@@ -22,7 +22,6 @@ frappe.ui.form.on('Sales Order Item', {
                     } else {
                         frappe.model.set_value(cdt, cdn, 'rate', 0); // Default to 0
                         frappe.msgprint(`No price found for this customer's currency or the following items. Please have the price set to proceed!`); 
-                        // For any item with price zero.
 
                     }
                 }
