@@ -21,7 +21,8 @@ frappe.ui.form.on('Sales Order Item', {
                         frappe.model.set_value(cdt, cdn, 'rate', r.message);
                     } else {
                         frappe.model.set_value(cdt, cdn, 'rate', 0); // Default to 0
-                        frappe.msgprint(`Custom price not found. The rate has been defaulted to 0. Please set the item group price in the system if required.`);
+                        frappe.msgprint(`No price found for this customer's currency or the following items. Please have the price set to proceed!`); 
+                        // For any item with price zero.
 
                     }
                 }
