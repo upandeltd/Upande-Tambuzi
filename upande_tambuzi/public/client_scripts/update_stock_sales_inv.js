@@ -2,7 +2,7 @@
 // For license information, please see license.txt
 
 
-
+//stock clearance
 frappe.ui.form.on('Sales Invoice', {
     onload: function(frm) {
         frm.set_value('update_stock', 1);
