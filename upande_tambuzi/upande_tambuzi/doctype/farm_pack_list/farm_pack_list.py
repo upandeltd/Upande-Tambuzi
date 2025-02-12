@@ -76,7 +76,10 @@ def process_consolidated_pack_list(farm_pack_list, sales_order_id=None):
                 "customer_id": item.customer_id,
                 "sales_order_id": item.sales_order_id,
                 "box_id": item.box_id,
-                "item_code": item.item_code
+                "item_code": item.item_code,
+                "uom": item.uom,
+                "qty": item.qty,
+                "custom_rate":item.custom_rate
             })
         
         # Save the CPL in Draft mode (docstatus=0)
