@@ -15,6 +15,7 @@ def get_item_group_price():
             {
                 "item_group": data.get('item_group'),
                 "length": data.get('length'),
+                "currency":data.get('currency')
             },
             "price_list_rate",
         )

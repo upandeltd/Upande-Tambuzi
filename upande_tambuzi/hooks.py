@@ -13,7 +13,7 @@ app_license = "mit"
 # app_include_css = "/assets/upande_tambuzi/css/upande_tambuzi.css"
 # app_include_js = "/assets/upande_tambuzi/js/upande_tambuzi.js"
 app_include_js = "/assets/upande_tambuzi/client_scripts/item_grp_price.js"
-
+app_include_js = "/assets/upande_tambuzi/client_scripts/update_stock_sales_inv.js"
 
 # include js, css files in header of web template
 # web_include_css = "/assets/upande_tambuzi/css/upande_tambuzi.css"
