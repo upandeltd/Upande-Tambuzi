@@ -11,7 +11,8 @@ frappe.ui.form.on('Sales Order Item', {
                 method: 'get_item_group_price',
                 args: {
                     item_group: row.item_group,
-                    length: row.custom_length
+                    length: row.custom_length,
+                    currency: frm.doc.currency
                 },
                 callback: function(r) {
                     console.log(r);
