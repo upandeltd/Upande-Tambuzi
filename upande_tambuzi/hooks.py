@@ -12,8 +12,10 @@ app_license = "mit"
 # include js, css files in header of desk.html
 # app_include_css = "/assets/upande_tambuzi/css/upande_tambuzi.css"
 # app_include_js = "/assets/upande_tambuzi/js/upande_tambuzi.js"
-app_include_js = "/assets/upande_tambuzi/client_scripts/item_grp_price.js"
+app_include_js = "/assets/upande_tambuzi/client_scripts/fetch_item_grp_price.js"
 app_include_js = "/assets/upande_tambuzi/client_scripts/update_stock_sales_inv.js"
+app_include_js = "/assets/upande_tambuzi/client_scripts/se_rejection_reason.js"
+
 
 # include js, css files in header of web template
 # web_include_css = "/assets/upande_tambuzi/css/upande_tambuzi.css"
@@ -174,8 +176,12 @@ doc_events = {
 # 	"frappe.desk.doctype.event.event.get_events": "upande_tambuzi.event.get_events"
 # }
 override_whitelisted_methods = {
-    "get_item_group_price": "upande_tambuzi.server_scripts.item_grp_price.get_item_group_price"
+    "get_item_group_price": "upande_tambuzi.server_scripts.fetch_item_grp_price.get_item_group_price"
 }
+
+whitelisted_methods = [
+    "upande_tambuzi.server_scripts.fetch_item_grp_price.get_item_group_price"
+]
 
 
 #

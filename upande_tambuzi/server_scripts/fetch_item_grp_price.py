@@ -2,7 +2,6 @@
 # For license information, please see license.txt
 
 import frappe
-
 @frappe.whitelist()
 def get_item_group_price():
     # Initialize default price as 0
@@ -15,7 +14,7 @@ def get_item_group_price():
             {
                 "item_group": data.get('item_group'),
                 "length": data.get('length'),
-                "currency":data.get('currency')
+                # "currency":data.get('currency')
             },
             "price_list_rate",
         )
