@@ -1,7 +1,3 @@
-// Copyright (c) 2025, Upande Limited and contributors
-// For license information, please see license.txt  
-//Test instance
-
 frappe.ui.form.on('Sales Order', {});
 
 frappe.ui.form.on('Sales Order Item', {
@@ -9,11 +5,11 @@ frappe.ui.form.on('Sales Order Item', {
         let row = frappe.get_doc(cdt, cdn);
         if (row.item_group && row.custom_length) {
             frappe.call({
-                method: 'get_item_group_price',
+                method: 'upande_tambuzi.server_scripts.item_grp_price.get_item_group_price',
                 args: {
                     item_group: row.item_group,
                     length: row.custom_length,
-                    currency: frm.doc.currency
+                    // currency: frm.doc.currency
                 },
                 callback: function(r) {
                     console.log(r);
