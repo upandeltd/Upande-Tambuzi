@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2025-02-14 02:35:28.352431",
+ "creation": "2025-02-14 09:53:18.988204",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
@@ -15,7 +15,9 @@
   "column_break_seqr",
   "qty",
   "stock_ledger_uom",
-  "stock_ledger_qty"
+  "stock_ledger_qty",
+  "length",
+  "rate"
  ],
  "fields": [
   {
@@ -26,8 +28,9 @@
   },
   {
    "fieldname": "customer_id",
-   "fieldtype": "Data",
-   "label": "Customer ID"
+   "fieldtype": "Link",
+   "label": "Customer ID",
+   "options": "Customer"
   },
   {
    "fieldname": "sales_order_id",
@@ -49,7 +52,7 @@
   {
    "fieldname": "uom",
    "fieldtype": "Link",
-   "label": "UOM",
+   "label": "Bunch UOM",
    "options": "UOM"
   },
   {
@@ -64,18 +67,30 @@
   {
    "fieldname": "qty",
    "fieldtype": "Int",
-   "label": "Qty"
+   "label": "Bunch Qty"
   },
   {
    "fieldname": "stock_ledger_qty",
    "fieldtype": "Data",
    "label": "Stock Ledger Qty"
+  },
+  {
+   "fieldname": "length",
+   "fieldtype": "Select",
+   "label": "Length",
+   "options": "43CM\n53CM\n63CM\n73CM"
+  },
+  {
+   "fieldname": "rate",
+   "fieldtype": "Currency",
+   "label": "Rate",
+   "options": "currency"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-02-14 02:36:19.283162",
+ "modified": "2025-02-14 10:14:42.686883",
  "modified_by": "Administrator",
  "module": "Upande Tambuzi",
  "name": "Pack List Item",
