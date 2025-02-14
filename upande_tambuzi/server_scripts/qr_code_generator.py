@@ -1,14 +1,18 @@
+import json
 import qrcode
 import frappe
 import os
 from PIL import Image, ImageDraw, ImageFont
 import time
 
-@frappe.whitelist()
+@frappe.whitelist(allow_guest=True)
 def generate_qr_code(stock_entry_details):
     url = frappe.utils.get_url()
 
+    stock_entry_details = json.loads(stock_entry_details)
+
     stock_entry_name = stock_entry_details['name']
+    graded_by = stock_entry_details.get('grader')
     stock_entry_url = f"{url}/app/stock-entry/{stock_entry_name}"
     unique_id = int(time.time())
 
@@ -41,12 +45,12 @@ def generate_qr_code(stock_entry_details):
         font = ImageFont.load_default(label_font_size)
 
     variety_bbox = font.getbbox(variety)
-    stock_entry_bbox = font.getbbox(stock_entry_name)
+    graded_by_bbox = font.getbbox(graded_by)
 
-    label_width = max(variety_bbox[2] - variety_bbox[0], stock_entry_bbox[2] - stock_entry_bbox[0])
+    label_width = max(variety_bbox[2] - variety_bbox[0], graded_by_bbox[2] - graded_by_bbox[0])
     
     variety_height = variety_bbox[3] - variety_bbox[1]
-    stock_entry_height = stock_entry_bbox[3] - stock_entry_bbox[1]
+    stock_entry_height = graded_by_bbox[3] - graded_by_bbox[1]
     label_height = variety_height + stock_entry_height + spacing
 
     canvas_height = label_height + qr_height
@@ -58,9 +62,9 @@ def generate_qr_code(stock_entry_details):
     variety_y = 0
     draw.text((variety_x, variety_y), variety, font=font, fill="black")
 
-    stock_entry_x = (standard_width - (stock_entry_bbox[2] - stock_entry_bbox[0])) // 2
-    stock_entry_y = variety_height + spacing 
-    draw.text((stock_entry_x, stock_entry_y), stock_entry_name, font=font, fill="black")
+    graded_by_x = (standard_width - (graded_by_bbox[2] - graded_by_bbox[0])) // 2
+    graded_by_y = variety_height + spacing 
+    draw.text((graded_by_x, graded_by_y), graded_by, font=font, fill="black")
 
     # Paste the QR code below the label
     qr_x = (standard_width - qr_width) // 2
@@ -83,7 +87,6 @@ def generate_qr_code(stock_entry_details):
 
     file_doc.insert()
 
-    final_qr_code_url = f"{file_doc.file_url}"
-
+    final_qr_code_url = file_doc.file_url
 
     return final_qr_code_url

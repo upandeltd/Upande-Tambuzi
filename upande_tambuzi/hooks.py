@@ -264,7 +264,7 @@ fixtures = [
     },
     {
         "dt": "Client Script",
-        "filters": [["name", "in", ["Scan QR Button", "Populate Number of Items"]]]
+        "filters": [["name", "in", ["Qr Code gen" ,"Scan QR Button", "Populate Number of Items", "Grading Stock Entry", "Field Rejects Stock Entry"]]]
     },
     {
         "dt": "DocType",
