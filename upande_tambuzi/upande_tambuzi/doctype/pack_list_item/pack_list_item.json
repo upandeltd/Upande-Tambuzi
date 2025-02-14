@@ -15,7 +15,9 @@
   "column_break_seqr",
   "qty",
   "stock_ledger_uom",
-  "stock_ledger_qty"
+  "stock_ledger_qty",
+  "length",
+  "rate"
  ],
  "fields": [
   {
@@ -71,12 +73,24 @@
    "fieldname": "stock_ledger_qty",
    "fieldtype": "Data",
    "label": "Stock Ledger Qty"
+  },
+  {
+   "fieldname": "length",
+   "fieldtype": "Select",
+   "label": "Length",
+   "options": "43CM\n53CM\n63CM\n73CM"
+  },
+  {
+   "fieldname": "rate",
+   "fieldtype": "Currency",
+   "label": "Rate",
+   "options": "currency"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-02-14 09:54:47.509275",
+ "modified": "2025-02-14 10:14:42.686883",
  "modified_by": "Administrator",
  "module": "Upande Tambuzi",
  "name": "Pack List Item",

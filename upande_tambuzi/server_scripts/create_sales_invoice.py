@@ -11,6 +11,9 @@ def create_sales_invoice(doc, method):
     # Fetch the customer ID from the first row of the items table
     customer_id = doc.items[0].customer_id if hasattr(doc.items[0], "customer_id") else None
 
+    # Fetch source warehouse from the first row of the items table
+    source_warehouse = doc.items[0].source_warehouse if hasattr(doc.items[0], "source_warehouse") else None
+
     # Validate if Customer ID is found
     if not customer_id:
         frappe.throw("Customer is missing in the Consolidated Pack List items. Please select a customer.")
@@ -28,7 +31,8 @@ def create_sales_invoice(doc, method):
         "due_date": frappe.utils.add_days(frappe.utils.today(), 30),
         "items": [],
         "custom_consolidated_packlist": doc.name,
-        "status": "Draft"
+        "status": "Draft",
+        "set_warehouse": source_warehouse  # Set warehouse for the entire invoice
     })
 
     # Add Items from Consolidated Pack List
@@ -37,8 +41,10 @@ def create_sales_invoice(doc, method):
             "item_code": item.item_code,
             "uom": item.uom,
             "qty": item.qty,
-            "rate": item.custom_rate or 0,
-            "amount": item.qty * (item.custom_rate or 0),
+            "rate": item.rate or 0,
+            "amount": item.qty * (item.rate or 0),
+            "warehouse": item.source_warehouse,
+             "custom_length": item.length
         })
 
     # Insert Sales Invoice in Draft
