@@ -2,7 +2,7 @@ frappe.ui.form.on('Farm Pack List', {
     refresh: function(frm) {
         // Only show close button if document is submitted and not already closed
         if(frm.doc.docstatus === 1 && frm.doc.custom_status !== 'Closed') {
-            let closeButton = frm.add_custom_button('Close', () => {
+            let closeButton = frm.add_custom_button('Add to Consolidated Pack List', () => {
                 // Disable the button immediately to prevent multiple clicks
                 closeButton.prop('disabled', true);
                 
