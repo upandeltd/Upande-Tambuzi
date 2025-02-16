@@ -40,53 +40,38 @@ function assign_to_dispatch_form(frm) {
 }
 
 function process_cpl_assignment(frm, selected_dispatch) {
-    frappe.call({
-        method: "frappe.client.get",
-        args: {
-            doctype: "Consolidated Pack List",
-            name: frm.doc.name,
-            fields: ["*", "items.custom_customer", "items.custom_item_group", "items.custom_s_number", "items.custom_delivery_point"]
-        },
-        callback: function(r) {
-            if (!r.message) {
-                frappe.msgprint(__("Error: Could not load CPL details"));
-                return;
-            }
+    // Since we have direct access to the frm.doc, we can use its items table
+    let cpl_items = frm.doc.items || [];
 
-            let cpl_doc = r.message;
-            let cpl_items = cpl_doc.items || [];
+    if (!cpl_items.length) {
+        frappe.msgprint(__("No items found in CPL."));
+        return;
+    }
 
-            if (!cpl_items.length) {
-                frappe.msgprint(__("No items found in CPL."));
-                return;
-            }
+    let grouped_items = {};
 
-            let grouped_items = {};
+    // Group items by customer and item group to merge them into one row
+    cpl_items.forEach(item => {
+        let key = `${item.custom_customer}-${item.custom_item_group}-${item.custom_s_number}-${item.custom_delivery_point}`;
 
-            // Group items by customer and item group to merge them into one row
-            cpl_items.forEach(item => {
-                let key = `${item.custom_customer}-${item.custom_item_group}-${item.custom_s_number}-${item.custom_delivery_point}`;
-
-                if (!grouped_items[key]) {
-                    grouped_items[key] = {
-                        custom_consolidated_pack_list_id: frm.doc.name,
-                        custom_customer: item.custom_customer,
-                        custom_item_group: item.custom_item_group,
-                        no_of_boxes: 1, // Start with 1 box
-                        custom_s_number: item.custom_s_number, // Fix: Fetch correctly
-                        custom_delivery_point: item.custom_delivery_point, // Fix: Fetch correctly
-                        cpl_item: [item.name] // Store item names in array for tracking
-                    };
-                } else {
-                    grouped_items[key].no_of_boxes += 1; // Sum up the boxes
-                    grouped_items[key].cpl_item.push(item.name); // Track multiple items
-                }
-            });
-
-            let dispatch_items = Object.values(grouped_items);
-            update_dispatch_form(frm, selected_dispatch, dispatch_items);
+        if (!grouped_items[key]) {
+            grouped_items[key] = {
+                custom_consolidated_pack_list_id: frm.doc.name,
+                custom_customer: item.custom_customer,
+                custom_item_group: item.custom_item_group,
+                no_of_boxes: 1,
+                custom_s_number: item.custom_s_number,
+                custom_delivery_point: item.custom_delivery_point,
+                cpl_item: [item.name]
+            };
+        } else {
+            grouped_items[key].no_of_boxes += 1;
+            grouped_items[key].cpl_item.push(item.name);
         }
     });
+
+    let dispatch_items = Object.values(grouped_items);
+    update_dispatch_form(frm, selected_dispatch, dispatch_items);
 }
 
 function update_dispatch_form(frm, dispatch_name, dispatch_items) {
