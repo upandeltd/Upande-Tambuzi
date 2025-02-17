@@ -268,9 +268,10 @@ fixtures = [{
     "filters": [[
         "name", "in",
         [
-            "Qr Code gen", "Scan Via Honeywell", "Scan Data Field Listener",
-            "Scan QR Button", "Populate Number of Items",
-            "Grading Stock Entry", "Field Rejects Stock Entry"
+            "Qr Code gen", "Close Box Button", "Scan Via Honeywell",
+            "Scan Data Field Listener", "Scan QR Button",
+            "Populate Number of Items", "Grading Stock Entry",
+            "Field Rejects Stock Entry"
         ]
     ]]
 }, {
