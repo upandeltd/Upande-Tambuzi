@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2025-02-14 00:27:00.072423",
+ "creation": "2025-02-17 22:11:15.406463",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
@@ -15,8 +15,7 @@
   "column_break_seqr",
   "qty",
   "stock_ledger_uom",
-  "stock_ledger_qty",
-  "no_of_boxes"
+  "stock_ledger_qty"
  ],
  "fields": [
   {
@@ -71,17 +70,12 @@
    "fieldname": "stock_ledger_qty",
    "fieldtype": "Data",
    "label": "Stock Ledger Qty"
-  },
-  {
-   "fieldname": "no_of_boxes",
-   "fieldtype": "Int",
-   "label": "No of Boxes"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-02-14 21:28:48.818691",
+ "modified": "2025-02-17 22:14:00.838014",
  "modified_by": "Administrator",
  "module": "Upande Tambuzi",
  "name": "Pack List Item",
