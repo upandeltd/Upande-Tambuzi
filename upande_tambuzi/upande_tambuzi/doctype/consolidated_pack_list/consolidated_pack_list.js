@@ -40,7 +40,7 @@ function assign_to_dispatch_form(frm) {
 }
 
 function process_cpl_assignment(frm, selected_dispatch) {
-    // Since we have direct access to the frm.doc, we can use its items table
+
     let cpl_items = frm.doc.items || [];
 
     if (!cpl_items.length) {
