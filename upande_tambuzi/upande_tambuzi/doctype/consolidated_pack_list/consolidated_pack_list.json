@@ -1,76 +1,76 @@
 {
-    "actions": [],
-    "allow_rename": 1,
-    "autoname": "naming_series:",
-    "creation": "2025-01-30 14:27:36.916216",
-    "doctype": "DocType",
-    "engine": "InnoDB",
-    "field_order": [
-     "section_break_npj3",
-     "amended_from",
-     "naming_series",
-     "items",
-     "approval_status"
-    ],
-    "fields": [
-     {
-      "fieldname": "section_break_npj3",
-      "fieldtype": "Section Break"
-     },
-     {
-      "fieldname": "amended_from",
-      "fieldtype": "Link",
-      "label": "Amended From",
-      "no_copy": 1,
-      "options": "Consolidated Pack List",
-      "print_hide": 1,
-      "read_only": 1,
-      "search_index": 1
-     },
-     {
-      "fieldname": "naming_series",
-      "fieldtype": "Select",
-      "label": "Naming Series",
-      "options": "CPL-.YYYY.-"
-     },
-     {
-      "fieldname": "items",
-      "fieldtype": "Table",
-      "label": "Items",
-      "options": "Pack List Item"
-     },
-     {
-      "fieldname": "approval_status",
-      "fieldtype": "Select",
-      "label": "Approval Status",
-      "options": "Approved by Sales Rep\nApproved by Sales Manager\nApproved by CEO"
-     }
-    ],
-    "index_web_pages_for_search": 1,
-    "is_submittable": 1,
-    "links": [],
-    "modified": "2025-02-03 15:02:05.586758",
-    "modified_by": "Administrator",
-    "module": "Upande Tambuzi",
-    "name": "Consolidated Pack List",
-    "naming_rule": "By \"Naming Series\" field",
-    "owner": "Administrator",
-    "permissions": [
-     {
-      "create": 1,
-      "delete": 1,
-      "email": 1,
-      "export": 1,
-      "print": 1,
-      "read": 1,
-      "report": 1,
-      "role": "System Manager",
-      "share": 1,
-      "submit": 1,
-      "write": 1
-     }
-    ],
-    "sort_field": "creation",
-    "sort_order": "DESC",
-    "states": []
-   }
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2025-01-30 14:27:36.916216",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_npj3",
+  "amended_from",
+  "naming_series",
+  "items",
+  "approval_status"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_npj3",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Consolidated Pack List",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Naming Series",
+   "options": "CPL-.YYYY.-"
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "label": "Items",
+   "options": "Pack List Item"
+  },
+  {
+   "fieldname": "approval_status",
+   "fieldtype": "Select",
+   "label": "Approval Status",
+   "options": "Approved by Sales Rep\nApproved by Sales Manager\nApproved by CEO"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-02-17 22:04:35.688471",
+ "modified_by": "Administrator",
+ "module": "Upande Tambuzi",
+ "name": "Consolidated Pack List",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}
