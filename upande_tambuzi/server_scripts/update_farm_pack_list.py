@@ -1,13 +1,11 @@
 import frappe
 
 @frappe.whitelist()
-def add_bunch_to_farm_pack_list(farm_pack_list_doc_id, bunch_label_data, box_label_data, farm):
+def add_bunch_to_farm_pack_list(farm_pack_list_doc_id, bunch_SE_name, opl_name, farm, box_id):
     try:
-        parsed_box_data = frappe.parse_json(box_label_data)
-        order_id = parsed_box_data.get("order_id")
-        box_id = parsed_box_data.get("box_id")
+        order_id = opl_name
 
-        stock_entry_id = get_stock_entry_id_from_url(bunch_label_data)
+        stock_entry_id = bunch_SE_name
         
         order_pick_list = frappe.get_doc("Order Pick List", order_id)
         stock_entry = frappe.get_doc("Stock Entry", stock_entry_id)
@@ -48,7 +46,3 @@ def add_bunch_to_farm_pack_list(farm_pack_list_doc_id, bunch_label_data, box_lab
 
     except Exception as e:
         frappe.throw(f"Error adding bunch to Farm Pack List: {e}")
-
-def get_stock_entry_id_from_url(stock_entry_url):
-    stock_entry_url_arr = stock_entry_url.split("/")
-    return stock_entry_url_arr[-1]

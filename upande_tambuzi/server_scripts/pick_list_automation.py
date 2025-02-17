@@ -2,6 +2,9 @@ import frappe
 from frappe.utils import nowdate
 from collections import defaultdict
 
+from upande_tambuzi.server_scripts.opl_qr_code_gen import generate_qr_code
+
+
 @frappe.whitelist()
 def create_pick_list_for_sales_order(doc, method=None):
     # Handle both document object and document name
@@ -49,7 +52,7 @@ def create_pick_list_for_sales_order(doc, method=None):
             "against_blanket_order"
         ]
     )
-# Validate and group items
+    # Validate and group items
     for item in sales_order_items:
         if not item.custom_source_warehouse:
             frappe.throw(f"Source warehouse not specified for item {item.item_code}")
@@ -74,6 +77,7 @@ def create_pick_list_for_sales_order(doc, method=None):
             # pick_list.company = sales_order.company
             order_pick_list.customer = sales_order.customer
             order_pick_list.date_created = nowdate()
+
             
             # Calculate total quantity for this warehouse
             total_stock_qty = sales_order.total_qty
@@ -106,8 +110,21 @@ def create_pick_list_for_sales_order(doc, method=None):
             # Save and submit with error handling
             try:
                 order_pick_list.save()
+
+                # Generate and attach qrcode encoded with url of OPL
+                opl_url = f"{frappe.utils.get_url()}/app/order-pick-list/{order_pick_list.name}"
+                qr_code_url = generate_qr_code(opl_url, order_pick_list.name)
+
+                order_pick_list = frappe.get_doc("Order Pick List", order_pick_list.name)
+                order_pick_list.custom_qr_code = qr_code_url
+
+                order_pick_list.save()
+
                 order_pick_list.submit()
                 order_pick_list_names.append(order_pick_list.name)
+
+                 
+                order_pick_list.save()
             except Exception as e:
                 frappe.log_error(f"Failed to create Order Pick List for warehouse {warehouse}: {str(e)}")
                 raise
