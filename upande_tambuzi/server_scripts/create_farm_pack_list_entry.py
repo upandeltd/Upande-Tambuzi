@@ -10,7 +10,7 @@ def create_farm_pack_list_entry(bunch_label_data, box_label_data, farm):
         order_pick_list = frappe.get_doc("Order Pick List", order_id)
         stock_entry = frappe.get_doc("Stock Entry", stock_entry_id)
 
-        source_warehouse = f"{farm} Packed Store - TL"
+        source_warehouse = f"{farm} Dispatch Cold Store - TL"
         
         item_code = stock_entry.items[0].item_code
         uom = stock_entry.items[0].uom
