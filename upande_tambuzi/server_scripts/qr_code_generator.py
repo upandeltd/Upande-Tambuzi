@@ -49,7 +49,7 @@ def generate_qr_code(stock_entry_details):
         qr = qrcode.QRCode(
             version=1,
             error_correction=qrcode.constants.ERROR_CORRECT_L,
-            box_size=10,
+            box_size=5,
             border=4,
         )
 
@@ -62,7 +62,7 @@ def generate_qr_code(stock_entry_details):
         standard_width = 550
         max_text_width = 500 
 
-        initial_font_size = int(standard_width * 0.06)
+        initial_font_size = int(standard_width * 0.07)
 
         def fit_text(draw, text, max_width, font_path="arial.ttf", min_font_size=14):
             """ Adjust font size so text fits within max_width """
