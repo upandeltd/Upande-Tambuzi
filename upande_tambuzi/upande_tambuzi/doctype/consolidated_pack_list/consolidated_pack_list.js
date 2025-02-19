@@ -70,12 +70,15 @@ function process_bulk_cpl_assignment(selected_docs) {
                                     bunch_uom: item.bunch_uom,
                                     bunch_qty: item.bunch_qty,
                                     box_id: item.box_id,
+                                    stem_length:item.stem_length,
                                     item_group: item.item_group,
                                     no_of_boxes: cpl_row_count, // Set no_of_boxes to count of items in CPL
                                     s_number: item.s_number,
                                     delivery_point: item.delivery_point,
                                     sales_order_id: item.sales_order_id || "N/A",
-                                    consolidated_pack_list: cpl_doc.name
+                                    consolidated_pack_list_id: cpl_doc.name,
+                                    item_code:item.item_code,
+                                    source_warehouse:item.source_warehouse
                                 });
                             });
                         }
@@ -99,15 +102,27 @@ function create_new_dispatch_form(selected_docs, dispatch_items) {
             let new_row = frappe.model.add_child(dispatch_form, "dispatch_form_item");
             new_row.customer_id = item.customer_id;
             new_row.item_group = item.item_group;
-            new_row.item_code = item.item_code;
             new_row.no_of_boxes = item.no_of_boxes;
             new_row.s_number = item.s_number;
             new_row.delivery_point = item.delivery_point;
-            new_row.consolidated_pack_list = item.consolidated_pack_list;
+            new_row.consolidated_pack_list_id = item.consolidated_pack_list_id;
             new_row.sales_order_id = item.sales_order_id;
-            new_row.box_id = item.box_id;
-            new_row.bunch_uom = item.bunch_uom;
-            new_row.bunch_qty = item.bunch_qty;
+         
+        });
+
+
+        dispatch_items.forEach(item => {
+        let new_row = frappe.model.add_child(dispatch_form, "custom_sku_summary");
+        new_row.item_code = item.item_code;
+        new_row.item_group = item.item_group;
+        new_row.no_of_stems = item.no_of_stems;
+        new_row.consolidated_pack_list_id = item.consolidated_pack_list_id;
+        new_row.sales_order_id = item.sales_order_id;
+        new_row.stem_length = item.stem_length;
+        new_row.bunch_uom = item.bunch_uom;
+        new_row.bunch_qty = item.bunch_qty;
+        new_row.source_warehouse = item.source_warehouse;
+
         });
 
         dispatch_form.no_of_boxes = dispatch_items.length; // Total number of items as rows

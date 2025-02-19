@@ -281,11 +281,9 @@ fixtures = [{
             "Scan", "Farm", "Box Label", "Box Label Item"
         ]
     ]]
-},  {
+}, {
     "dt": "Print Format",
-    "filters": [
-        ["name", "in", ["QR Code Only"]]
-    ]
+    "filters": [["name", "in", ["QR Code Only"]]]
 }]
 
 # doc_events = {
