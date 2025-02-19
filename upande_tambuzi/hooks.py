@@ -135,7 +135,9 @@ doc_events = {
         "on_submit":
         "upande_tambuzi.server_scripts.pick_list_automation.create_pick_list_for_sales_order",
         "before_submit":
-        "upande_tambuzi.upande_tambuzi.custom.sales_order_custom.validate_customer_check_limit"
+        "upande_tambuzi.upande_tambuzi.custom.sales_order_custom.validate_customer_check_limit",
+        "on_submit":
+        "upande_tambuzi.server_scripts.so_stock_transfer_automation.on_submit_sales_order"
     },
 
     # "Consolidated Pack List": {
