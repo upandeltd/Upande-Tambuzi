@@ -284,7 +284,17 @@ fixtures = [{
             "Scan", "Farm", "Box Label", "Box Label Item"
         ]
     ]]
-}]
+},  {
+    "dt": "Print Format",
+    "filters": [
+        ["name", "in", ["QR Code Only"]]
+    ]
+}, {
+    "dt": "Workspace",
+    "filters": [
+        ["name", "in", ["Scan Stock"]]
+    ]
+},]
 
 # doc_events = {
 #     "Consolidated Pack List": {
