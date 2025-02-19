@@ -291,12 +291,7 @@ fixtures = [{
     "filters": [
         ["name", "in", ["QR Code Only"]]
     ]
-}, {
-    "dt": "Workspace",
-    "filters": [
-        ["name", "in", ["Scan Stock"]]
-    ]
-},]
+}]
 
 # doc_events = {
 #     "Consolidated Pack List": {
