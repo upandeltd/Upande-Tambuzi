@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2025-02-19 00:33:20.414235",
+ "creation": "2025-02-19 01:19:38.168799",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
@@ -75,7 +75,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-02-19 00:34:26.291059",
+ "modified": "2025-02-19 11:43:27.360983",
  "modified_by": "Administrator",
  "module": "Upande Tambuzi",
  "name": "Pack List Item",
