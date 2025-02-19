@@ -6,6 +6,14 @@ def on_submit_sales_order(doc, method):
     if doc.workflow_state != "Approved":
         return
 
+    warehouse_patterns = [{
+        "from": "Graded General",
+        "to": "Graded Sold"
+    }, {
+        "from": "Dispatch Form",
+        "to": "Dispatch Sold"
+    }]
+
     stock_entry = frappe.get_doc({
         "doctype": "Stock Entry",
         "stock_entry_type": "Material Transfer",
@@ -14,20 +22,21 @@ def on_submit_sales_order(doc, method):
 
     for item in doc.items:
         source_warehouse = item.custom_source_warehouse
-        target_warehouse = item.warehouse  # Assuming you have a target warehouse field
+        target_warehouse = None
 
-        if not source_warehouse:
-            frappe.throw(
-                f"Source warehouse is required for item {item.item_code}")
+        # Try each pattern until we find a match
+        for pattern in warehouse_patterns:
+            if pattern["from"] in source_warehouse:
+                target_warehouse = source_warehouse.replace(
+                    pattern["from"], pattern["to"])
+                break
 
         if not target_warehouse:
             frappe.throw(
-                f"Target warehouse is required for item {item.item_code}")
+                f"Could not determine target warehouse for source warehouse '{source_warehouse}'. No matching pattern found."
+            )
 
-        # Verify warehouses exist
-        if not frappe.db.exists("Warehouse", source_warehouse):
-            frappe.throw(
-                f"Source warehouse '{source_warehouse}' does not exist")
+        # Verify target warehouse exists
         if not frappe.db.exists("Warehouse", target_warehouse):
             frappe.throw(
                 f"Target warehouse '{target_warehouse}' does not exist")
