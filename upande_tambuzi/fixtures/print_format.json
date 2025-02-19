@@ -1,0 +1,33 @@
+[
+ {
+  "absolute_value": 0,
+  "align_labels_right": 0,
+  "css": null,
+  "custom_format": 1,
+  "default_print_language": "en",
+  "disabled": 0,
+  "doc_type": "QR Code",
+  "docstatus": 0,
+  "doctype": "Print Format",
+  "font": null,
+  "font_size": 14,
+  "format_data": null,
+  "html": "<!DOCTYPE html>\n<html>\n<head>\n    <style>\n        .qr-code-container {\n            float: left;\n            width: 30%; /* Adjust the width as necessary */\n            text-align: center;\n        }\n        .qr-code-container img {\n            max-width: 100%;\n            height: auto;\n        }\n\n        .text-container {\n            float: left;\n            margin-top: 35px;\n            width: 65%; /* Adjust this to make room for the text */\n            padding-left: 5px; /* Space between QR and text */\n        }\n\n        .text-container p {\n            margin: 0;\n            font-size: 18px;\n            line-height: 1.5;\n        }\n\n        .text-container p strong {\n            font-weight: bold;\n        }\n\n        /* Clear floats */\n        .clearfix {\n            clear: both;\n        }\n    </style>\n</head>\n<body>\n    <div class=\"qr-code-container\">\n        {% if doc.qr_code_image %}\n            <img src=\"{{ doc.qr_code_image }}\" alt=\"QR Code\">\n        {% else %}\n            <p>No QR Code available</p>\n        {% endif %}\n    </div>\n    \n    <div class=\"text-container\">\n        <p><strong>Variety: </strong>{{ doc.variety }}</p>\n        <p><strong>Graded By: </strong>{{ doc.graded_by }}</p>\n    </div>\n\n    <div class=\"clearfix\"></div>\n</body>\n</html>\n",
+  "line_breaks": 0,
+  "margin_bottom": 15.0,
+  "margin_left": 15.0,
+  "margin_right": 15.0,
+  "margin_top": 15.0,
+  "modified": "2025-02-19 03:39:16.565766",
+  "module": "Upande Tambuzi",
+  "name": "QR Code Only",
+  "page_number": "Hide",
+  "print_format_builder": 0,
+  "print_format_builder_beta": 0,
+  "print_format_type": "Jinja",
+  "raw_commands": null,
+  "raw_printing": 0,
+  "show_section_headings": 0,
+  "standard": "No"
+ }
+]
