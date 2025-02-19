@@ -1,6 +1,6 @@
 frappe.listview_settings["Consolidated Pack List"] = {
     onload: function (listview) {
-        listview.page.add_inner_button("Bulk Attach to Dispatch Form", function() {
+        listview.page.add_inner_button("Create Dispatch Form", function() {
             let selected_docs = listview.get_checked_items();
             
             if (!selected_docs.length) {
@@ -62,16 +62,16 @@ function process_bulk_cpl_assignment(selected_docs, selected_dispatch) {
                         let cpl_items = cpl_doc.items || [];
 
                         cpl_items.forEach(item => {
-                            let key = `${item.custom_customer}-${item.custom_item_group}-${item.custom_s_number}-${item.custom_delivery_point}`;
+                            let key = `${item.customer_id}-${item.item_group}-${item.s_number}-${item.delivery_point}`;
 
                             if (!grouped_items[key]) {
                                 grouped_items[key] = {
-                                    custom_consolidated_pack_list_id: selected_dispatch,
-                                    custom_customer: item.custom_customer,
-                                    custom_item_group: item.custom_item_group,
+                                    consolidated_pack_list_id: selected_dispatch,
+                                    customer_id: item.customer_id,
+                                    item_group: item.item_group,
                                     no_of_boxes: 1,
-                                    custom_s_number: item.custom_s_number,
-                                    custom_delivery_point: item.custom_delivery_point,
+                                    s_number: item.s_number,
+                                    delivery_point: item.delivery_point,
                                     cpl_item: [item.name]
                                 };
                             } else {
@@ -123,12 +123,12 @@ function update_bulk_dispatch_form(selected_docs, dispatch_name, dispatch_items)
             // Add new items
             dispatch_items.forEach(item => {
                 new_items.push({
-                    custom_consolidated_pack_list_id: item.custom_consolidated_pack_list_id,
-                    custom_customer: item.custom_customer,
-                    custom_item_group: item.custom_item_group,
+                    consolidated_pack_list_id: item.consolidated_pack_list_id,
+                    customer_id: item.customer_id,
+                    item_group: item.item_group,
                     no_of_boxes: item.no_of_boxes,
-                    custom_s_number: item.custom_s_number,
-                    custom_delivery_point: item.custom_delivery_point,
+                    s_number: item.s_number,
+                    delivery_point: item.delivery_point,
                     doctype: 'Dispatch Form Item' // Add doctype for child table
                 });
             });
@@ -147,7 +147,7 @@ function update_bulk_dispatch_form(selected_docs, dispatch_name, dispatch_items)
                         frappe.show_alert({
                             message: __("CPLs successfully assigned to Dispatch Form"),
                             indicator: 'green'
-                        }, 5);
+                        }, 15);
 
                         // Update all selected CPLs to dispatched status
                         let update_promises = selected_docs.map(cpl => {
@@ -173,7 +173,7 @@ function update_bulk_dispatch_form(selected_docs, dispatch_name, dispatch_items)
                             frappe.show_alert({
                                 message: __("All selected CPLs have been marked as dispatched"),
                                 indicator: 'green'
-                            }, 5);
+                            }, 15);
                             
                             // Refresh the list view
                             cur_list.refresh();

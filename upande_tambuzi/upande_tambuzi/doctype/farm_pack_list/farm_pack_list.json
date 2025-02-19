@@ -15,7 +15,7 @@
    "fieldname": "pack_list_item",
    "fieldtype": "Table",
    "label": "Pack List Item",
-   "options": "Pack List Item 1"
+   "options": "Dispatch Form Item"
   },
   {
    "fieldname": "naming_series",
@@ -37,7 +37,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-02-19 11:52:22.508048",
+ "modified": "2025-02-19 12:05:51.578016",
  "modified_by": "Administrator",
  "module": "Upande Tambuzi",
  "name": "Farm Pack List",
