@@ -1,3 +1,4 @@
+// Last last
 frappe.ui.form.on('Stock Entry', {
     stock_entry_type: function(frm) {
         console.log("Stock Entry Type:", frm.doc.stock_entry_type);
