@@ -62,7 +62,7 @@ def process_consolidated_pack_list(farm_pack_list, sales_order_id=None):
                 frappe.throw(
                     _("No items found in the Farm Pack List. Cannot process CPL."
                       ))
-            message = _(f"New CPL:{cpl.name} is created in draft status")
+            message = _(f"New CPL is created in draft status")
 
         if "items" not in cpl.as_dict():
             frappe.throw(
@@ -76,9 +76,8 @@ def process_consolidated_pack_list(farm_pack_list, sales_order_id=None):
                     "sales_order_id": item.sales_order_id,
                     "box_id": item.box_id,
                     "item_code": item.item_code,
-                    "uom": item.uom,
-                    "qty": item.qty,
-                    "custom_rate": item.custom_rate
+                    "bunch_uom": item.bunch_uom,
+                    "bunch_qty": item.bunch_qty,
                 })
 
         cpl.save(ignore_permissions=True)
