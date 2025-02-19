@@ -30,7 +30,7 @@
    "fieldname": "dispatch_form_item",
    "fieldtype": "Table",
    "label": "Dispatch Form Item",
-   "options": "Pack List Item"
+   "options": "Dispatch Form Item"
   },
   {
    "fieldname": "naming_series",
@@ -42,7 +42,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-02-17 22:04:35.286598",
+ "modified": "2025-02-19 12:08:13.409459",
  "modified_by": "Administrator",
  "module": "Upande Tambuzi",
  "name": "Dispatch Form",

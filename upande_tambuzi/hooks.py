@@ -134,10 +134,9 @@ doc_events = {
     "Sales Order": {
         "on_submit":
         "upande_tambuzi.server_scripts.pick_list_automation.create_pick_list_for_sales_order",
+        "upande_tambuzi.server_scripts.so_stock_transfer_automation.on_submit_sales_order"
         "before_submit":
         "upande_tambuzi.upande_tambuzi.custom.sales_order_custom.validate_customer_check_limit",
-        "on_submit":
-        "upande_tambuzi.server_scripts.so_stock_transfer_automation.on_submit_sales_order"
     },
 
     # "Consolidated Pack List": {
@@ -186,11 +185,6 @@ override_whitelisted_methods = {
     "create_sales_invoice":
     "upande_tambuzi.server_scripts.create_sales_invoice.create_sales_invoice"
 }
-
-whitelisted_methods = [
-    "upande_tambuzi.server_scripts.fetch_item_grp_price.get_item_group_price",
-    "upande_tambuzi.server_scripts.create_sales_invoice.create_sales_invoice"
-]
 
 #
 # each overriding function accepts a `data` argument;
@@ -286,11 +280,9 @@ fixtures = [{
             "Scan", "Farm", "Box Label", "Box Label Item"
         ]
     ]]
-},  {
+}, {
     "dt": "Print Format",
-    "filters": [
-        ["name", "in", ["QR Code Only"]]
-    ]
+    "filters": [["name", "in", ["QR Code Only"]]]
 }]
 
 # doc_events = {

@@ -5,5 +5,5 @@
 from frappe.model.document import Document
 
 
-class PackListItem(Document):
+class SKUSummary(Document):
 	pass
