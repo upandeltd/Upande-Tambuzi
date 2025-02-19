@@ -185,11 +185,6 @@ override_whitelisted_methods = {
     "upande_tambuzi.server_scripts.create_sales_invoice.create_sales_invoice"
 }
 
-whitelisted_methods = [
-    "upande_tambuzi.server_scripts.fetch_item_grp_price.get_item_group_price",
-    "upande_tambuzi.server_scripts.create_sales_invoice.create_sales_invoice"
-]
-
 #
 # each overriding function accepts a `data` argument;
 # generated from the base implementation of the doctype dashboard,
