@@ -48,7 +48,7 @@ function validate_and_process_cpls(selected_docs) {
 }
 
 function process_bulk_cpl_assignment(selected_docs) {
-    let all_items = [];
+    let grouped_items = {};
 
     let fetch_cpl_data = selected_docs.map(cpl => {
         return new Promise(resolve => {
@@ -61,24 +61,26 @@ function process_bulk_cpl_assignment(selected_docs) {
                 callback: function (response) {
                     if (response.message) {
                         let cpl_doc = response.message;
-                        let cpl_row_count = cpl_doc.items ? cpl_doc.items.length : 0;
 
                         if (cpl_doc.items && cpl_doc.items.length) {
                             cpl_doc.items.forEach(item => {
-                                all_items.push({
+                                let key = `${item.item_group}_${cpl_doc.name}`;
+                                if (!grouped_items[key]) {
+                                    grouped_items[key] = [];
+                                }
+                                grouped_items[key].push({
                                     customer_id: item.customer_id,
                                     bunch_uom: item.bunch_uom,
                                     bunch_qty: item.bunch_qty,
                                     box_id: item.box_id,
-                                    stem_length:item.stem_length,
+                                    stem_length: item.stem_length,
                                     item_group: item.item_group,
-                                    no_of_boxes: cpl_row_count, // Set no_of_boxes to count of items in CPL
                                     s_number: item.s_number,
                                     delivery_point: item.delivery_point,
                                     sales_order_id: item.sales_order_id || "N/A",
                                     consolidated_pack_list_id: cpl_doc.name,
-                                    item_code:item.item_code,
-                                    source_warehouse:item.source_warehouse
+                                    item_code: item.item_code,
+                                    source_warehouse: item.source_warehouse
                                 });
                             });
                         }
@@ -90,42 +92,43 @@ function process_bulk_cpl_assignment(selected_docs) {
     });
 
     Promise.all(fetch_cpl_data).then(() => {
-        create_new_dispatch_form(selected_docs, all_items);
+        create_new_dispatch_form(selected_docs, grouped_items);
     });
 }
 
-function create_new_dispatch_form(selected_docs, dispatch_items) {
+function create_new_dispatch_form(selected_docs, grouped_items) {
     frappe.model.with_doctype("Dispatch Form", function () {
         let dispatch_form = frappe.model.get_new_doc("Dispatch Form");
 
-        dispatch_items.forEach(item => {
+        Object.keys(grouped_items).forEach(group_key => {
+            let items = grouped_items[group_key];
             let new_row = frappe.model.add_child(dispatch_form, "dispatch_form_item");
-            new_row.customer_id = item.customer_id;
-            new_row.item_group = item.item_group;
-            new_row.no_of_boxes = item.no_of_boxes;
-            new_row.s_number = item.s_number;
-            new_row.delivery_point = item.delivery_point;
-            new_row.consolidated_pack_list_id = item.consolidated_pack_list_id;
-            new_row.sales_order_id = item.sales_order_id;
-         
+            new_row.item_group = items[0].item_group;
+            new_row.consolidated_pack_list_id = items[0].consolidated_pack_list_id;
+            new_row.no_of_boxes = items.length;
+            new_row.customer_id = items[0].customer_id;
+            new_row.s_number = items[0].s_number;
+            new_row.delivery_point = items[0].delivery_point;
+            new_row.sales_order_id = items[0].sales_order_id;
         });
 
-
-        dispatch_items.forEach(item => {
-        let new_row = frappe.model.add_child(dispatch_form, "custom_sku_summary");
-        new_row.item_code = item.item_code;
-        new_row.item_group = item.item_group;
-        new_row.no_of_stems = item.no_of_stems;
-        new_row.consolidated_pack_list_id = item.consolidated_pack_list_id;
-        new_row.sales_order_id = item.sales_order_id;
-        new_row.stem_length = item.stem_length;
-        new_row.bunch_uom = item.bunch_uom;
-        new_row.bunch_qty = item.bunch_qty;
-        new_row.source_warehouse = item.source_warehouse;
-
+        Object.keys(grouped_items).forEach(group_key => {
+            let items = grouped_items[group_key];
+            items.forEach(item => {
+                let new_row = frappe.model.add_child(dispatch_form, "custom_sku_summary");
+                new_row.item_code = item.item_code;
+                new_row.item_group = item.item_group;
+                new_row.no_of_stems = item.no_of_stems;
+                new_row.consolidated_pack_list_id = item.consolidated_pack_list_id;
+                new_row.sales_order_id = item.sales_order_id;
+                new_row.stem_length = item.stem_length;
+                new_row.bunch_uom = item.bunch_uom;
+                new_row.bunch_qty = item.bunch_qty;
+                new_row.source_warehouse = item.source_warehouse;
+            });
         });
 
-        dispatch_form.no_of_boxes = dispatch_items.length; // Total number of items as rows
+        dispatch_form.no_of_boxes = Object.keys(grouped_items).length;
 
         frappe.call({
             method: "frappe.client.insert",
