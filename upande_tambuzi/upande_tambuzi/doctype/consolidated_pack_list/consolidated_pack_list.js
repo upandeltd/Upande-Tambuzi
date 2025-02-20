@@ -1,51 +1,53 @@
 frappe.listview_settings["Consolidated Pack List"] = {
     onload: function (listview) {
-        listview.page.add_inner_button("Bulk Attach to Dispatch Form", function() {
+        listview.page.add_inner_button("Create to Dispatch Form", function () {
             let selected_docs = listview.get_checked_items();
-            
+
             if (!selected_docs.length) {
                 frappe.msgprint(__("Please select at least one Consolidated Pack List"));
                 return;
             }
-            
-            assign_multiple_cpls_to_dispatch(selected_docs);
+
+            validate_and_process_cpls(selected_docs);
         });
     }
 };
 
-function assign_multiple_cpls_to_dispatch(selected_docs) {
-    frappe.call({
-        method: "frappe.client.get_list",
-        args: {
-            doctype: "Dispatch Form",
-            filters: { docstatus: 0 },
-            fields: ["name"]
-        },
-        callback: function(response) {
-            let dispatch_forms = response.message || [];
-            if (!dispatch_forms.length) {
-                frappe.msgprint(__("No available Dispatch Forms in pending status."));
-                return;
-            }
-
-            let dispatch_options = dispatch_forms.map(df => df.name);
-
-            frappe.prompt([
-                {
-                    label: "Select Dispatch Form",
-                    fieldname: "selected_dispatch",
-                    fieldtype: "Select",
-                    options: dispatch_options,
-                    reqd: 1
+function validate_and_process_cpls(selected_docs) {
+    let validation_promises = selected_docs.map(cpl => {
+        return new Promise(resolve => {
+            frappe.call({
+                method: "frappe.client.get",
+                args: {
+                    doctype: "Consolidated Pack List",
+                    name: cpl.name,
+                    fields: ["name", "custom_dispatched"]
+                },
+                callback: function (response) {
+                    if (response.message && response.message.custom_dispatched) {
+                        resolve({ is_dispatched: true, cpl_id: cpl.name });
+                    } else {
+                        resolve({ is_dispatched: false, cpl_id: cpl.name });
+                    }
                 }
-            ], function(values) {
-                process_bulk_cpl_assignment(selected_docs, values.selected_dispatch);
-            }, __("Assign Selected CPLs"), __("Assign"));
+            });
+        });
+    });
+
+    Promise.all(validation_promises).then(results => {
+        let dispatched_cpls = results.filter(result => result.is_dispatched);
+
+        if (dispatched_cpls.length > 0) {
+            let cpl_list = dispatched_cpls.map(cpl => cpl.cpl_id).join(", ");
+            frappe.msgprint(__(`Cannot process already dispatched CPLs: ${cpl_list}`));
+            return;
         }
+
+        process_bulk_cpl_assignment(selected_docs);
     });
 }
 
-function process_bulk_cpl_assignment(selected_docs, selected_dispatch) {
+function process_bulk_cpl_assignment(selected_docs) {
     let grouped_items = {};
 
     let fetch_cpl_data = selected_docs.map(cpl => {
@@ -56,29 +58,32 @@ function process_bulk_cpl_assignment(selected_docs, selected_dispatch) {
                     doctype: "Consolidated Pack List",
                     name: cpl.name
                 },
-                callback: function(response) {
+                callback: function (response) {
                     if (response.message) {
                         let cpl_doc = response.message;
-                        let cpl_items = cpl_doc.items || [];
 
-                        cpl_items.forEach(item => {
-                            let key = `${item.custom_customer}-${item.custom_item_group}-${item.custom_s_number}-${item.custom_delivery_point}`;
-
-                            if (!grouped_items[key]) {
-                                grouped_items[key] = {
-                                    custom_consolidated_pack_list_id: selected_dispatch,
-                                    custom_customer: item.custom_customer,
-                                    custom_item_group: item.custom_item_group,
-                                    no_of_boxes: 1,
-                                    custom_s_number: item.custom_s_number,
-                                    custom_delivery_point: item.custom_delivery_point,
-                                    cpl_item: [item.name]
-                                };
-                            } else {
-                                grouped_items[key].no_of_boxes += 1;
-                                grouped_items[key].cpl_item.push(item.name);
-                            }
-                        });
+                        if (cpl_doc.items && cpl_doc.items.length) {
+                            cpl_doc.items.forEach(item => {
+                                let key = `${item.item_group}_${cpl_doc.name}`;
+                                if (!grouped_items[key]) {
+                                    grouped_items[key] = [];
+                                }
+                                grouped_items[key].push({
+                                    customer_id: item.customer_id,
+                                    bunch_uom: item.bunch_uom,
+                                    bunch_qty: item.bunch_qty,
+                                    box_id: item.box_id,
+                                    stem_length: item.stem_length,
+                                    item_group: item.item_group,
+                                    s_number: item.s_number,
+                                    delivery_point: item.delivery_point,
+                                    sales_order_id: item.sales_order_id || "N/A",
+                                    consolidated_pack_list_id: cpl_doc.name,
+                                    item_code: item.item_code,
+                                    source_warehouse: item.source_warehouse
+                                });
+                            });
+                        }
                     }
                     resolve();
                 }
@@ -87,102 +92,80 @@ function process_bulk_cpl_assignment(selected_docs, selected_dispatch) {
     });
 
     Promise.all(fetch_cpl_data).then(() => {
-        let dispatch_items = Object.values(grouped_items);
-        update_bulk_dispatch_form(selected_docs, selected_dispatch, dispatch_items);
+        create_new_dispatch_form(selected_docs, grouped_items);
     });
 }
 
-function update_bulk_dispatch_form(selected_docs, dispatch_name, dispatch_items) {
-    frappe.call({
-        method: "frappe.client.get",
-        args: {
-            doctype: "Dispatch Form",
-            name: dispatch_name
-        },
-        callback: function(response) {
-            if (!response.message) {
-                frappe.msgprint(__("Error: Could not load Dispatch Form."));
-                return;
-            }
+function create_new_dispatch_form(selected_docs, grouped_items) {
+    frappe.model.with_doctype("Dispatch Form", function () {
+        let dispatch_form = frappe.model.get_new_doc("Dispatch Form");
 
-            let df_doc = response.message;
-            
-            // Initialize dispatch_form_item if it doesn't exist
-            if (!df_doc.dispatch_form_item) {
-                df_doc.dispatch_form_item = [];
-            }
+        Object.keys(grouped_items).forEach(group_key => {
+            let items = grouped_items[group_key];
+            let new_row = frappe.model.add_child(dispatch_form, "dispatch_form_item");
+            new_row.item_group = items[0].item_group;
+            new_row.consolidated_pack_list_id = items[0].consolidated_pack_list_id;
+            new_row.no_of_boxes = items.length;
+            new_row.customer_id = items[0].customer_id;
+            new_row.s_number = items[0].s_number;
+            new_row.delivery_point = items[0].delivery_point;
+            new_row.sales_order_id = items[0].sales_order_id;
+        });
 
-            // Create new array with existing items (if any) plus new items
-            let new_items = [];
-            
-            // Add existing items if any
-            if (df_doc.dispatch_form_item && Array.isArray(df_doc.dispatch_form_item)) {
-                new_items = [...df_doc.dispatch_form_item];
-            }
-            
-            // Add new items
-            dispatch_items.forEach(item => {
-                new_items.push({
-                    custom_consolidated_pack_list_id: item.custom_consolidated_pack_list_id,
-                    custom_customer: item.custom_customer,
-                    custom_item_group: item.custom_item_group,
-                    no_of_boxes: item.no_of_boxes,
-                    custom_s_number: item.custom_s_number,
-                    custom_delivery_point: item.custom_delivery_point,
-                    doctype: 'Dispatch Form Item' // Add doctype for child table
-                });
+        Object.keys(grouped_items).forEach(group_key => {
+            let items = grouped_items[group_key];
+            items.forEach(item => {
+                let new_row = frappe.model.add_child(dispatch_form, "custom_sku_summary");
+                new_row.item_code = item.item_code;
+                new_row.item_group = item.item_group;
+                new_row.no_of_stems = item.no_of_stems;
+                new_row.consolidated_pack_list_id = item.consolidated_pack_list_id;
+                new_row.sales_order_id = item.sales_order_id;
+                new_row.stem_length = item.stem_length;
+                new_row.bunch_uom = item.bunch_uom;
+                new_row.bunch_qty = item.bunch_qty;
+                new_row.source_warehouse = item.source_warehouse;
             });
+        });
 
-            // Update the document with new items
-            df_doc.dispatch_form_item = new_items;
-            
-            // Update total boxes count
-            df_doc.no_of_boxes = new_items.reduce((sum, item) => sum + item.no_of_boxes, 0);
+        dispatch_form.no_of_boxes = Object.keys(grouped_items).length;
 
-            frappe.call({
-                method: "frappe.client.save",
-                args: { doc: df_doc },
-                callback: function(save_result) {
-                    if (save_result.message) {
-                        frappe.show_alert({
-                            message: __("CPLs successfully assigned to Dispatch Form"),
-                            indicator: 'green'
-                        }, 5);
+        frappe.call({
+            method: "frappe.client.insert",
+            args: { doc: dispatch_form },
+            callback: function (save_result) {
+                if (save_result.message) {
+                    let new_dispatch_id = save_result.message.name;
+                    frappe.show_alert({
+                        message: __(`CPLs successfully assigned to new Dispatch Form ${new_dispatch_id}`),
+                        indicator: 'green'
+                    }, 15);
 
-                        // Update all selected CPLs to dispatched status
-                        let update_promises = selected_docs.map(cpl => {
-                            return new Promise(resolve => {
-                                frappe.call({
-                                    method: "frappe.client.set_value",
-                                    args: {
-                                        doctype: "Consolidated Pack List",
-                                        name: cpl.name,
-                                        fieldname: {
-                                            "custom_dispatched": 1,
-                                            "custom_dispatch_status": "Dispatched"
-                                        }
-                                    },
-                                    callback: function() {
-                                        resolve();
-                                    }
-                                });
+                    let update_promises = selected_docs.map(cpl => {
+                        return new Promise(resolve => {
+                            frappe.call({
+                                method: "frappe.client.set_value",
+                                args: {
+                                    doctype: "Consolidated Pack List",
+                                    name: cpl.name,
+                                    fieldname: { "custom_dispatched": 1, "custom_dispatch_status": "Dispatched" }
+                                },
+                                callback: function () { resolve(); }
                             });
                         });
+                    });
 
-                        Promise.all(update_promises).then(() => {
-                            frappe.show_alert({
-                                message: __("All selected CPLs have been marked as dispatched"),
-                                indicator: 'green'
-                            }, 5);
-                            
-                            // Refresh the list view
-                            cur_list.refresh();
-                        });
-                    } else {
-                        frappe.msgprint(__("Error saving Dispatch Form: ") + save_result.exc);
-                    }
+                    Promise.all(update_promises).then(() => {
+                        frappe.show_alert({
+                            message: __("All selected CPLs have been marked as dispatched"),
+                            indicator: 'green'
+                        }, 15);
+                        cur_list.refresh();
+                    });
+                } else {
+                    frappe.msgprint(__("Error creating Dispatch Form: ") + save_result.exc);
                 }
-            });
-        }
+            }
+        });
     });
 }
