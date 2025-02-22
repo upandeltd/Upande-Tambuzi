@@ -2,6 +2,17 @@
  {
   "docstatus": 0,
   "doctype": "Client Script",
+  "dt": "Stock Entry",
+  "enabled": 1,
+  "modified": "2025-02-22 13:17:55.103138",
+  "module": "Upande Tambuzi",
+  "name": "Archive Employee",
+  "script": "frappe.ui.form.on('Stock Entry', {\n    onload: function (frm) {\n        frm.fields_dict['custom_graded_by'].get_query = function() {\n            return {\n                filters: {\n                    'custom_archived': 0\n                }\n            };\n        };\n    }\n});\n",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
   "dt": "Scan",
   "enabled": 0,
   "modified": "2025-02-16 13:37:37.485949",
@@ -26,10 +37,10 @@
   "doctype": "Client Script",
   "dt": "Stock Entry",
   "enabled": 1,
-  "modified": "2025-02-12 17:40:06.907542",
+  "modified": "2025-02-22 14:41:27.648541",
   "module": "Upande Tambuzi",
   "name": "Grading Stock Entry",
-  "script": "frappe.ui.form.on('Stock Entry', {\n    custom_farm: function(frm) {\n        if (frm.doc.stock_entry_type === \"Grading\") {\n            let warehouseMapping = {\n                \"Burguret\": { source: \"Burguret Receiving Cold Store - TL\", target: \"Burguret Graded General - TL\" },\n                \"Turaco\": { source: \"Turaco Receiving Cold Store - TL\", target: \"Turaco Graded General - TL\" },\n                \"Pendekeza\": { source: \"Pendekeza Receiving Cold Store - TL\", target: \"Pendekeza Graded General - TL\" }\n            };\n\n            let selectedFarm = frm.doc.custom_farm;\n\n            if (selectedFarm && warehouseMapping[selectedFarm]) {\n                frm.set_value(\"from_warehouse\", warehouseMapping[selectedFarm].source);\n                frm.set_value(\"to_warehouse\", warehouseMapping[selectedFarm].target);\n            }\n        }\n    },\n\n    stock_entry_type: function(frm) {\n        if (frm.doc.stock_entry_type === \"Grading\") {\n            frm.trigger(\"custom_farm\");\n        }\n    }\n});\n",
+  "script": "frappe.ui.form.on('Stock Entry', {\n    custom_farm: function(frm) {\n        if (frm.doc.stock_entry_type === \"Grading\") {\n            let warehouseMapping = {\n                \"Burguret\": { source: \"Burguret Receiving Cold Store - TL\", target: \"Burguret Graded General - TL\" },\n                \"Turaco\": { source: \"Turaco Receiving Cold Store - TL\", target: \"Turaco Graded General - TL\" },\n                \"Pendekeza\": { source: \"Pendekeza Receiving Cold Store - TL\", target: \"Pendekeza Graded General - TL\" }\n            };\n\n            let selectedFarm = frm.doc.custom_farm;\n\n            if (selectedFarm && warehouseMapping[selectedFarm]) {\n                frm.set_value(\"from_warehouse\", warehouseMapping[selectedFarm].source);\n                frm.set_value(\"to_warehouse\", warehouseMapping[selectedFarm].target);\n            }\n        }\n    },\n    \n    custom_bunched_by: function(frm) {\n        if (frm.doc.stock_entry_type === \"Grading\") {\n            if (frm.doc.custom_bunched_by) {\n                let bunched_by_value = frm.doc.custom_bunched_by;\n\n                if (frm.doc.items && frm.doc.items.length > 0) {\n                    frm.doc.items.forEach((item, idx) => {\n                        frappe.model.set_value(item.doctype, item.name, 'uom', bunched_by_value); \n                    });\n                \n                } else {\n                    frappe.throw(\"No items found in the child table.\");\n                }\n\n            }\n        }\n    },\n\n    stock_entry_type: function(frm) {\n        if (frm.doc.stock_entry_type === \"Grading\") {\n            frm.trigger(\"custom_farm\");\n            frm.trigger(\"custom_bunched_by\");\n        }\n    }\n});\n",
   "view": "Form"
  },
  {
