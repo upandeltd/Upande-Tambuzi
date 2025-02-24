@@ -284,7 +284,7 @@ fixtures = [{
     ]]
 }, {
     "dt": "Print Format",
-    "filters": [["name", "in", ["QR Code Only"]]]
+    "filters": [["name", "in", ["QR Code Only", "Box Label"]]]
 }]
 
 # doc_events = {
