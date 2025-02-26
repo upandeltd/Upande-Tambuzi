@@ -72,7 +72,6 @@ def create_pick_list_for_sales_order(doc, method=None):
             order_pick_list = frappe.new_doc("Order Pick List")
             order_pick_list.purpose = "Delivery"
             order_pick_list.sales_order = sales_order.name
-            # pick_list.company = sales_order.company
             order_pick_list.customer = sales_order.customer
             order_pick_list.date_created = nowdate()
 
@@ -96,7 +95,9 @@ def create_pick_list_for_sales_order(doc, method=None):
                         "warehouse": item.
                         custom_source_warehouse,  # This pulls from Sales Order Item's source warehouse
                         "sales_order": sales_order.name,
-                        "sales_order_item": item.name
+                        "sales_order_item": item.name,
+                        "custom_consignee": item.custom_consignee,
+                        "custom_truck_details": item.custom_truck_details
                     })
 
                 # If item is against blanket order, set the reference
