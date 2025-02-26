@@ -90,11 +90,13 @@ def generate_qr_code(stock_entry_details):
         qr_code_doc = frappe.get_doc({
             "doctype": "QR Code",
             "bunch_id": bunch_id,
-            "qr_code_image": file_url,
+            "qr_code_image": file_doc.file_url,
             "stock_entry": stock_entry_name,
             "graded_by": graded_by_name,
             "variety": variety
         })
+
+
 
         qr_code_doc.insert(ignore_permissions=True)
         frappe.db.commit() 

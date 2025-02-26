@@ -1,5 +1,6 @@
 import frappe
 
+# Custom scanned
 @frappe.whitelist()
 def update_custom_scanned(stock_entry_name):
     stock_entry = frappe.get_doc("Stock Entry", stock_entry_name)
