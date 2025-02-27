@@ -22,27 +22,45 @@ def add_bunch_to_farm_pack_list(farm_pack_list_doc_id, bunch_SE_name, opl_name, 
         customer_id = order_pick_list.customer
         sales_order_id = order_pick_list.sales_order
 
+        stem_from_bunch = {
+            "Bunch (5)": 5,
+            "Bunch (6)": 6,
+            "Bunch (10)": 10,
+            "Bunch (12)": 12
+        } 
+        
+        # add this to the existing number of stems
+        bunch_stems = stem_from_bunch[uom]
+
         if farm_pack_list_doc_id:
             pack_list_doc = frappe.get_doc("Farm Pack List", farm_pack_list_doc_id)
         else:
             pack_list_doc = frappe.new_doc("Farm Pack List")
             pack_list_doc.farm = farm 
 
-        # iterate over the pack_list_item and check if the item code and uom matches the bunch
+        # Track whether a match was found
+        item_found = False
+
         for item in pack_list_doc.pack_list_item:
             if item.item_code == item_code and item.bunch_uom == uom:
-                item.bunch_qty = item.bunch_qty + 1
+                item.bunch_qty += 1
+                item.custom_number_of_stems += bunch_stems
 
-            else:
-                pack_list_doc.append("pack_list_item", {
-                    "item_code": item_code,
-                    "bunch_uom": uom,
-                    "bunch_qty": quantity,
-                    "source_warehouse": source_warehouse,
-                    "sales_order_id": sales_order_id,
-                    "customer_id": customer_id,
-                    "box_id": box_id,
-                })
+                item_found = True
+                break  
+
+        # If no matching item was found, add a new one
+        if not item_found:
+            pack_list_doc.append("pack_list_item", {
+                "item_code": item_code,
+                "bunch_uom": uom,
+                "bunch_qty": quantity,
+                "source_warehouse": source_warehouse,
+                "sales_order_id": sales_order_id,
+                "customer_id": customer_id,
+                "box_id": box_id,
+                "custom_number_of_stems": bunch_stems,
+            })
         
 
         pack_list_doc.save()

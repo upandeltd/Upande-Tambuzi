@@ -1,18 +1,25 @@
 import frappe
 
 @frappe.whitelist(allow_guest=True)
-def get_stock_entry_items(stock_entry_id):
-    if not stock_entry_id:
-        frappe.throw("Stock Entry ID is required")
+def get_all_stock_entries_with_items():
+    stock_entries = frappe.get_all("Stock Entry", fields=["name"])
 
-    stock_entry = frappe.get_doc("Stock Entry", stock_entry_id)
+    all_stock_entries_data = []
+
+    for stock_entry in stock_entries:
+        entry_doc = frappe.get_doc("Stock Entry", stock_entry.name)
+        
+        items = entry_doc.items
+
+        all_stock_entries_data.append({
+            "stock_entry_id": entry_doc.name,
+            "items": [{
+                "item_code": item.item_code,
+                "qty": item.qty,
+                "uom": item.uom,
+                "source_warehouse": item.s_warehouse,
+                "target_warehouse": item.t_warehouse
+            } for item in items]
+        })
     
-    items = stock_entry.get("items")
-    
-    return [{
-        "item_code": item.item_code,
-        "qty": item.qty,
-        "uom": item.uom,
-        "source_warehouse": item.s_warehouse,
-        "target_warehouse": item.t_warehouse
-    } for item in items]
+    return all_stock_entries_data

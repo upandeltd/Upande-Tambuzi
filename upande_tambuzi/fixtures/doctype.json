@@ -2209,7 +2209,7 @@
   "max_attachments": 0,
   "menu_index": null,
   "migration_hash": "b7baf54643bb074e39bbee529b57565e",
-  "modified": "2025-02-26 00:51:08.111126",
+  "modified": "2025-02-26 08:41:55.055640",
   "module": "Upande Tambuzi",
   "name": "Scan",
   "naming_rule": "Expression",
@@ -2236,7 +2236,7 @@
     "role": "System Manager",
     "select": 0,
     "share": 1,
-    "submit": 0,
+    "submit": 1,
     "write": 1
    }
   ],
