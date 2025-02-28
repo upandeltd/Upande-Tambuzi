@@ -79,7 +79,9 @@ def process_consolidated_pack_list(farm_pack_list, sales_order_id=None):
                     "bunch_uom": item.bunch_uom,
                     "bunch_qty": item.bunch_qty,
                     "stem_length": item.stem_length,
-                    "consolidated_pack_list_id": item.consolidated_pack_list_id
+                    "consolidated_pack_list_id":
+                    item.consolidated_pack_list_id,
+                    "custom_number_of_stems": item.custom_number_of_stems
                 })
 
         cpl.save(ignore_permissions=True)
