@@ -135,11 +135,18 @@ doc_events = {
     "Sales Order": {
         "on_submit":
         "upande_tambuzi.server_scripts.pick_list_automation.create_pick_list_for_sales_order",
+        "upande_tambuzi.server_scripts.so_stock_transfer_automation.on_submit_sales_order"
+
         "before_submit":
         "upande_tambuzi.upande_tambuzi.custom.sales_order_custom.validate_customer_check_limit",
         "on_update":
         "upande_tambuzi.server_scripts.so_delivery_warehouse.handle_sales_order_approval"
     },
+
+    "Dispatch Form": {
+        "on_submit":
+        "upande_tambuzi.server_scripts.sales_inv_automation.create_sales_invoice"
+    }
 
     # "Consolidated Pack List": {
     #     "on_submit": "upande_tambuzi.server_scripts.create_sales_invoice.create_sales_invoice"
@@ -181,7 +188,7 @@ doc_events = {
 # override_whitelisted_methods = {
 #   "frappe.desk.doctype.event.event.get_events": "upande_tambuzi.event.get_events"
 # }
-override_whitelisted_methods = {
+whitelisted_methods = {
     "get_item_group_price":
     "upande_tambuzi.server_scripts.fetch_item_grp_price.get_item_group_price",
     "create_sales_invoice":
