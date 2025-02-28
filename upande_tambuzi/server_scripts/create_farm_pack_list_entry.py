@@ -25,8 +25,8 @@ def create_farm_pack_list_entry(bunch_label_data, box_label_data, farm):
         pack_list_doc.custom_farm = farm 
         pack_list_doc.append("pack_list_item", {
             "item_code": item_code,
-            "uom": uom,
-            "qty": quantity,
+            "bunch_uom": uom,
+            "bunch_qty": quantity,
             "source_warehouse": source_warehouse,
             "sales_order_id": sales_order_id,
             "customer_id": customer_id,
