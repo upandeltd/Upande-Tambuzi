@@ -11,6 +11,9 @@ def add_bunch_to_farm_pack_list(farm_pack_list_doc_id, bunch_SE_name, opl_name, 
         stock_entry = frappe.get_doc("Stock Entry", stock_entry_id)
 
         source_warehouse = f"{farm} Dispatch Cold Store - TL"
+
+        # Check if this item already exists and bunch size matches on the fpl
+        # If exists and matches the preexisting uom, increment 
         item_code = stock_entry.items[0].item_code
         uom = stock_entry.items[0].uom
 
@@ -25,15 +28,22 @@ def add_bunch_to_farm_pack_list(farm_pack_list_doc_id, bunch_SE_name, opl_name, 
             pack_list_doc = frappe.new_doc("Farm Pack List")
             pack_list_doc.farm = farm 
 
-        pack_list_doc.append("pack_list_item", {
-            "item_code": item_code,
-            "uom": uom,
-            "qty": quantity,
-            "source_warehouse": source_warehouse,
-            "sales_order_id": sales_order_id,
-            "customer_id": customer_id,
-            "box_id": box_id,
-        })
+        # iterate over the pack_list_item and check if the item code and uom matches the bunch
+        for item in pack_list_doc.pack_list_item:
+            if item.item_code == item_code and item.bunch_uom == uom:
+                item.bunch_qty = item.bunch_qty + 1
+
+            else:
+                pack_list_doc.append("pack_list_item", {
+                    "item_code": item_code,
+                    "bunch_uom": uom,
+                    "bunch_qty": quantity,
+                    "source_warehouse": source_warehouse,
+                    "sales_order_id": sales_order_id,
+                    "customer_id": customer_id,
+                    "box_id": box_id,
+                })
+        
 
         pack_list_doc.save()
 

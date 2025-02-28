@@ -15,6 +15,7 @@ app_license = "mit"
 app_include_js = "/assets/upande_tambuzi/client_scripts/fetch_item_grp_price.js"
 app_include_js = "/assets/upande_tambuzi/client_scripts/update_stock_sales_inv.js"
 app_include_js = "/assets/upande_tambuzi/client_scripts/se_rejection_reason.js"
+app_include_js = "/assets/upande_tambuzi/client_scripts/so_stock_transfer.js"
 
 # include js, css files in header of web template
 # web_include_css = "/assets/upande_tambuzi/css/upande_tambuzi.css"
@@ -138,8 +139,14 @@ doc_events = {
 
         "before_submit":
         "upande_tambuzi.upande_tambuzi.custom.sales_order_custom.validate_customer_check_limit",
-        
+        "on_update":
+        "upande_tambuzi.server_scripts.so_delivery_warehouse.handle_sales_order_approval"
     },
+
+    "Dispatch Form": {
+        "on_submit":
+        "upande_tambuzi.server_scripts.sales_inv_automation.create_sales_invoice"
+    }
 
     # "Consolidated Pack List": {
     #     "on_submit": "upande_tambuzi.server_scripts.create_sales_invoice.create_sales_invoice"
@@ -181,7 +188,7 @@ doc_events = {
 # override_whitelisted_methods = {
 #   "frappe.desk.doctype.event.event.get_events": "upande_tambuzi.event.get_events"
 # }
-override_whitelisted_methods = {
+whitelisted_methods = {
     "get_item_group_price":
     "upande_tambuzi.server_scripts.fetch_item_grp_price.get_item_group_price",
     "create_sales_invoice":
@@ -269,7 +276,7 @@ fixtures = [{
             "Qr Code gen", "Close Box Button", "Scan Via Honeywell",
             "Scan Data Field Listener", "Scan QR Button",
             "Populate Number of Items", "Grading Stock Entry",
-            "Field Rejects Stock Entry"
+            "Field Rejects Stock Entry", "Archive Employee"
         ]
     ]]
 }, {
@@ -282,11 +289,9 @@ fixtures = [{
             "Scan", "Farm", "Box Label", "Box Label Item"
         ]
     ]]
-},  {
+}, {
     "dt": "Print Format",
-    "filters": [
-        ["name", "in", ["QR Code Only"]]
-    ]
+    "filters": [["name", "in", ["QR Code Only", "Box Label"]]]
 }]
 
 # doc_events = {
