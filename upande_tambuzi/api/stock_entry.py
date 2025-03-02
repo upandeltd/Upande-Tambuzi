@@ -1,5 +1,6 @@
 import frappe
 
+# Api endpoint for getting all stock entries
 @frappe.whitelist(allow_guest=True)
 def get_all_stock_entries_with_items():
     stock_entries = frappe.get_all("Stock Entry", fields=["name"])
