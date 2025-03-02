@@ -131,6 +131,8 @@ app_include_js = "/assets/upande_tambuzi/client_scripts/so_stock_transfer.js"
 #       "on_trash": "method"
 #   }
 # }
+
+
 doc_events = {
     "Sales Order": {
         "on_submit":
@@ -189,8 +191,8 @@ doc_events = {
 #   "frappe.desk.doctype.event.event.get_events": "upande_tambuzi.event.get_events"
 # }
 whitelisted_methods = {
-    "get_item_group_price":
-    "upande_tambuzi.server_scripts.fetch_item_grp_price.get_item_group_price",
+    # "get_item_group_price":
+    # "upande_tambuzi.server_scripts.fetch_item_grp_price.get_item_group_price",
     "create_sales_invoice":
     "upande_tambuzi.server_scripts.create_sales_invoice.create_sales_invoice"
 }
