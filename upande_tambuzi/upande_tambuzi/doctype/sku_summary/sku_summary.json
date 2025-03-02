@@ -24,6 +24,7 @@
    "options": "Item"
   },
   {
+   "fetch_from": "item_code.item_group",
    "fieldname": "no_of_stems",
    "fieldtype": "Int",
    "label": "No of Stems"
@@ -73,7 +74,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-02-19 13:46:47.642502",
+ "modified": "2025-02-28 13:16:32.411375",
  "modified_by": "Administrator",
  "module": "Upande Tambuzi",
  "name": "SKU Summary",
