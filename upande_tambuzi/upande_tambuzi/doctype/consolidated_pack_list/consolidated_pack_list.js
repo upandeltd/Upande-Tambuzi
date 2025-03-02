@@ -74,6 +74,7 @@ function process_bulk_cpl_assignment(selected_docs) {
                                     bunch_qty: item.bunch_qty,
                                     box_id: item.box_id,
                                     stem_length: item.stem_length,
+                                    no_of_stems:item.no_of_stems,
                                     item_group: item.item_group,
                                     s_number: item.s_number,
                                     delivery_point: item.delivery_point,
@@ -106,6 +107,7 @@ function create_new_dispatch_form(selected_docs, grouped_items) {
             new_row.item_group = items[0].item_group;
             new_row.consolidated_pack_list_id = items[0].consolidated_pack_list_id;
             new_row.no_of_boxes = items.length;
+            new_row.custom_number_of_stems = items.custom_number_of_stems;
             new_row.customer_id = items[0].customer_id;
             new_row.s_number = items[0].s_number;
             new_row.delivery_point = items[0].delivery_point;
