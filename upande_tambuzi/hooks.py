@@ -141,11 +141,11 @@ doc_events = {
         ],
         "before_submit": "upande_tambuzi.upande_tambuzi.custom.sales_order_custom.validate_customer_check_limit",
         "on_update": "upande_tambuzi.server_scripts.so_delivery_warehouse.handle_sales_order_approval"
-    },
-
-    "Dispatch Form": {
-        "on_submit": "upande_tambuzi.server_scripts.sales_inv_automation.create_sales_invoice"
     }
+
+    # "Dispatch Form": {
+    #     "on_submit": "upande_tambuzi.server_scripts.sales_inv_automation.create_sales_invoice"
+    # }
 }
 
     # "Consolidated Pack List": {
