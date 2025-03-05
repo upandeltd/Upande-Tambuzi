@@ -158,13 +158,18 @@ doc_events = {
 # Scheduled Tasks
 # ---------------
 
-# scheduler_events = {
-#   "all": [
-#       "upande_tambuzi.tasks.all"
-#   ],
-#   "daily": [
-#       "upande_tambuzi.tasks.daily"
-#   ],
+scheduler_events = {
+    # "cron": {
+    #     "* * * * *": [
+    #         "upande_tambuzi.tasks.transfer_stock"
+    #     ]
+    # },
+    # "all": [
+    #     "upande_tambuzi.tasks.transfer_stock"
+    # ],
+    "daily": [
+        "upande_tambuzi.tasks.transfer_stock"
+    ],
 #   "hourly": [
 #       "upande_tambuzi.tasks.hourly"
 #   ],
@@ -174,7 +179,7 @@ doc_events = {
 #   "monthly": [
 #       "upande_tambuzi.tasks.monthly"
 #   ],
-# }
+}
 
 # Testing
 # -------
