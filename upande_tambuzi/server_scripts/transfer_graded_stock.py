@@ -1,26 +1,16 @@
 import frappe
-from frappe.utils import now_datetime, add_days
 
 @frappe.whitelist()
-def transfer_stock():
-    last_24_hours = add_days(now_datetime(), -1)
-    
-    stock_entries = frappe.get_all(
-        "Stock Entry",
-        filters={
-            "stock_entry_type": ["in", ["Grading", "Grading without Receiving"]],
-            "creation": [">=", last_24_hours]
-        },
-        fields=["name", "stock_entry_type"]
-    )
-    
-    if not stock_entries:
-        frappe.log_error("✅ No eligible stock entries found for transfer.")
-        return
-    
+def transfer_stock(stock_entries):
+
+    if isinstance(stock_entries, str):
+        stock_entries = eval(stock_entries) 
+
     for entry in stock_entries:
+
         try:
-            stock_entry = frappe.get_doc("Stock Entry", entry["name"])
+
+            stock_entry = frappe.get_doc("Stock Entry", entry)
             farm_name = stock_entry.custom_farm
             
             from_warehouse = f"{farm_name} Graded General - TL"
@@ -41,12 +31,11 @@ def transfer_stock():
                     "t_warehouse": to_warehouse
                 })
                 
-            print(f'{to_warehouse}')
             new_stock_entry.save()
             new_stock_entry.submit()
             frappe.db.commit()
-            print(f"Submitted Stock Entry {new_stock_entry.name}")
-            
+            frappe.response["message"] = "Graded stock transfered"
+
         except Exception as e:
-            frappe.log_error(f"❌ Error processing Stock Entry {entry['name']}: {str(e)}")
+            frappe.log_error(f"❌ Error processing Stock Entry {entry}: {str(e)}")
     

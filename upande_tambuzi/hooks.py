@@ -280,7 +280,8 @@ fixtures = [{
             "Qr Code gen", "Close Box Button", "Scan Via Honeywell",
             "Scan Data Field Listener", "Scan QR Button",
             "Populate Number of Items", "Grading Stock Entry",
-            "Field Rejects Stock Entry", "Archive Employee"
+            "Field Rejects Stock Entry", "Archive Employee",
+            "Transfer Grading Stock"
         ]
     ]]
 }, {
