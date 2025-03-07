@@ -21,13 +21,25 @@ function validate_and_process_cpls(selected_docs) {
                 args: {
                     doctype: "Consolidated Pack List",
                     name: cpl.name,
-                    fields: ["name", "custom_dispatched"]
+                    fields: ["name", "custom_dispatched", "docstatus", "custom_dispatch_status", "workflow_state"]
                 },
                 callback: function (response) {
-                    if (response.message && response.message.custom_dispatched) {
-                        resolve({ is_dispatched: true, cpl_id: cpl.name });
+                    if (response.message) {
+                        resolve({ 
+                            is_dispatched: response.message.custom_dispatched, 
+                            is_submitted: response.message.docstatus === 1,
+                            workflow_state: response.message.workflow_state,
+                            dispatch_status: response.message.custom_dispatch_status,
+                            cpl_id: cpl.name 
+                        });
                     } else {
-                        resolve({ is_dispatched: false, cpl_id: cpl.name });
+                        resolve({ 
+                            is_dispatched: false, 
+                            is_submitted: false, 
+                            workflow_state: "", 
+                            dispatch_status: "",
+                            cpl_id: cpl.name 
+                        });
                     }
                 }
             });
@@ -35,11 +47,17 @@ function validate_and_process_cpls(selected_docs) {
     });
 
     Promise.all(validation_promises).then(results => {
-        let dispatched_cpls = results.filter(result => result.is_dispatched);
+        // Filter out CPLs that are already dispatched, submitted, or don't meet criteria
+        let invalid_cpls = results.filter(result => 
+            result.is_dispatched || 
+            (result.workflow_state !== "Approved") || 
+            (result.dispatch_status !== "Pending")
+        );
 
-        if (dispatched_cpls.length > 0) {
-            let cpl_list = dispatched_cpls.map(cpl => cpl.cpl_id).join(", ");
-            frappe.msgprint(__(`Cannot process already dispatched CPLs: ${cpl_list}`));
+        if (invalid_cpls.length > 0) {
+            let cpl_list = invalid_cpls.map(cpl => cpl.cpl_id).join(", ");
+            frappe.msgprint(__(`Cannot process these CPLs: ${cpl_list}. 
+                CPLs must be in 'Approved' state with 'Pending' dispatch status.`));
             return;
         }
 
@@ -74,14 +92,14 @@ function process_bulk_cpl_assignment(selected_docs) {
                                     bunch_qty: item.bunch_qty,
                                     box_id: item.box_id,
                                     stem_length: item.stem_length,
-                                    no_of_stems:item.no_of_stems,
                                     item_group: item.item_group,
                                     s_number: item.s_number,
                                     delivery_point: item.delivery_point,
                                     sales_order_id: item.sales_order_id || "N/A",
                                     consolidated_pack_list_id: cpl_doc.name,
                                     item_code: item.item_code,
-                                    source_warehouse: item.source_warehouse
+                                    source_warehouse: item.source_warehouse,
+                                    no_of_stems: item.no_of_stems || 0
                                 });
                             });
                         }
@@ -107,7 +125,6 @@ function create_new_dispatch_form(selected_docs, grouped_items) {
             new_row.item_group = items[0].item_group;
             new_row.consolidated_pack_list_id = items[0].consolidated_pack_list_id;
             new_row.no_of_boxes = items.length;
-            new_row.custom_number_of_stems = items.custom_number_of_stems;
             new_row.customer_id = items[0].customer_id;
             new_row.s_number = items[0].s_number;
             new_row.delivery_point = items[0].delivery_point;
@@ -150,7 +167,11 @@ function create_new_dispatch_form(selected_docs, grouped_items) {
                                 args: {
                                     doctype: "Consolidated Pack List",
                                     name: cpl.name,
-                                    fieldname: { "custom_dispatched": 1, "custom_dispatch_status": "Dispatched" }
+                                    fieldname: { 
+                                        "custom_dispatched": 1, 
+                                        "custom_dispatch_status": "Dispatched", 
+                                        "docstatus": 1 
+                                    }
                                 },
                                 callback: function () { resolve(); }
                             });
@@ -159,7 +180,7 @@ function create_new_dispatch_form(selected_docs, grouped_items) {
 
                     Promise.all(update_promises).then(() => {
                         frappe.show_alert({
-                            message: __("All selected CPLs have been marked as dispatched"),
+                            message: __("All selected CPLs have been marked as dispatched and submitted"),
                             indicator: 'green'
                         }, 15);
                         cur_list.refresh();
