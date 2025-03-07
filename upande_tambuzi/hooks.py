@@ -138,7 +138,9 @@ doc_events = {
         "before_submit":
         "upande_tambuzi.upande_tambuzi.custom.sales_order_custom.validate_customer_check_limit",
         "on_update":
-        "upande_tambuzi.server_scripts.so_delivery_warehouse.handle_sales_order_approval"
+        "upande_tambuzi.server_scripts.so_delivery_warehouse.handle_sales_order_approval",
+        "on_cancel":
+        "upande_tambuzi.server_scripts.so_delivery_warehouse.handle_sales_order_cancellation"
     },
 
     # "Consolidated Pack List": {
