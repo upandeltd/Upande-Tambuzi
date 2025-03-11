@@ -145,7 +145,7 @@ doc_events = {
 
     "Consolidated Pack List":{
         "on_submit":
-        "upande_tambuzi.server_scripts.create_sales_invoice.create_sales_invoice",
+        "upande_tambuzi.server_scripts.create_sales_invoice.create_sales_invoice_from_packlist",
 
     }
 
