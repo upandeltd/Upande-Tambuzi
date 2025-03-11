@@ -83,7 +83,7 @@ def create_sales_invoice_from_packlist(doc, method):
         invoice_links = " | ".join(
             [f'<a href="/app/sales-invoice/{invoice}" target="_blank">{invoice}</a>' for invoice in created_invoices]
         )
-        frappe.msgprint(f"Sales Invoices SuccessfullyCreated: {invoice_links}", title="Sales Invoice", indicator="green")
+        frappe.msgprint(f"Sales Invoices Successfully Created: {invoice_links}", title="Sales Invoice", indicator="green")
 
     # Show errors if any Sales Invoice creation failed
     if failed_invoices:
