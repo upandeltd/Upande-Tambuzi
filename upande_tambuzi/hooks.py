@@ -143,6 +143,12 @@ doc_events = {
         "upande_tambuzi.server_scripts.so_delivery_warehouse.handle_sales_order_cancellation"
     },
 
+    "Consolidated Pack List":{
+        "on_submit":
+        "upande_tambuzi.server_scripts.create_sales_invoice.create_sales_invoice",
+
+    }
+
     # "Consolidated Pack List": {
     #     "on_submit": "upande_tambuzi.server_scripts.create_sales_invoice.create_sales_invoice"
     # }
@@ -154,13 +160,18 @@ doc_events = {
 # Scheduled Tasks
 # ---------------
 
-# scheduler_events = {
-#   "all": [
-#       "upande_tambuzi.tasks.all"
-#   ],
-#   "daily": [
-#       "upande_tambuzi.tasks.daily"
-#   ],
+scheduler_events = {
+    # "cron": {
+    #     "* * * * *": [
+    #         "upande_tambuzi.tasks.transfer_stock"
+    #     ]
+    # },
+    # "all": [
+    #     "upande_tambuzi.tasks.transfer_stock"
+    # ],
+    "daily": [
+        "upande_tambuzi.tasks.transfer_stock"
+    ],
 #   "hourly": [
 #       "upande_tambuzi.tasks.hourly"
 #   ],
@@ -170,7 +181,7 @@ doc_events = {
 #   "monthly": [
 #       "upande_tambuzi.tasks.monthly"
 #   ],
-# }
+}
 
 # Testing
 # -------
@@ -183,7 +194,18 @@ doc_events = {
 # override_whitelisted_methods = {
 #   "frappe.desk.doctype.event.event.get_events": "upande_tambuzi.event.get_events"
 # }
-override_whitelisted_methods = {
+
+
+override_class = {
+    "erpnext.controllers.taxes_and_totals.calculate_taxes_and_totals":
+    "upande_tambuzi.overrides.standard_system_rate.CustomTaxesAndTotals"
+}
+
+
+
+
+
+whitelisted_methods = {
     "get_item_group_price":
     "upande_tambuzi.server_scripts.fetch_item_grp_price.get_item_group_price",
     "create_sales_invoice":
@@ -271,7 +293,8 @@ fixtures = [{
             "Qr Code gen", "Close Box Button", "Scan Via Honeywell",
             "Scan Data Field Listener", "Scan QR Button",
             "Populate Number of Items", "Grading Stock Entry",
-            "Field Rejects Stock Entry", "Archive Employee"
+            "Field Rejects Stock Entry", "Archive Employee",
+            "Transfer Grading Stock"
         ]
     ]]
 }, {
@@ -281,7 +304,9 @@ fixtures = [{
         "name", "in",
         [
             "Scan Location", "QR Code", "Packing List", "Pack List Item",
-            "Scan", "Farm", "Box Label", "Box Label Item"
+            "Scan", "Farm", "Box Label", "Box Label Item",
+            "Label Print", "Bucket QR Code", "Bunch QR Code",
+            "Grader QR Code", "Harvest"
         ]
     ]]
 }, {
