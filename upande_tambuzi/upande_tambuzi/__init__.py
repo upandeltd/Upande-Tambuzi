@@ -1,0 +1,4 @@
+from erpnext.controllers import taxes_and_totals
+from upande_tambuzi.overrides.standard_system_rate import CustomTaxesAndTotals
+
+taxes_and_totals.calculate_taxes_and_totals = CustomTaxesAndTotals
