@@ -304,7 +304,9 @@ fixtures = [{
         "name", "in",
         [
             "Scan Location", "QR Code", "Packing List", "Pack List Item",
-            "Scan", "Farm", "Box Label", "Box Label Item"
+            "Scan", "Farm", "Box Label", "Box Label Item",
+            "Label Print", "Bucket QR Code", "Bunch QR Code",
+            "Grader QR Code", "Harvest"
         ]
     ]]
 }, {
