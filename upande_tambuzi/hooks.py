@@ -4,6 +4,7 @@ app_publisher = "Upande Limited"
 app_description = "ERPNext project for Tambuzi Ltd, a dealer in flower operations."
 app_email = "newton@upande.com"
 app_license = "mit"
+
 # required_apps = []
 
 # Includes in <head>
@@ -39,10 +40,21 @@ app_include_js = "/assets/upande_tambuzi/client_scripts/so_stock_transfer.js"
 # Svg Icons
 # ------------------
 # include app icons in desk
-# app_include_icons = "upande_tambuzi/public/icons.svg"
+# app_include_icons = "upande_tambuzi/public/login/tambuzi_logo.svg"
 
 # Home Pages
 # ----------
+
+# add_to_apps_screen = [
+#     {
+#         "name": app_name,
+#         "logo": "/assets/upande_tambuzi/Login/tambuzi_logo.ico",
+#         "title": app_title,
+#         "route": app_home,
+#         "has_permission": "erpnext.check_app_permission",
+#     }
+# ]
+
 
 # application home page (will override Website Settings)
 # home_page = "login"
@@ -145,7 +157,7 @@ doc_events = {
 
     "Consolidated Pack List":{
         "on_submit":
-        "upande_tambuzi.server_scripts.create_sales_invoice.create_sales_invoice",
+        "upande_tambuzi.server_scripts.create_sales_invoice.create_sales_invoice_from_packlist",
 
     }
 
@@ -282,7 +294,10 @@ fixtures = [{
     "Server Script",
     "filters": [[
         "name", "in",
-        ["Stock Entry Script", "Stock Entry After Save", "Scan Timestamp"]
+        [
+            "Stock Entry Script", "Stock Entry After Save", "Scan Timestamp",
+            "Harvest Stock Entry"
+        ]
     ]]
 }, {
     "dt":
@@ -294,7 +309,7 @@ fixtures = [{
             "Scan Data Field Listener", "Scan QR Button",
             "Populate Number of Items", "Grading Stock Entry",
             "Field Rejects Stock Entry", "Archive Employee",
-            "Transfer Grading Stock"
+            "Transfer Grading Stock", "Generate Bucket Codes", "Harvest Scan"
         ]
     ]]
 }, {
