@@ -16,6 +16,7 @@ def add_bunch_to_farm_pack_list(farm_pack_list_doc_id, bunch_SE_name, opl_name, 
         # If exists and matches the preexisting uom, increment 
         item_code = stock_entry.items[0].item_code
         uom = stock_entry.items[0].uom
+        stem_length = stock_entry.custom_stem_length
 
         # Quantity scanned should always be 1
         quantity = 1
@@ -60,6 +61,7 @@ def add_bunch_to_farm_pack_list(farm_pack_list_doc_id, bunch_SE_name, opl_name, 
                 "customer_id": customer_id,
                 "box_id": box_id,
                 "custom_number_of_stems": bunch_stems,
+                "stem_length": stem_length
             })
         
 
