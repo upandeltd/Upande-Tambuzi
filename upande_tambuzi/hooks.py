@@ -294,7 +294,10 @@ fixtures = [{
     "Server Script",
     "filters": [[
         "name", "in",
-        ["Stock Entry Script", "Stock Entry After Save", "Scan Timestamp"]
+        [
+            "Stock Entry Script", "Stock Entry After Save", "Scan Timestamp",
+            "Harvest Stock Entry"
+        ]
     ]]
 }, {
     "dt":
@@ -306,7 +309,7 @@ fixtures = [{
             "Scan Data Field Listener", "Scan QR Button",
             "Populate Number of Items", "Grading Stock Entry",
             "Field Rejects Stock Entry", "Archive Employee",
-            "Transfer Grading Stock"
+            "Transfer Grading Stock", "Generate Bucket Codes", "Harvest Scan"
         ]
     ]]
 }, {
