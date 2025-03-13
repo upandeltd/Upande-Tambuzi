@@ -71,7 +71,7 @@ def process_consolidated_pack_list(farm_pack_list, sales_order_id=None):
         for item in farm_pack_doc.pack_list_item:
             cpl.append(
                 "items", {
-                    "source_warehouse": item.source_warehouse,
+                    "source_warehouse": "Delivery Truck - TL",
                     "customer_id": item.customer_id,
                     "sales_order_id": item.sales_order_id,
                     "box_id": item.box_id,
