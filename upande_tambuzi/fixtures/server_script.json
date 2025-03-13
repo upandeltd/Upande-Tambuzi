@@ -9,13 +9,13 @@
   "doctype_event": "After Save",
   "enable_rate_limit": 0,
   "event_frequency": "All",
-  "modified": "2025-02-14 00:57:11.986145",
+  "modified": "2025-03-11 10:54:18.828871",
   "module": "Upande Tambuzi",
   "name": "Stock Entry Script",
   "rate_limit_count": 5,
   "rate_limit_seconds": 86400,
   "reference_doctype": "Stock Entry",
-  "script": "if (doc.stock_entry_type == \"Harvesting\") or (doc.stock_entry_type == \"Receiving\"):\n    doc.submit()\n    ",
+  "script": "if (doc.stock_entry_type == \"Harvesting\") or (doc.stock_entry_type == \"Receiving\") or (doc.stock_entry_type == \"Grading\"):\n    doc.submit()\n    ",
   "script_type": "DocType Event"
  },
  {
@@ -35,6 +35,25 @@
   "rate_limit_seconds": 86400,
   "reference_doctype": "Stock Entry",
   "script": "if doc.stock_entry_type == \"Grading\":\n    name = doc.name\n    \n    if frappe.db.exists(\"QR Code\", name):\n        frappe.delete_doc(\"QR Code\", name)\n    \n    if doc.custom_bunch_qr_code:\n        qr_code_doc = frappe.get_doc({\n            \"doctype\": \"QR Code\",  \n            \"stock_entry\": doc.name,\n            \"qr_code_image\": doc.custom_bunch_qr_code,  \n        })\n        qr_code_doc.insert()\n        \n",
+  "script_type": "DocType Event"
+ },
+ {
+  "allow_guest": 0,
+  "api_method": null,
+  "cron_format": null,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Server Script",
+  "doctype_event": "Before Save",
+  "enable_rate_limit": 0,
+  "event_frequency": "All",
+  "modified": "2025-03-12 07:37:31.925591",
+  "module": "Upande Tambuzi",
+  "name": "Harvest Stock Entry",
+  "rate_limit_count": 5,
+  "rate_limit_seconds": 86400,
+  "reference_doctype": "Harvest",
+  "script": "stock_entry = frappe.new_doc(\"Stock Entry\")\n\nstock_entry.stock_entry_type = \"Harvesting\"\nstock_entry.custom_farm = doc.farm\nstock_entry.custom_greenhouse = doc.block\nstock_entry.custom_block__bed_number = doc.bay\nstock_entry.custom_harvester = doc.harvester\nstock_entry.custom_bucket_id = doc.bucket_id\nstock_entry.to_warehouse = doc.block\n\nstock_entry.append(\"items\", {\n    \"item_code\": doc.item_code,\n    \"qty\": doc.quantity\n})\n\nstock_entry.insert()\nstock_entry.submit()\n\nfrappe.msgprint(f\"Stock Entry {stock_entry.name} created successfully.\")",
   "script_type": "DocType Event"
  }
 ]

@@ -294,7 +294,10 @@ fixtures = [{
     "Server Script",
     "filters": [[
         "name", "in",
-        ["Stock Entry Script", "Stock Entry After Save", "Scan Timestamp"]
+        [
+            "Stock Entry Script", "Stock Entry After Save", "Scan Timestamp",
+            "Harvest Stock Entry"
+        ]
     ]]
 }, {
     "dt":
@@ -306,7 +309,8 @@ fixtures = [{
             "Scan Data Field Listener", "Scan QR Button",
             "Populate Number of Items", "Grading Stock Entry",
             "Field Rejects Stock Entry", "Archive Employee",
-            "Transfer Grading Stock"
+            "Transfer Grading Stock", "Generate Bucket Codes", "Harvest Scan",
+            "New Form After Save"
         ]
     ]]
 }, {
@@ -316,12 +320,17 @@ fixtures = [{
         "name", "in",
         [
             "Scan Location", "QR Code", "Packing List", "Pack List Item",
-            "Scan", "Farm", "Box Label", "Box Label Item"
+            "Scan", "Farm", "Box Label", "Box Label Item",
+            "Label Print", "Bucket QR Code", "Bunch QR Code",
+            "Grader QR Code", "Harvest"
         ]
     ]]
 }, {
     "dt": "Print Format",
-    "filters": [["name", "in", ["QR Code Only", "Box Label"]]]
+    "filters": [["name", "in", [
+        "QR Code Only", "Box Label", "Harvest Label",
+        "Grader QR Print Format", "Bunch QR Code"
+    ]]]
 }]
 
 # doc_events = {
