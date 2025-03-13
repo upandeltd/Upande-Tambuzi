@@ -309,7 +309,8 @@ fixtures = [{
             "Scan Data Field Listener", "Scan QR Button",
             "Populate Number of Items", "Grading Stock Entry",
             "Field Rejects Stock Entry", "Archive Employee",
-            "Transfer Grading Stock", "Generate Bucket Codes", "Harvest Scan"
+            "Transfer Grading Stock", "Generate Bucket Codes", "Harvest Scan",
+            "New Form After Save"
         ]
     ]]
 }, {
