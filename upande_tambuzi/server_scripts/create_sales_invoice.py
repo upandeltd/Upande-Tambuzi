@@ -69,9 +69,9 @@ def create_sales_invoice_from_packlist(doc, method):
                     "discount_percentage": so_item.discount_percentage
                 })
 
-            # Submit the Sales Invoice
+            # sales invoice creation in draft
             sales_invoice.flags.ignore_permissions = True
-            sales_invoice.submit()
+            sales_invoice.insert()
             created_invoices.append(sales_invoice.name)
 
         except Exception as e:
