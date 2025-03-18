@@ -13,15 +13,15 @@ def create_sales_invoice_from_packlist(doc, method):
     if not sales_order_ids:
         frappe.throw("No Sales Order linked to this Dispatch Form.")
 
-    created_invoices = []  # Stores successfully created invoices
-    failed_invoices = []  # Stores failed invoices for error reporting
+    created_invoices = []  #successfully created invs
+    failed_invoices = []  #failed invs
 
     for sales_order_id in sales_order_ids:
         try:
-            # Fetch the Sales Order
+            #SO Fetch
             sales_order = frappe.get_doc("Sales Order", sales_order_id)
 
-            # Create a new Sales Invoice
+            #New SI
             sales_invoice = frappe.new_doc("Sales Invoice")
             sales_invoice.customer = sales_order.customer
             sales_invoice.custom_shipping_agent = sales_order.custom_shipping_agent
@@ -30,33 +30,32 @@ def create_sales_invoice_from_packlist(doc, method):
             sales_invoice.custom_consolidated_packlist = doc.name
             sales_invoice.set_warehouse = doc.items[0].source_warehouse if doc.items else None  
             sales_invoice.posting_date = today()
-            sales_invoice.update_stock = 1  # Ensure stock is updated
+            sales_invoice.update_stock = 1  #clear stk frm system
 
-            # Set due date based on Sales Order delivery date
+            #Due date based on SO delivery date
             delivery_date = sales_order.delivery_date if sales_order.delivery_date else sales_invoice.posting_date
             sales_invoice.due_date = max(getdate(delivery_date), getdate(sales_invoice.posting_date))
 
-            # Copy taxes from Sales Order
-            sales_invoice.taxes_and_charges = sales_order.taxes_and_charges
+            #Taxes frm SO
+            sales_invoice.taxes_and_charges = sales_order.taxes_section
             sales_invoice.taxes = sales_order.taxes
 
-            # Process items in the Pack List that belong to the current Sales Order
+            #Process items in the Pack List that belong to the fetched SO
             for dispatch_item in doc.items:
                 if dispatch_item.sales_order_id != sales_order_id:
-                    continue  # Skip items that do not belong to this Sales Order
+                    continue  # Skip items not in SO
 
-                # Find the corresponding item in the Sales Order
+                #Find the corresponding item in SO
                 so_item = next((item for item in sales_order.items if item.item_code == dispatch_item.item_code), None)
 
                 if not so_item:
                     frappe.throw(f"Item {dispatch_item.item_code} not found in Sales Order {sales_order_id}")
 
-                # Ensure quantity is valid
+                #Quantity validation
                 item_qty = dispatch_item.bunch_qty
                 if not item_qty or item_qty <= 0:
                     frappe.throw(f"Invalid quantity for item {dispatch_item.item_code} in Consolidated Pack List {doc.name}")
 
-                # Add item to Sales Invoice
                 sales_invoice.append("items", {
                     "item_code": dispatch_item.item_code,
                     "qty": dispatch_item.bunch_qty,
@@ -69,23 +68,24 @@ def create_sales_invoice_from_packlist(doc, method):
                     "discount_percentage": so_item.discount_percentage
                 })
 
-            # sales invoice creation in draft
+            #SI Create
             sales_invoice.flags.ignore_permissions = True
-            sales_invoice.insert()
+            sales_invoice.insert() #draft
+            sales_invoice.submit() #submit
             created_invoices.append(sales_invoice.name)
 
         except Exception as e:
-            # Store error message for failed invoices
+            #failed invoices.error
             failed_invoices.append(f"Sales Order {sales_order_id}: {str(e)}")
 
-    # Display success messages with clickable links
+    #link to created invoices
     if created_invoices:
         invoice_links = " | ".join(
             [f'<a href="/app/sales-invoice/{invoice}" target="_blank">{invoice}</a>' for invoice in created_invoices]
         )
         frappe.msgprint(f"Sales Invoices Successfully Created: {invoice_links}", title="Sales Invoice", indicator="green")
 
-    # Show errors if any Sales Invoice creation failed
+    #error for failed invs
     if failed_invoices:
         error_message = "<br>".join(failed_invoices)
         frappe.msgprint(f"Some invoices failed to generate:<br>{error_message}", indicator="red")
