@@ -55,7 +55,6 @@ app_include_js = "/assets/upande_tambuzi/client_scripts/so_stock_transfer.js"
 #     }
 # ]
 
-
 # application home page (will override Website Settings)
 # home_page = "login"
 
@@ -154,8 +153,7 @@ doc_events = {
         "on_cancel":
         "upande_tambuzi.server_scripts.so_delivery_warehouse.handle_sales_order_cancellation"
     },
-
-    "Consolidated Pack List":{
+    "Consolidated Pack List": {
         "on_submit":
         "upande_tambuzi.server_scripts.create_sales_invoice.create_sales_invoice_from_packlist",
 
@@ -186,18 +184,16 @@ scheduler_events = {
     # "all": [
     #     "upande_tambuzi.tasks.transfer_stock"
     # ],
-    "daily": [
-        "upande_tambuzi.tasks.transfer_stock"
-    ],
-#   "hourly": [
-#       "upande_tambuzi.tasks.hourly"
-#   ],
-#   "weekly": [
-#       "upande_tambuzi.tasks.weekly"
-#   ],
-#   "monthly": [
-#       "upande_tambuzi.tasks.monthly"
-#   ],
+    "daily": ["upande_tambuzi.tasks.transfer_stock"],
+    #   "hourly": [
+    #       "upande_tambuzi.tasks.hourly"
+    #   ],
+    #   "weekly": [
+    #       "upande_tambuzi.tasks.weekly"
+    #   ],
+    #   "monthly": [
+    #       "upande_tambuzi.tasks.monthly"
+    #   ],
 }
 
 # Testing
@@ -212,15 +208,10 @@ scheduler_events = {
 #   "frappe.desk.doctype.event.event.get_events": "upande_tambuzi.event.get_events"
 # }
 
-
 override_class = {
     "erpnext.controllers.taxes_and_totals.calculate_taxes_and_totals":
     "upande_tambuzi.overrides.standard_system_rate.CustomTaxesAndTotals"
 }
-
-
-
-
 
 whitelisted_methods = {
     "get_item_group_price":
@@ -315,7 +306,7 @@ fixtures = [{
             "Populate Number of Items", "Grading Stock Entry",
             "Field Rejects Stock Entry", "Archive Employee",
             "Transfer Grading Stock", "Generate Bucket Codes", "Harvest Scan",
-            "New Form After Save"
+            "New Form After Save", "Remove Read Only on Field"
         ]
     ]]
 }, {
@@ -325,17 +316,21 @@ fixtures = [{
         "name", "in",
         [
             "Scan Location", "QR Code", "Packing List", "Pack List Item",
-            "Scan", "Farm", "Box Label", "Box Label Item",
-            "Label Print", "Bucket QR Code", "Bunch QR Code",
-            "Grader QR Code", "Harvest"
+            "Scan", "Farm", "Box Label", "Box Label Item", "Label Print",
+            "Bucket QR Code", "Bunch QR Code", "Grader QR Code", "Harvest",
+            "Scanned Items", "Scan Check", "Scan Check List", "QR Sequence"
         ]
     ]]
 }, {
-    "dt": "Print Format",
-    "filters": [["name", "in", [
-        "QR Code Only", "Box Label", "Harvest Label",
-        "Grader QR Print Format", "Bunch QR Code"
-    ]]]
+    "dt":
+    "Print Format",
+    "filters": [[
+        "name", "in",
+        [
+            "QR Code Only", "Box Label", "Harvest Label",
+            "Grader QR Print Format", "Bunch QR Code"
+        ]
+    ]]
 }]
 
 # doc_events = {
