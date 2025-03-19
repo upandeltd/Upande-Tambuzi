@@ -10,6 +10,21 @@ from io import BytesIO
 def generate_id(no_of_labels, label_doc_name, action, variety=None,  farm=None, stem_length=None, bunch_size=None, grader=None):
     # Generate Bucket id
     # Encode the bucket id and variety in the qr code
+    def get_next_sequence(action, increment_by=1):
+        sequence_doc = frappe.get_single("QR Sequence")
+        if action == "Harvesting Label":
+            counter = sequence_doc.bucket_counter or 0
+            sequence_doc.bucket_counter = counter + increment_by
+        elif action == "Bunch Label":
+            counter = sequence_doc.bunch_counter or 0
+            sequence_doc.bunch_counter = counter + increment_by
+        elif action == "Grader Label":
+            counter = sequence_doc.grader_counter or 0
+            sequence_doc.grader_counter = counter + increment_by
+        sequence_doc.save()
+        frappe.db.commit()
+        return counter
+
 
     unique_id = int(time.time())
     
@@ -22,8 +37,11 @@ def generate_id(no_of_labels, label_doc_name, action, variety=None,  farm=None, 
 
     if action == "Harvesting Label":
 
+        base_number = get_next_sequence(action, increment_by=no_of_labels_int)
+
         for i in range(1, no_of_labels_int + 1):
-            bucket_id = f"BUCKET-{frappe.generate_hash(length=10)}-{i}"
+            bucket_number = base_number + i
+            bucket_id = f"BUCKET-{bucket_number}"
 
             qr_data = {
                 "item_code": variety,
@@ -69,8 +87,11 @@ def generate_id(no_of_labels, label_doc_name, action, variety=None,  farm=None, 
             frappe.db.commit()
 
     if action == "Bunch Label":
+        base_number = get_next_sequence(action, increment_by=no_of_labels_int)
+
         for i in range(1, no_of_labels_int + 1):
-            bunch_id = f'BUNCH-{frappe.generate_hash(length=10)}-{i}'
+            bunch_number = base_number + i
+            bunch_id = f"BUNCH-{bunch_number}"
 
             qr_data = {
                 "farm": farm,
