@@ -159,6 +159,11 @@ doc_events = {
         "on_submit":
         "upande_tambuzi.server_scripts.create_sales_invoice.create_sales_invoice_from_packlist",
 
+    },
+
+    "Sales Invoice": {
+        "on_submit": 
+        "upande_tambuzi.server_scripts.sinv_approved_by.set_approved_by"
     }
 
     # "Consolidated Pack List": {
