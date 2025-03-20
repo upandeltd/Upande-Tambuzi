@@ -37,7 +37,7 @@ def create_sales_invoice_from_packlist(doc, method):
             sales_invoice.due_date = max(getdate(delivery_date), getdate(sales_invoice.posting_date))
 
             #Taxes frm SO
-            sales_invoice.taxes_and_charges = sales_order.taxes_section
+            sales_invoice.taxes_and_charges = sales_order.taxes_and_charges
             sales_invoice.taxes = sales_order.taxes
 
             #Process items in the Pack List that belong to the fetched SO
