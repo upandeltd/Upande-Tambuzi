@@ -331,7 +331,10 @@ fixtures = [{
             "Grader QR Print Format", "Bunch QR Code"
         ]
     ]]
+}, {
+    "dt": "Custom DocPerm"
 }]
+
 
 # doc_events = {
 #     "Consolidated Pack List": {
