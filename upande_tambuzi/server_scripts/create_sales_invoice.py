@@ -74,7 +74,7 @@ def create_sales_invoice_from_packlist(doc, method):
             if sales_invoice.items:
                 sales_invoice.flags.ignore_permissions = True
                 sales_invoice.insert()
-                sales_invoice.submit()
+                # sales_invoice.submit()
                 created_invoices.append(sales_invoice.name)
             else:
                 failed_invoices.append(f"No valid items for Sales Order {sales_order_id}, invoice not created.")
