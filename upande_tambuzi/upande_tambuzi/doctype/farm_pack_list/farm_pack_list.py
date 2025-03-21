@@ -8,6 +8,9 @@ class FarmPackList(Document):
     def on_submit(self):
         transfer_stock_on_submit(self)
 
+    def on_cancel(self):
+        transfer_stock_on_disable(self)
+
 
 @frappe.whitelist()
 def transfer_stock_on_submit(doc):
@@ -56,6 +59,61 @@ def transfer_stock_on_submit(doc):
 
     frappe.msgprint(
         f"Stock Transfer Created from {source_warehouse} to {target_warehouse} Successfully!",
+        alert=True,
+        indicator="green",
+        wide=True,
+    )
+
+
+# stock transfer when farm pack list is disabled
+
+
+@frappe.whitelist()
+def transfer_stock_on_disable(doc):
+    if not doc.pack_list_item:
+        frappe.throw("No items in Farm Pack List to transfer.")
+
+    target_warehouses = [
+        "Burguret Dispatch Cold Store - TL",
+        "Pendekeza Dispatch Cold Store - TL", "Turaco Dispatch Cold Store - TL"
+    ]
+
+    target_warehouse = None
+    for item in doc.pack_list_item:
+        if item.source_warehouse in target_warehouses:
+            target_warehouse = item.source_warehouse
+            break
+
+    if not target_warehouse:
+        frappe.throw(
+            "Invalid or missing target warehouse. Allowed warehouses: " +
+            ", ".join(target_warehouses))
+
+    source_warehouse = "Delivery Truck - TL"
+
+    if not frappe.db.exists("Warehouse", target_warehouse):
+        frappe.throw(f"Target Warehouse '{target_warehouse}' does not exist.")
+
+    stock_entry = frappe.new_doc("Stock Entry")
+    stock_entry.stock_entry_type = "Material Transfer"
+    stock_entry.farm_pack_list = doc.name
+
+    for item in doc.pack_list_item:
+        stock_entry.append(
+            "items", {
+                "s_warehouse": source_warehouse,
+                "t_warehouse": target_warehouse,
+                "item_code": item.item_code,
+                "qty": item.bunch_qty,
+                "uom": item.bunch_uom,
+                "stock_uom": item.bunch_uom,
+            })
+
+    stock_entry.save(ignore_permissions=True)
+    stock_entry.submit()
+
+    frappe.msgprint(
+        f"Stock Transfer Created from {source_warehouse} to {target_warehouse} Successfully after cancellation of farm pack list!",
         alert=True,
         indicator="green",
         wide=True,
