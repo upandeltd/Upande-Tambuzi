@@ -64,8 +64,9 @@ def add_bunch_to_farm_pack_list(farm_pack_list_doc_id, bunch_SE_name, opl_name, 
                 "stem_length": stem_length
             })
         
-
+        pack_list_doc.docstatus = 0
         pack_list_doc.save()
+
 
         return {
             "message": f"Bunch successfully added to Farm Pack List: {pack_list_doc.name}",
