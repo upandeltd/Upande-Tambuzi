@@ -8,6 +8,9 @@ class FarmPackList(Document):
     def on_submit(self):
         transfer_stock_on_submit(self)
 
+    def on_cancel(self):
+        transfer_stock_on_cancel(self)
+
 
 @frappe.whitelist()
 def transfer_stock_on_submit(doc):
@@ -58,6 +61,71 @@ def transfer_stock_on_submit(doc):
         f"Stock Transfer Created from {source_warehouse} to {target_warehouse} Successfully!",
         alert=True,
         indicator="green",
+        wide=True,
+    )
+
+
+# stock transfer when farm pack list is disabled
+
+
+@frappe.whitelist()
+def transfer_stock_on_cancel(doc):
+    """Transfers stock from Dispatch Cold Store back to Available for Sale when Farm Pack List is cancelled."""
+
+    if not doc.pack_list_item:
+        frappe.throw("No items in Farm Pack List to transfer.")
+
+    dispatch_warehouses = [
+        "Burguret Dispatch Cold Store - TL", "Turaco Dispatch Cold Store - TL",
+        "Pendekeza Dispatch Cold Store - TL"
+    ]
+
+    available_for_sale_warehouses = {
+        "Burguret Dispatch Cold Store - TL":
+        "Burguret Available for Sale - TL",
+        "Turaco Dispatch Cold Store - TL": "Turaco Available for Sale - TL",
+        "Pendekeza Dispatch Cold Store - TL":
+        "Pendekeza Available for Sale - TL",
+    }
+
+    stock_entry = frappe.new_doc("Stock Entry")
+    stock_entry.stock_entry_type = "Material Transfer"
+    stock_entry.farm_pack_list = doc.name
+
+    for item in doc.pack_list_item:
+        source_warehouse = item.source_warehouse  # Stock is moving FROM dispatch
+
+        # Validate if source warehouse is one of the Dispatch Cold Store warehouses
+        if source_warehouse not in dispatch_warehouses:
+            frappe.throw(
+                f"Invalid or missing source warehouse '{source_warehouse}'. Expected: "
+                + ", ".join(dispatch_warehouses))
+
+        # Get the corresponding Available for Sale warehouse
+        target_warehouse = available_for_sale_warehouses.get(source_warehouse)
+        if not target_warehouse:
+            frappe.throw(
+                f"No mapped Available for Sale warehouse for {source_warehouse}."
+            )
+
+        # Add items to the Stock Entry
+        stock_entry.append(
+            "items", {
+                "s_warehouse": source_warehouse,
+                "t_warehouse": target_warehouse,
+                "item_code": item.item_code,
+                "qty": item.bunch_qty,
+                "uom": item.bunch_uom,
+                "stock_uom": item.bunch_uom,
+            })
+
+    stock_entry.save(ignore_permissions=True)
+    stock_entry.submit()
+
+    frappe.msgprint(
+        f"Stock Transfer Created from {source_warehouse} to {target_warehouse} Successfully!",
+        alert=True,
+        indicator="red",
         wide=True,
     )
 
