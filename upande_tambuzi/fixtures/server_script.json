@@ -47,13 +47,13 @@
   "doctype_event": "Before Save",
   "enable_rate_limit": 0,
   "event_frequency": "All",
-  "modified": "2025-03-12 07:37:31.925591",
+  "modified": "2025-03-24 12:22:22.737541",
   "module": "Upande Tambuzi",
   "name": "Harvest Stock Entry",
   "rate_limit_count": 5,
   "rate_limit_seconds": 86400,
   "reference_doctype": "Harvest",
-  "script": "stock_entry = frappe.new_doc(\"Stock Entry\")\n\nstock_entry.stock_entry_type = \"Harvesting\"\nstock_entry.custom_farm = doc.farm\nstock_entry.custom_greenhouse = doc.block\nstock_entry.custom_block__bed_number = doc.bay\nstock_entry.custom_harvester = doc.harvester\nstock_entry.custom_bucket_id = doc.bucket_id\nstock_entry.to_warehouse = doc.block\n\nstock_entry.append(\"items\", {\n    \"item_code\": doc.item_code,\n    \"qty\": doc.quantity\n})\n\nstock_entry.insert()\nstock_entry.submit()\n\nfrappe.msgprint(f\"Stock Entry {stock_entry.name} created successfully.\")",
+  "script": "stock_entry = frappe.new_doc(\"Stock Entry\")\n\nstock_entry.stock_entry_type = \"Harvesting\"\nstock_entry.custom_farm = doc.farm\nstock_entry.custom_greenhouse = doc.block or doc.blck or doc.bck\nstock_entry.custom_block__bed_number = doc.bay\nstock_entry.custom_harvester = doc.harvester\nstock_entry.custom_bucket_id = doc.bucket_id\nstock_entry.to_warehouse = doc.block or doc.blck or doc.bck\n\nstock_entry.append(\"items\", {\n    \n    \"item_code\": doc.item_code,\n    \"qty\": doc.quantity\n})\n\nstock_entry.insert()\nstock_entry.submit()\n\nfrappe.msgprint(f\"Stock Entry {stock_entry.name} created successfully.\")",
   "script_type": "DocType Event"
  }
 ]

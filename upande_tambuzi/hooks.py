@@ -304,8 +304,8 @@ fixtures = [{
             "Populate Number of Items", "Grading Stock Entry",
             "Field Rejects Stock Entry", "Archive Employee",
             "Transfer Grading Stock", "Generate Bucket Codes", "Harvest Scan",
-            "New Form After Save", "Remove Read Only on Field",
-            "Ensure Bucket Is Scanned On Save"
+            "New Form After Save", "Remove Read Only on Field", "Ensure Bucket Is Scanned On Save",
+            "Field Rejects Stock Entry"
         ]
     ]]
 }, {
