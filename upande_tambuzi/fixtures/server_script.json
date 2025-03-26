@@ -55,5 +55,24 @@
   "reference_doctype": "Harvest",
   "script": "stock_entry = frappe.new_doc(\"Stock Entry\")\n\nstock_entry.stock_entry_type = \"Harvesting\"\nstock_entry.custom_farm = doc.farm\nstock_entry.custom_greenhouse = doc.block or doc.blck or doc.bck\nstock_entry.custom_block__bed_number = doc.bay\nstock_entry.custom_harvester = doc.harvester\nstock_entry.custom_bucket_id = doc.bucket_id\nstock_entry.to_warehouse = doc.block or doc.blck or doc.bck\n\nstock_entry.append(\"items\", {\n    \n    \"item_code\": doc.item_code,\n    \"qty\": doc.quantity\n})\n\nstock_entry.insert()\nstock_entry.submit()\n\nfrappe.msgprint(f\"Stock Entry {stock_entry.name} created successfully.\")",
   "script_type": "DocType Event"
+ },
+ {
+  "allow_guest": 0,
+  "api_method": null,
+  "cron_format": null,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Server Script",
+  "doctype_event": "After Submit",
+  "enable_rate_limit": 0,
+  "event_frequency": "All",
+  "modified": "2025-03-26 16:23:28.541728",
+  "module": "Upande Tambuzi",
+  "name": "Automate Rejects Material Issue",
+  "rate_limit_count": 5,
+  "rate_limit_seconds": 86400,
+  "reference_doctype": "Stock Entry",
+  "script": "if (doc.stock_entry_type == \"Field Rejects\"):\n\n    items = []\n    for item in doc.items:\n        item_dict = {\n            \"item_code\": item.item_code,\n            \"qty\": item.qty,\n            \"s_warehouse\": None,\n            \"t_warehouse\": item.t_warehouse,\n            \"custom_rejection_reason\": item.custom_rejection_reason\n        }\n        \n        items.append(item_dict)\n        \n    \n    if items:\n        material_issue = frappe.get_doc({\n            \"doctype\": \"Stock Entry\",\n            \"stock_entry_type\": \"Material Issue\",\n            \"items\": []\n        })\n\n        for item in items:\n            material_issue.append(\"items\", {\n                \"item_code\": item[\"item_code\"],\n                \"qty\": item[\"qty\"],\n                \"s_warehouse\": item[\"t_warehouse\"],\n                \"t_warehouse\": None,\n                \"custom_rejection_reason\": item[\"custom_rejection_reason\"]\n            })\n\n        material_issue.insert()\n        material_issue.submit()\n        \n        frappe.msgprint(f\"Material Issue Stock Entry {material_issue.name} created successfully.\")\n",
+  "script_type": "DocType Event"
  }
 ]

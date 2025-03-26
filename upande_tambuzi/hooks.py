@@ -290,7 +290,7 @@ fixtures = [{
         "name", "in",
         [
             "Stock Entry Script", "Stock Entry After Save", "Scan Timestamp",
-            "Harvest Stock Entry"
+            "Harvest Stock Entry", "Automate Rejects Material Issue"
         ]
     ]]
 }, {
@@ -317,7 +317,8 @@ fixtures = [{
             "Scan Location", "QR Code", "Packing List", "Pack List Item",
             "Scan", "Farm", "Box Label", "Box Label Item", "Label Print",
             "Bucket QR Code", "Bunch QR Code", "Grader QR Code", "Harvest",
-            "Scanned Items", "Scan Check", "Scan Check List", "QR Sequence"
+            "Scanned Items", "Scan Check", "Scan Check List", "QR Sequence",
+            "Rejection Reason"
         ]
     ]]
 }, {
@@ -334,6 +335,15 @@ fixtures = [{
     ]]
 }, {
     "dt": "Custom DocPerm"
+}, {
+    "dt":
+    "Report",
+    "filters": [[
+        "name", "in",
+        [
+            "Field Rejects Report", "Packhouse Discards/Rejects Report"
+        ]
+    ]]
 }]
 
 # doc_events = {
