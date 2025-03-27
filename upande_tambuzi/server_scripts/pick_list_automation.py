@@ -123,12 +123,12 @@ def create_pick_list_for_sales_order(doc, method=None):
                                                  order_pick_list.name)
                 order_pick_list.custom_qr_code = qr_code_url
 
-                # order_pick_list.save()
+                order_pick_list.save()
 
-                # order_pick_list.submit()
+                order_pick_list.submit()
                 order_pick_list_names.append(order_pick_list.name)
 
-                # order_pick_list.save()
+                order_pick_list.save()
             except Exception as e:
                 frappe.log_error(
                     f"Failed to create Order Pick List for warehouse {warehouse}: {str(e)}"
