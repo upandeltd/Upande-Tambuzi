@@ -140,12 +140,35 @@ def process_consolidated_pack_list(farm_pack_list, sales_order_id=None):
 
     farm_pack_doc = frappe.get_doc("Farm Pack List", farm_pack_list)
 
+    # Fetch sales_order_id from the first Pack List Item if not provided
     if not sales_order_id and farm_pack_doc.pack_list_item:
         sales_order_id = farm_pack_doc.pack_list_item[0].sales_order_id
 
     if not sales_order_id:
         frappe.throw("Sales Order ID is required to process the CPL.")
 
+    # Fetch all related Farm Pack Lists via Pack List Item
+    related_farm_packs = frappe.get_all(
+        "Pack List Item",
+        filters={"sales_order_id": sales_order_id},
+        fields=["parent"]  # 'parent' links to Farm Pack List
+    )
+
+    # Extract unique Farm Pack List IDs
+    farm_pack_list_ids = list(
+        set(pack["parent"] for pack in related_farm_packs))
+
+    # Fetch total stems from related Farm Pack Lists
+    related_farm_pack_docs = frappe.get_all(
+        "Farm Pack List",
+        filters={"name": ["in", farm_pack_list_ids]},
+        fields=["custom_total_stems"])
+
+    # Calculate the total stems
+    total_stems = sum(fpl["custom_total_stems"]
+                      for fpl in related_farm_pack_docs)
+
+    # Check for an existing Consolidated Pack List (CPL)
     existing_cpl = frappe.get_all("Consolidated Pack List",
                                   filters={"sales_order_id": sales_order_id},
                                   fields=["name"],
@@ -162,7 +185,13 @@ def process_consolidated_pack_list(farm_pack_list, sales_order_id=None):
             cpl = frappe.new_doc("Consolidated Pack List")
             cpl.sales_order_id = sales_order_id
             cpl.customer_id = farm_pack_doc.pack_list_item[0].customer_id
-            message = f"New CPL{cpl.name} is created in draft status"
+            message = "New CPL is created in draft status"
+
+        # **Fetch required fields from Farm Pack List**
+        cpl.custom_customer = farm_pack_doc.custom_customer
+        cpl.custom_currency = farm_pack_doc.custom_currency
+        cpl.custom_customer_address = farm_pack_doc.custom_customer_address
+        cpl.custom_total_stems = total_stems
 
         if "items" not in cpl.as_dict():
             frappe.throw("Field 'items' does not exist in CPL")
