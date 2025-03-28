@@ -2,12 +2,23 @@
  {
   "docstatus": 0,
   "doctype": "Client Script",
+  "dt": "Stock Entry",
+  "enabled": 1,
+  "modified": "2025-03-28 12:28:32.692244",
+  "module": "Upande Tambuzi",
+  "name": "Ensure Uppercase in Bay Field",
+  "script": "frappe.ui.form.on('Stock Entry Detail', {\n\tcustom_bay(frm, cdt, cdn) {\n\t\tlet row = locals[cdt][cdn]; \n        let value = row.custom_bay || '';\n        frappe.model.set_value(cdt, cdn, 'custom_bay', value.toUpperCase());\n\t}\n});",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
   "dt": "Label Print",
   "enabled": 1,
-  "modified": "2025-03-10 14:19:59.890800",
+  "modified": "2025-03-28 14:28:09.020556",
   "module": "Upande Tambuzi",
   "name": "Generate Bucket Codes",
-  "script": "frappe.ui.form.on('Label Print', {\n\tafter_save(frm) {\n\t    let variety;\n\t    let number_of_labels;\n\t    let doc_name;\n\t    let action;\n\t    let farm;\n\t    let stem_length;\n\t    let bunch_size, grader;\n\t    \n\t    let args = {\n\t        action : frm.doc.action,\n\t        label_doc_name: frm.doc.name,\n\t        \n\t    };\n\t    \n\t    if (frm.doc.action === 'Harvesting Label') {\n\t        args.variety = frm.doc.item_code;\n    \t\targs.no_of_labels = frm.doc.number_of_labels;\n\n\t    } else if (frm.doc.action === 'Bunch Label') {\n\t        args.variety = frm.doc.variety;\n\t        args.no_of_labels = frm.doc.no_of_labels;\n\t        args.farm = frm.doc.farm;\n\t        args.stem_length = frm.doc.stem_length;\n\t        args.bunch_size = frm.doc.bunch_size;\n\t        \n\t    } else if (frm.doc.action === 'Grader Label') {\n\t        args.grader = frm.doc.grader;\n\t        args.no_of_labels = frm.doc.qty_of_labels;\n\t    }\n\t    \n\t    \n\t\t\n\t\tlet bucket_id;\n\t\t\n\t\tfrappe.call({\n\t\t    method: \"upande_tambuzi.server_scripts.gen_label_id.generate_id\",\n\t\t    args: args,\n\t\t    callback:(response) => {\n\t\t        console.log(response);\n\t\t    }\n\t\t});\n\t\t\n\t}\n})",
+  "script": "frappe.ui.form.on('Label Print', {\n\tafter_save(frm) {\n\t    let variety;\n\t    let number_of_labels;\n\t    let doc_name;\n\t    let action;\n\t    let farm;\n\t    let stem_length;\n\t    let bunch_size, grader, day_code;\n\t    \n\t    let args = {\n\t        action : frm.doc.action,\n\t        label_doc_name: frm.doc.name,\n\t        \n\t    };\n\t    \n\t    if (frm.doc.action === 'Harvesting Label') {\n\t        args.variety = frm.doc.item_code;\n    \t\targs.no_of_labels = frm.doc.number_of_labels;\n\n\t    } else if (frm.doc.action === 'Bunch Label') {\n\t        args.variety = frm.doc.variety;\n\t        args.no_of_labels = frm.doc.no_of_labels;\n\t        args.farm = frm.doc.farm;\n\t        args.stem_length = frm.doc.stem_length;\n\t        args.bunch_size = frm.doc.bunch_size;\n\t        \n\t    } else if (frm.doc.action === 'Grader Label') {\n\t        args.grader = frm.doc.grader;\n\t        args.no_of_labels = frm.doc.qty_of_labels;\n\t        args.day_code = frm.doc.day_code;\n\t    }\n\t    \n\t    \n\t\t\n\t\tlet bucket_id;\n\t\t\n\t\tfrappe.call({\n\t\t    method: \"upande_tambuzi.server_scripts.gen_label_id.generate_id\",\n\t\t    args: args,\n\t\t    callback:(response) => {\n\t\t        console.log(response);\n\t\t    }\n\t\t});\n\t\t\n\t}\n})",
   "view": "Form"
  },
  {
@@ -162,6 +173,28 @@
   "module": "Upande Tambuzi",
   "name": "Ensure Bucket Is Scanned On Save",
   "script": "frappe.ui.form.on('Harvest', {\n\tbefore_save(frm) {\n\t\tif (!frm.doc.bucket_id) {\n\t\t    frappe.msgprint(\"Please scan the bucket QR Code before saving!\");\n\t\t    \n\t\t    setTimeout(() => {\n                frappe.set_route('Form', frm.doctype, 'new');\n            }, 4000);\n            \n            setTimeout(() => {\n                window.location.reload();\n            }, 1000);\n\t\t}\n\t}\n})",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Bunch QR Code",
+  "enabled": 1,
+  "modified": "2025-03-27 09:34:45.545382",
+  "module": "Upande Tambuzi",
+  "name": "Hide Filter Button",
+  "script": "frappe.listview_settings[\"Bunch QR Code\"] = {\n    onload(listview) {\n        setTimeout(() => {\n            let filter_button = $(\".filter-section .filter-selector\");\n\n            if (filter_button.length) {\n                filter_button.hide();\n            }\n        }, 500);\n        \n    }\n};",
+  "view": "List"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Label Print",
+  "enabled": 1,
+  "modified": "2025-03-28 14:14:07.299189",
+  "module": "Upande Tambuzi",
+  "name": "Grading Traceability Symbols",
+  "script": "frappe.ui.form.on('Label Print', {\n\trefresh(frm) {\n\t    let creation_date = frappe.datetime.now_date();\n\t    let date_obj = new Date(creation_date);\n\t    let day_index = date_obj.getDay();\n\t    \n\t    const days_of_week = [\"Sunday\", \"Monday\", \"Tuesday\", \"Wednesday\", \"Thursday\", \"Friday\", \"Saturday\"];\n\t    const sign = [\"+\", \"#\", \"@\", \"*\", \"$\", \"%\", \"&\"];\n\t    \n\t    let day_of_week = days_of_week[day_index];\n\t    let day_sign = sign[day_index];\n\t    \n\t    \n\t    frm.set_value(\"day_code\", day_sign);\n\t\t    \n\t}\n});",
   "view": "Form"
  }
 ]
