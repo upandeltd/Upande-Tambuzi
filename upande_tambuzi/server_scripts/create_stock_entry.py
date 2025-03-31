@@ -21,7 +21,7 @@ def create_stock_entry(stock_entry_data):
     stock_entry.stock_entry_type = stock_entry_type 
 
     stock_entry.custom_greenhouse = greenhouse
-    stock_entry.custom_breeder = breeder
+    # stock_entry.custom_breeder = breeder
     stock_entry.custom_harvester = harvester
     stock_entry.custom_grower = grower
     stock_entry.custom_block__bed_number = block__bed_number
