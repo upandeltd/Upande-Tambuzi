@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2025-03-31 22:59:10.281505",
+ "creation": "2025-03-31 23:54:57.849255",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
@@ -17,10 +17,10 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-03-31 22:59:54.059664",
+ "modified": "2025-03-31 23:55:10.454995",
  "modified_by": "Administrator",
  "module": "Upande Tambuzi",
- "name": "Breeder",
+ "name": "Breeders",
  "owner": "Administrator",
  "permissions": [
   {
