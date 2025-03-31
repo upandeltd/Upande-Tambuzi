@@ -156,11 +156,9 @@ doc_events = {
     "Consolidated Pack List": {
         "on_submit":
         "upande_tambuzi.server_scripts.create_sales_invoice.create_sales_invoice_from_packlist",
-
     },
-
     "Sales Invoice": {
-        "on_submit": 
+        "on_submit":
         "upande_tambuzi.server_scripts.sinv_approved_by.set_approved_by"
     }
 
@@ -292,7 +290,7 @@ fixtures = [{
         "name", "in",
         [
             "Stock Entry Script", "Stock Entry After Save", "Scan Timestamp",
-            "Harvest Stock Entry"
+            "Harvest Stock Entry", "Automate Rejects Material Issue"
         ]
     ]]
 }, {
@@ -306,7 +304,9 @@ fixtures = [{
             "Populate Number of Items", "Grading Stock Entry",
             "Field Rejects Stock Entry", "Archive Employee",
             "Transfer Grading Stock", "Generate Bucket Codes", "Harvest Scan",
-            "New Form After Save", "Remove Read Only on Field"
+            "New Form After Save", "Remove Read Only on Field", "Ensure Bucket Is Scanned On Save",
+            "Field Rejects Stock Entry", "Hide Filter Button", "Ensure Uppercase in Bay Field",
+            "Grading Traceability Symbols"
         ]
     ]]
 }, {
@@ -318,7 +318,8 @@ fixtures = [{
             "Scan Location", "QR Code", "Packing List", "Pack List Item",
             "Scan", "Farm", "Box Label", "Box Label Item", "Label Print",
             "Bucket QR Code", "Bunch QR Code", "Grader QR Code", "Harvest",
-            "Scanned Items", "Scan Check", "Scan Check List", "QR Sequence"
+            "Scanned Items", "Scan Check", "Scan Check List", "QR Sequence",
+            "Rejection Reason"
         ]
     ]]
 }, {
@@ -328,13 +329,23 @@ fixtures = [{
         "name", "in",
         [
             "QR Code Only", "Box Label", "Harvest Label",
-            "Grader QR Print Format", "Bunch QR Code"
+            "Grader QR Print Format", "Bunch QR Code",
+            "Trial Bunch Print Format", "Grader QR Print format 2",
+            "Harvest Label 2"
         ]
     ]]
 }, {
     "dt": "Custom DocPerm"
+}, {
+    "dt":
+    "Report",
+    "filters": [[
+        "name", "in",
+        [
+            "Field Rejects Report", "Packhouse Discards/Rejects Report"
+        ]
+    ]]
 }]
-
 
 # doc_events = {
 #     "Consolidated Pack List": {
