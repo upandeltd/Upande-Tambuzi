@@ -2252,7 +2252,7 @@
    "_comments": null,
    "_liked_by": null,
    "_user_tags": null,
-   "creation": "2025-01-14 16:54:10.649966",
+   "creation": "2025-03-29 00:21:48.036019",
    "default_value": null,
    "doc_type": "Stock Entry",
    "docstatus": 0,
@@ -2264,11 +2264,11 @@
    "modified_by": "Administrator",
    "module": null,
    "name": "Stock Entry-scan_barcode-hidden",
-   "owner": "rodgers@upande.com",
+   "owner": "Administrator",
    "property": "hidden",
    "property_type": "Check",
    "row_name": null,
-   "value": "1"
+   "value": "0"
   },
   {
    "_assign": null,
