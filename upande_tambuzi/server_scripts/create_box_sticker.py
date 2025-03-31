@@ -3,7 +3,7 @@ import frappe
 import frappe.utils
 
 @frappe.whitelist()
-def create_box_sticker(variety, uom, customer, length, box_number, customer_purchase_order, order_pick_list):
+def create_box_sticker(variety, uom, customer, length, box_number, customer_purchase_order, order_pick_list, truck_details, consignee):
     date = frappe.utils.today()
 
     boxStickerDoc = frappe.new_doc("Box Label")
@@ -14,6 +14,8 @@ def create_box_sticker(variety, uom, customer, length, box_number, customer_purc
     boxStickerDoc.date = date
     boxStickerDoc.customer_purchase_order = customer_purchase_order
     boxStickerDoc.order_pick_list = order_pick_list
+    boxStickerDoc.truck_details = truck_details
+    boxStickerDoc.consignee = consignee
     packrate = 0
 
     # One bunch per scan

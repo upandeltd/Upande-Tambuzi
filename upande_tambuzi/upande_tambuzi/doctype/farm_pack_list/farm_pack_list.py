@@ -8,6 +8,9 @@ class FarmPackList(Document):
     def on_submit(self):
         transfer_stock_on_submit(self)
 
+    def on_cancel(self):
+        transfer_stock_on_cancel(self)
+
 
 @frappe.whitelist()
 def transfer_stock_on_submit(doc):
@@ -62,6 +65,71 @@ def transfer_stock_on_submit(doc):
     )
 
 
+# stock transfer when farm pack list is disabled
+
+
+@frappe.whitelist()
+def transfer_stock_on_cancel(doc):
+    """Transfers stock from Dispatch Cold Store back to Available for Sale when Farm Pack List is cancelled."""
+
+    if not doc.pack_list_item:
+        frappe.throw("No items in Farm Pack List to transfer.")
+
+    dispatch_warehouses = [
+        "Burguret Dispatch Cold Store - TL", "Turaco Dispatch Cold Store - TL",
+        "Pendekeza Dispatch Cold Store - TL"
+    ]
+
+    available_for_sale_warehouses = {
+        "Burguret Dispatch Cold Store - TL":
+        "Burguret Available for Sale - TL",
+        "Turaco Dispatch Cold Store - TL": "Turaco Available for Sale - TL",
+        "Pendekeza Dispatch Cold Store - TL":
+        "Pendekeza Available for Sale - TL",
+    }
+
+    stock_entry = frappe.new_doc("Stock Entry")
+    stock_entry.stock_entry_type = "Material Transfer"
+    stock_entry.farm_pack_list = doc.name
+
+    for item in doc.pack_list_item:
+        source_warehouse = item.source_warehouse  # Stock is moving FROM dispatch
+
+        # Validate if source warehouse is one of the Dispatch Cold Store warehouses
+        if source_warehouse not in dispatch_warehouses:
+            frappe.throw(
+                f"Invalid or missing source warehouse '{source_warehouse}'. Expected: "
+                + ", ".join(dispatch_warehouses))
+
+        # Get the corresponding Available for Sale warehouse
+        target_warehouse = available_for_sale_warehouses.get(source_warehouse)
+        if not target_warehouse:
+            frappe.throw(
+                f"No mapped Available for Sale warehouse for {source_warehouse}."
+            )
+
+        # Add items to the Stock Entry
+        stock_entry.append(
+            "items", {
+                "s_warehouse": source_warehouse,
+                "t_warehouse": target_warehouse,
+                "item_code": item.item_code,
+                "qty": item.bunch_qty,
+                "uom": item.bunch_uom,
+                "stock_uom": item.bunch_uom,
+            })
+
+    stock_entry.save(ignore_permissions=True)
+    stock_entry.submit()
+
+    frappe.msgprint(
+        f"Stock Transfer Created from {source_warehouse} to {target_warehouse} Successfully!",
+        alert=True,
+        indicator="red",
+        wide=True,
+    )
+
+
 @frappe.whitelist()
 def process_consolidated_pack_list(farm_pack_list, sales_order_id=None):
     """Creates or updates Consolidated Pack List and triggers stock transfer"""
@@ -72,12 +140,35 @@ def process_consolidated_pack_list(farm_pack_list, sales_order_id=None):
 
     farm_pack_doc = frappe.get_doc("Farm Pack List", farm_pack_list)
 
+    # Fetch sales_order_id from the first Pack List Item if not provided
     if not sales_order_id and farm_pack_doc.pack_list_item:
         sales_order_id = farm_pack_doc.pack_list_item[0].sales_order_id
 
     if not sales_order_id:
         frappe.throw("Sales Order ID is required to process the CPL.")
 
+    # Fetch all related Farm Pack Lists via Pack List Item
+    related_farm_packs = frappe.get_all(
+        "Pack List Item",
+        filters={"sales_order_id": sales_order_id},
+        fields=["parent"]  # 'parent' links to Farm Pack List
+    )
+
+    # Extract unique Farm Pack List IDs
+    farm_pack_list_ids = list(
+        set(pack["parent"] for pack in related_farm_packs))
+
+    # Fetch total stems from related Farm Pack Lists
+    related_farm_pack_docs = frappe.get_all(
+        "Farm Pack List",
+        filters={"name": ["in", farm_pack_list_ids]},
+        fields=["custom_total_stems"])
+
+    # Calculate the total stems
+    total_stems = sum(fpl["custom_total_stems"]
+                      for fpl in related_farm_pack_docs)
+
+    # Check for an existing Consolidated Pack List (CPL)
     existing_cpl = frappe.get_all("Consolidated Pack List",
                                   filters={"sales_order_id": sales_order_id},
                                   fields=["name"],
@@ -94,7 +185,13 @@ def process_consolidated_pack_list(farm_pack_list, sales_order_id=None):
             cpl = frappe.new_doc("Consolidated Pack List")
             cpl.sales_order_id = sales_order_id
             cpl.customer_id = farm_pack_doc.pack_list_item[0].customer_id
-            message = f"New CPL{cpl.name} is created in draft status"
+            message = "New CPL is created in draft status"
+
+        # **Fetch required fields from Farm Pack List**
+        cpl.custom_customer = farm_pack_doc.custom_customer
+        cpl.custom_currency = farm_pack_doc.custom_currency
+        cpl.custom_customer_address = farm_pack_doc.custom_customer_address
+        cpl.custom_total_stems = total_stems
 
         if "items" not in cpl.as_dict():
             frappe.throw("Field 'items' does not exist in CPL")
