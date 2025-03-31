@@ -1,0 +1,272 @@
+[
+ {
+  "add_total_row": 1,
+  "add_translate_data": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [
+   {
+    "default": "Today",
+    "fieldname": "from_date",
+    "fieldtype": "Date",
+    "label": "Start Date",
+    "mandatory": 0,
+    "options": null,
+    "parent": "Packhouse Discards/Rejects Report",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   },
+   {
+    "default": "Today",
+    "fieldname": "to_date",
+    "fieldtype": "Date",
+    "label": "End Date",
+    "mandatory": 0,
+    "options": null,
+    "parent": "Packhouse Discards/Rejects Report",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   },
+   {
+    "default": "Discards-Ungraded",
+    "fieldname": "stock_entry_type",
+    "fieldtype": "Select",
+    "label": "Discard/Reject",
+    "mandatory": 1,
+    "options": "\nDiscards-Ungraded\nDiscards-Graded\nGraded Rejects",
+    "parent": "Packhouse Discards/Rejects Report",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   },
+   {
+    "default": "",
+    "fieldname": "farm",
+    "fieldtype": "Link",
+    "label": " Farm",
+    "mandatory": 1,
+    "options": "Farm",
+    "parent": "Packhouse Discards/Rejects Report",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   }
+  ],
+  "is_standard": "No",
+  "javascript": null,
+  "json": null,
+  "letter_head": "Tambuzi",
+  "modified": "2025-03-27 13:06:24.539974",
+  "module": "Stock",
+  "name": "Packhouse Discards/Rejects Report",
+  "prepared_report": 0,
+  "query": "SELECT\r\n    se.posting_date AS \"Date:Date:120\",\r\n    se.stock_entry_type AS \"Discard/Reject Type:Link/Stock Entry Type:150\",\r\n    i.item_group AS \"Item Group:Link/Item Group:160\",\r\n    sed.item_code AS \"Item Code:Link/Item:200\",\r\n    se.custom_farm AS \"Farm:Link/Farm:140\",\r\n    sed.custom_rejection_reason AS \"Reason:Select:180\",\r\n    SUM(sed.qty) AS \"Qty:Int:70\"\r\nFROM\r\n    `tabStock Entry` se\r\nJOIN\r\n    `tabStock Entry Detail` sed ON sed.parent = se.name\r\nJOIN\r\n    `tabItem` i ON sed.item_code = i.item_code    \r\nWHERE\r\n    se.docstatus = 1\r\n    AND se.posting_date BETWEEN %(from_date)s AND %(to_date)s\r\n    AND (\r\n        %(stock_entry_type)s IS NULL \r\n        OR se.stock_entry_type = %(stock_entry_type)s\r\n    )\r\n    AND (\r\n        se.custom_farm = %(farm)s\r\n    )\r\n    \r\nGROUP BY\r\n    se.posting_date, se.stock_entry_type, i.item_group, sed.item_code, se.custom_farm, sed.custom_rejection_reason\r\nORDER BY\r\n    se.posting_date, se.stock_entry_type, i.item_group, sed.item_code;",
+  "ref_doctype": "Stock Entry",
+  "reference_report": null,
+  "report_name": "Packhouse Discards/Rejects Report",
+  "report_script": "",
+  "report_type": "Query Report",
+  "roles": [
+   {
+    "parent": "Packhouse Discards/Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock Manager"
+   },
+   {
+    "parent": "Packhouse Discards/Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock User"
+   },
+   {
+    "parent": "Packhouse Discards/Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Manufacturing Manager"
+   },
+   {
+    "parent": "Packhouse Discards/Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Manufacturing User"
+   },
+   {
+    "parent": "Packhouse Discards/Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Agronomist Clerk"
+   },
+   {
+    "parent": "Packhouse Discards/Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Production Manager"
+   },
+   {
+    "parent": "Packhouse Discards/Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Harvest Manager"
+   },
+   {
+    "parent": "Packhouse Discards/Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Harvest User"
+   },
+   {
+    "parent": "Packhouse Discards/Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Packing Supervisor"
+   },
+   {
+    "parent": "Packhouse Discards/Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Pendekeza Packhouse Manager"
+   },
+   {
+    "parent": "Packhouse Discards/Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Turacco Packhouse Manager"
+   }
+  ],
+  "timeout": 0
+ },
+ {
+  "add_total_row": 1,
+  "add_translate_data": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [
+   {
+    "default": "Today",
+    "fieldname": "from_date",
+    "fieldtype": "Date",
+    "label": "From Date",
+    "mandatory": 0,
+    "options": null,
+    "parent": "Field Rejects Report",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   },
+   {
+    "default": "Today",
+    "fieldname": "to_date",
+    "fieldtype": "Date",
+    "label": "To Date",
+    "mandatory": 0,
+    "options": null,
+    "parent": "Field Rejects Report",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   },
+   {
+    "default": null,
+    "fieldname": "farm",
+    "fieldtype": "Link",
+    "label": "Farm",
+    "mandatory": 1,
+    "options": "Farm",
+    "parent": "Field Rejects Report",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   }
+  ],
+  "is_standard": "No",
+  "javascript": null,
+  "json": null,
+  "letter_head": "Tambuzi",
+  "modified": "2025-03-27 11:34:53.158815",
+  "module": "Stock",
+  "name": "Field Rejects Report",
+  "prepared_report": 0,
+  "query": "SELECT\r\n    se.posting_date AS \"Date:Date:120\",\r\n    i.item_group AS \"Item Group:Link/Item Group:160\",\r\n    sed.item_code AS \"Item Code:Link/Item:200\",\r\n    se.custom_farm AS \"Farm:Link/Farm:140\",\r\n    sed.custom_reason AS \"Reason:Select:180\",\r\n    sed.custom_rejection_reason AS \"Reason:Select:180\",\r\n    SUM(sed.qty) AS \"Qty:Int:70\"\r\nFROM\r\n    `tabStock Entry` se\r\nJOIN\r\n    `tabStock Entry Detail` sed ON sed.parent = se.name\r\nJOIN\r\n    `tabItem` i ON sed.item_code = i.item_code    \r\nWHERE\r\n    se.docstatus = 1\r\n    AND se.posting_date BETWEEN %(from_date)s AND %(to_date)s\r\n    AND se.custom_farm= %(farm)s\r\n    AND se.stock_entry_type = \"Field Rejects\"\r\nGROUP BY\r\n    se.posting_date, i.item_group, sed.item_code, se.custom_farm, sed.custom_reason, custom_rejection_reason\r\nORDER BY\r\n    se.posting_date, i.item_group, sed.item_code;",
+  "ref_doctype": "Stock Entry",
+  "reference_report": null,
+  "report_name": "Field Rejects Report",
+  "report_script": null,
+  "report_type": "Query Report",
+  "roles": [
+   {
+    "parent": "Field Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock Manager"
+   },
+   {
+    "parent": "Field Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock User"
+   },
+   {
+    "parent": "Field Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Manufacturing Manager"
+   },
+   {
+    "parent": "Field Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Manufacturing User"
+   },
+   {
+    "parent": "Field Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Agronomist Clerk"
+   },
+   {
+    "parent": "Field Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Production Manager"
+   },
+   {
+    "parent": "Field Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Harvest Manager"
+   },
+   {
+    "parent": "Field Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Harvest User"
+   },
+   {
+    "parent": "Field Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Packing Supervisor"
+   },
+   {
+    "parent": "Field Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Pendekeza Packhouse Manager"
+   },
+   {
+    "parent": "Field Rejects Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Turacco Packhouse Manager"
+   }
+  ],
+  "timeout": 0
+ }
+]
