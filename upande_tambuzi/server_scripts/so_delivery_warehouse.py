@@ -6,7 +6,10 @@ def handle_sales_order_approval(doc, method):
     warehouse_mapping = {
         "Turaco Available for Sale - TL": "Turaco Graded Sold - TL",
         "Pendekeza Available for Sale - TL": "Pendekeza Graded Sold - TL",
-        "Burguret Available for Sale - TL": "Burguret Graded Sold - TL"
+        "Burguret Available for Sale - TL": "Burguret Graded Sold - TL",
+        "Pendekeza Forecast - TL": "Pendekeza Graded Sold - TL",
+        "Burguret Forecast - TL": "Burguret Graded Sold - TL",
+        "Turaco Forecast - TL": "Turaco Graded Sold - TL",
     }
 
     updated = False
@@ -98,7 +101,10 @@ def handle_sales_order_cancellation(doc, method):
     warehouse_reverse_mapping = {
         "Turaco Graded Sold - TL": "Turaco Available for Sale - TL",
         "Pendekeza Graded Sold - TL": "Pendekeza Available for Sale - TL",
-        "Burguret Graded Sold - TL": "Burguret Available for Sale - TL"
+        "Burguret Graded Sold - TL": "Burguret Available for Sale - TL",
+        "Turaco Graded Sold - TL": "Turaco Forecast - TL",
+        "Pendekeza Graded Sold - TL": "Pendekeza Forecast - TL",
+        "Burguret Graded Sold - TL": "Burguret Forecast - TL",
     }
 
     items_details = []  # Store item details for table display

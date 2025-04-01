@@ -19,8 +19,8 @@ def transfer_stock_on_submit(doc):
         frappe.throw("No items in Farm Pack List to transfer.")
 
     source_warehouses = [
-        "Burguret Dispatch Cold Store - TL",
-        "Pendekeza Dispatch Cold Store - TL", "Turaco Dispatch Cold Store - TL"
+        "Burguret Graded Sold - TL", "Turaco Graded Sold - TL",
+        "Pendekeza Graded Sold - TL"
     ]
 
     source_warehouse = None
@@ -38,6 +38,9 @@ def transfer_stock_on_submit(doc):
 
     if not frappe.db.exists("Warehouse", source_warehouse):
         frappe.throw(f"Source Warehouse '{source_warehouse}' does not exist.")
+
+    if not frappe.db.exists("Warehouse", target_warehouse):
+        frappe.throw(f"Target Warehouse '{target_warehouse}' does not exist.")
 
     stock_entry = frappe.new_doc("Stock Entry")
     stock_entry.stock_entry_type = "Material Transfer"
@@ -65,48 +68,39 @@ def transfer_stock_on_submit(doc):
     )
 
 
-# stock transfer when farm pack list is disabled
-
-
 @frappe.whitelist()
 def transfer_stock_on_cancel(doc):
-    """Transfers stock from Dispatch Cold Store back to Available for Sale when Farm Pack List is cancelled."""
+    """Transfers stock from Delivery Truck back to source warehouse when Farm Pack List is cancelled."""
 
     if not doc.pack_list_item:
         frappe.throw("No items in Farm Pack List to transfer.")
 
-    dispatch_warehouses = [
-        "Burguret Dispatch Cold Store - TL", "Turaco Dispatch Cold Store - TL",
-        "Pendekeza Dispatch Cold Store - TL"
+    target_warehouses = [
+        "Burguret Graded Sold - TL", "Turaco Graded Sold - TL",
+        "Pendekeza Graded Sold - TL"
     ]
 
-    available_for_sale_warehouses = {
-        "Burguret Dispatch Cold Store - TL":
-        "Burguret Available for Sale - TL",
-        "Turaco Dispatch Cold Store - TL": "Turaco Available for Sale - TL",
-        "Pendekeza Dispatch Cold Store - TL":
-        "Pendekeza Available for Sale - TL",
-    }
+    source_warehouse = "Delivery Truck - TL"
+
+    if not frappe.db.exists("Warehouse", source_warehouse):
+        frappe.throw(f"Source Warehouse '{source_warehouse}' does not exist.")
 
     stock_entry = frappe.new_doc("Stock Entry")
     stock_entry.stock_entry_type = "Material Transfer"
     stock_entry.farm_pack_list = doc.name
 
     for item in doc.pack_list_item:
-        source_warehouse = item.source_warehouse  # Stock is moving FROM dispatch
+        target_warehouse = item.source_warehouse  # Stock moves back to original source
 
-        # Validate if source warehouse is one of the Dispatch Cold Store warehouses
-        if source_warehouse not in dispatch_warehouses:
+        # Validate if target warehouse is one of the allowed warehouses
+        if target_warehouse not in target_warehouses:
             frappe.throw(
-                f"Invalid or missing source warehouse '{source_warehouse}'. Expected: "
-                + ", ".join(dispatch_warehouses))
+                f"Invalid target warehouse '{target_warehouse}'. Expected: " +
+                ", ".join(target_warehouses))
 
-        # Get the corresponding Available for Sale warehouse
-        target_warehouse = available_for_sale_warehouses.get(source_warehouse)
-        if not target_warehouse:
+        if not frappe.db.exists("Warehouse", target_warehouse):
             frappe.throw(
-                f"No mapped Available for Sale warehouse for {source_warehouse}."
-            )
+                f"Target Warehouse '{target_warehouse}' does not exist.")
 
         # Add items to the Stock Entry
         stock_entry.append(
@@ -130,6 +124,7 @@ def transfer_stock_on_cancel(doc):
     )
 
 
+# Rest of the code (process_consolidated_pack_list and close_farm_pack_list) remains unchanged
 @frappe.whitelist()
 def process_consolidated_pack_list(farm_pack_list, sales_order_id=None):
     """Creates or updates Consolidated Pack List and triggers stock transfer"""
