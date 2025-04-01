@@ -182,7 +182,7 @@ scheduler_events = {
     # "all": [
     #     "upande_tambuzi.tasks.transfer_stock"
     # ],
-    "daily": ["upande_tambuzi.tasks.transfer_stock"],
+    # "daily": ["upande_tambuzi.tasks.transfer_stock"],
     #   "hourly": [
     #       "upande_tambuzi.tasks.hourly"
     #   ],
