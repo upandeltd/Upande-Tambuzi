@@ -1,5 +1,3 @@
-console.log("Test Log"); // Test if the script is printing logs to the console
-
 frappe.ui.form.on('Sales Order', {
     currency: function(frm) {
         console.log("Script triggered: Currency field changed");
