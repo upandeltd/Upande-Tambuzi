@@ -5,8 +5,12 @@ from frappe.model.document import Document
 
 class FarmPackList(Document):
 
-    def on_submit(self):
-        transfer_stock_on_submit(self)
+    def validate(self):
+        """Hook to check workflow state changes"""
+        if self.workflow_state == "Reviewed" and not self.is_new():
+            # Only trigger if the document is not new and workflow state is "Reviewed"
+            transfer_stock_on_submit(self)
+            process_consolidated_pack_list(self.name)
 
     def on_cancel(self):
         transfer_stock_on_cancel(self)
@@ -14,6 +18,7 @@ class FarmPackList(Document):
 
 @frappe.whitelist()
 def transfer_stock_on_submit(doc):
+    """Transfers stock when Farm Pack List workflow state is Reviewed"""
 
     if not doc.pack_list_item:
         frappe.throw("No items in Farm Pack List to transfer.")
@@ -90,7 +95,7 @@ def transfer_stock_on_cancel(doc):
     stock_entry.farm_pack_list = doc.name
 
     for item in doc.pack_list_item:
-        target_warehouse = item.source_warehouse  # Stock moves back to original source
+        target_warehouse = item.source_warehouse
 
         # Validate if target warehouse is one of the allowed warehouses
         if target_warehouse not in target_warehouses:
@@ -124,10 +129,9 @@ def transfer_stock_on_cancel(doc):
     )
 
 
-# Rest of the code (process_consolidated_pack_list and close_farm_pack_list) remains unchanged
 @frappe.whitelist()
 def process_consolidated_pack_list(farm_pack_list, sales_order_id=None):
-    """Creates or updates Consolidated Pack List and triggers stock transfer"""
+    """Creates or updates Consolidated Pack List when Farm Pack List workflow status is Reviewed"""
     if not frappe.has_permission("Farm Pack List", "read"):
         frappe.throw("Not permitted to read Farm Pack List")
     if not frappe.has_permission("Consolidated Pack List", "write"):
@@ -142,12 +146,10 @@ def process_consolidated_pack_list(farm_pack_list, sales_order_id=None):
     if not sales_order_id:
         frappe.throw("Sales Order ID is required to process the CPL.")
 
-    # Fetch all related Farm Pack Lists via Pack List Item
     related_farm_packs = frappe.get_all(
         "Pack List Item",
         filters={"sales_order_id": sales_order_id},
-        fields=["parent"]  # 'parent' links to Farm Pack List
-    )
+        fields=["parent"])
 
     # Extract unique Farm Pack List IDs
     farm_pack_list_ids = list(
@@ -226,7 +228,6 @@ def process_consolidated_pack_list(farm_pack_list, sales_order_id=None):
 
 @frappe.whitelist()
 def close_farm_pack_list(farm_pack_list):
-
     if not frappe.has_permission("Farm Pack List", "write"):
         frappe.throw(_("Not permitted to close Farm Pack List"))
 

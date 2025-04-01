@@ -13,12 +13,15 @@ app_license = "mit"
 # include js, css files in header of desk.html
 # app_include_css = "/assets/upande_tambuzi/css/upande_tambuzi.css"
 # app_include_js = "/assets/upande_tambuzi/js/upande_tambuzi.js"
-app_include_js = "/assets/upande_tambuzi/client_scripts/fetch_item_grp_price.js"
-app_include_js = "/assets/upande_tambuzi/client_scripts/update_stock_sales_inv.js"
-app_include_js = "/assets/upande_tambuzi/client_scripts/se_rejection_reason.js"
-app_include_js = "/assets/upande_tambuzi/client_scripts/so_stock_transfer.js"
-app_include_js = ["/assets/upande_tambuzi/client_scripts/autofetch_pricelist.js"]
 
+# As a list to make sure it does not override_class
+app_include_js = [
+    "/assets/upande_tambuzi/client_scripts/fetch_item_grp_price.js",
+    "/assets/upande_tambuzi/client_scripts/update_stock_sales_inv.js", 
+    "/assets/upande_tambuzi/client_scripts/se_rejection_reason.js",
+    "/assets/upande_tambuzi/client_scripts/so_stock_transfer.js",
+    "/assets/upande_tambuzi/client_scripts/autofetch_pricelist.js"
+]
 
 # include js, css files in header of web template
 # web_include_css = "/assets/upande_tambuzi/css/upande_tambuzi.css"
