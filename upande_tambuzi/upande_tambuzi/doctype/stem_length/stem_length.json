@@ -7,6 +7,7 @@
  "engine": "InnoDB",
  "field_order": [
   "section_break_nhts",
+  "company",
   "length",
   "price",
   "amended_from",
@@ -44,12 +45,19 @@
    "fieldtype": "Select",
    "label": "Naming Series",
    "options": "LEN-.YYYY.-"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company"
   }
  ],
+ "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-01-30 16:50:55.577014",
+ "modified": "2025-04-01 00:43:36.338634",
  "modified_by": "Administrator",
  "module": "Upande Tambuzi",
  "name": "Stem Length",

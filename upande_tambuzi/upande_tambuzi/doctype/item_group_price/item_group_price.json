@@ -6,9 +6,10 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "company",
   "item_group",
-  "uom",
   "column_break_nczi",
+  "uom",
   "length",
   "section_break_lbov",
   "price_list",
@@ -157,12 +158,19 @@
    "print_hide": 1,
    "read_only": 1,
    "search_index": 1
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company"
   }
  ],
+ "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-02-11 14:46:48.605516",
+ "modified": "2025-04-01 00:44:20.018698",
  "modified_by": "Administrator",
  "module": "Upande Tambuzi",
  "name": "Item Group Price",
