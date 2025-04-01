@@ -48,27 +48,16 @@
    "options": "Approved by Sales Rep\nApproved by Sales Manager\nApproved by CEO"
   },
   {
-<<<<<<< Updated upstream
-   "fieldname": "company",
-   "fieldtype": "Link",
-   "label": "Company",
-   "options": "Company"
-=======
    "fieldname": "completion_percentage",
    "fieldtype": "Percent",
    "label": "Completion Percentage"
->>>>>>> Stashed changes
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
-<<<<<<< Updated upstream
- "modified": "2025-04-01 00:47:43.351924",
-=======
  "modified": "2025-03-26 10:00:22.034440",
->>>>>>> Stashed changes
  "modified_by": "Administrator",
  "module": "Upande Tambuzi",
  "name": "Consolidated Pack List",
