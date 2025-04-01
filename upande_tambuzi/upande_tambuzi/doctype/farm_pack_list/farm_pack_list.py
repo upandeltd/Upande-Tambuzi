@@ -5,8 +5,12 @@ from frappe.model.document import Document
 
 class FarmPackList(Document):
 
-    def on_submit(self):
-        transfer_stock_on_submit(self)
+    def validate(self):
+        """Hook to check workflow state changes"""
+        if self.workflow_state == "Reviewed" and not self.is_new():
+            # Only trigger if the document is not new and workflow state is "Reviewed"
+            transfer_stock_on_submit(self)
+            process_consolidated_pack_list(self.name)
 
     def on_cancel(self):
         transfer_stock_on_cancel(self)
@@ -14,13 +18,14 @@ class FarmPackList(Document):
 
 @frappe.whitelist()
 def transfer_stock_on_submit(doc):
+    """Transfers stock when Farm Pack List workflow state is Reviewed"""
 
     if not doc.pack_list_item:
         frappe.throw("No items in Farm Pack List to transfer.")
 
     source_warehouses = [
-        "Burguret Dispatch Cold Store - TL",
-        "Pendekeza Dispatch Cold Store - TL", "Turaco Dispatch Cold Store - TL"
+        "Burguret Graded Sold - TL", "Turaco Graded Sold - TL",
+        "Pendekeza Graded Sold - TL"
     ]
 
     source_warehouse = None
@@ -38,6 +43,9 @@ def transfer_stock_on_submit(doc):
 
     if not frappe.db.exists("Warehouse", source_warehouse):
         frappe.throw(f"Source Warehouse '{source_warehouse}' does not exist.")
+
+    if not frappe.db.exists("Warehouse", target_warehouse):
+        frappe.throw(f"Target Warehouse '{target_warehouse}' does not exist.")
 
     stock_entry = frappe.new_doc("Stock Entry")
     stock_entry.stock_entry_type = "Material Transfer"
@@ -65,48 +73,39 @@ def transfer_stock_on_submit(doc):
     )
 
 
-# stock transfer when farm pack list is disabled
-
-
 @frappe.whitelist()
 def transfer_stock_on_cancel(doc):
-    """Transfers stock from Dispatch Cold Store back to Available for Sale when Farm Pack List is cancelled."""
+    """Transfers stock from Delivery Truck back to source warehouse when Farm Pack List is cancelled."""
 
     if not doc.pack_list_item:
         frappe.throw("No items in Farm Pack List to transfer.")
 
-    dispatch_warehouses = [
-        "Burguret Dispatch Cold Store - TL", "Turaco Dispatch Cold Store - TL",
-        "Pendekeza Dispatch Cold Store - TL"
+    target_warehouses = [
+        "Burguret Graded Sold - TL", "Turaco Graded Sold - TL",
+        "Pendekeza Graded Sold - TL"
     ]
 
-    available_for_sale_warehouses = {
-        "Burguret Dispatch Cold Store - TL":
-        "Burguret Available for Sale - TL",
-        "Turaco Dispatch Cold Store - TL": "Turaco Available for Sale - TL",
-        "Pendekeza Dispatch Cold Store - TL":
-        "Pendekeza Available for Sale - TL",
-    }
+    source_warehouse = "Delivery Truck - TL"
+
+    if not frappe.db.exists("Warehouse", source_warehouse):
+        frappe.throw(f"Source Warehouse '{source_warehouse}' does not exist.")
 
     stock_entry = frappe.new_doc("Stock Entry")
     stock_entry.stock_entry_type = "Material Transfer"
     stock_entry.farm_pack_list = doc.name
 
     for item in doc.pack_list_item:
-        source_warehouse = item.source_warehouse  # Stock is moving FROM dispatch
+        target_warehouse = item.source_warehouse
 
-        # Validate if source warehouse is one of the Dispatch Cold Store warehouses
-        if source_warehouse not in dispatch_warehouses:
+        # Validate if target warehouse is one of the allowed warehouses
+        if target_warehouse not in target_warehouses:
             frappe.throw(
-                f"Invalid or missing source warehouse '{source_warehouse}'. Expected: "
-                + ", ".join(dispatch_warehouses))
+                f"Invalid target warehouse '{target_warehouse}'. Expected: " +
+                ", ".join(target_warehouses))
 
-        # Get the corresponding Available for Sale warehouse
-        target_warehouse = available_for_sale_warehouses.get(source_warehouse)
-        if not target_warehouse:
+        if not frappe.db.exists("Warehouse", target_warehouse):
             frappe.throw(
-                f"No mapped Available for Sale warehouse for {source_warehouse}."
-            )
+                f"Target Warehouse '{target_warehouse}' does not exist.")
 
         # Add items to the Stock Entry
         stock_entry.append(
@@ -132,7 +131,7 @@ def transfer_stock_on_cancel(doc):
 
 @frappe.whitelist()
 def process_consolidated_pack_list(farm_pack_list, sales_order_id=None):
-    """Creates or updates Consolidated Pack List and triggers stock transfer"""
+    """Creates or updates Consolidated Pack List when Farm Pack List workflow status is Reviewed"""
     if not frappe.has_permission("Farm Pack List", "read"):
         frappe.throw("Not permitted to read Farm Pack List")
     if not frappe.has_permission("Consolidated Pack List", "write"):
@@ -147,12 +146,10 @@ def process_consolidated_pack_list(farm_pack_list, sales_order_id=None):
     if not sales_order_id:
         frappe.throw("Sales Order ID is required to process the CPL.")
 
-    # Fetch all related Farm Pack Lists via Pack List Item
     related_farm_packs = frappe.get_all(
         "Pack List Item",
         filters={"sales_order_id": sales_order_id},
-        fields=["parent"]  # 'parent' links to Farm Pack List
-    )
+        fields=["parent"])
 
     # Extract unique Farm Pack List IDs
     farm_pack_list_ids = list(
@@ -231,7 +228,6 @@ def process_consolidated_pack_list(farm_pack_list, sales_order_id=None):
 
 @frappe.whitelist()
 def close_farm_pack_list(farm_pack_list):
-
     if not frappe.has_permission("Farm Pack List", "write"):
         frappe.throw(_("Not permitted to close Farm Pack List"))
 

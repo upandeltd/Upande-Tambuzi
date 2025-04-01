@@ -11,22 +11,22 @@ class ConsolidatedPackList(Document):
 
 @frappe.whitelist()
 def transfer_stock_on_cpl_cancel(doc):
-    """Transfers stock from Delivery Truck back to Dispatch Cold Store when CPL is cancelled."""
+    """Transfers stock from Delivery Truck back to Graded Sold when CPL is cancelled."""
 
     if not doc.items:
         frappe.throw("No items in Consolidated Pack List to transfer.")
 
     dispatch_warehouses = [
-        "Burguret Dispatch Cold Store - TL", "Turaco Dispatch Cold Store - TL",
-        "Pendekeza Dispatch Cold Store - TL"
+        "Burguret Graded Sold - TL", "Burguret Graded Sold - TL",
+        "Burguret Graded Sold - TL"
     ]
 
     # Map each sales order/customer to a default dispatch warehouse (if applicable)
     # You can modify this logic based on business rules
     default_dispatch_mapping = {
-        "Burguret": "Burguret Dispatch Cold Store - TL",
-        "Turaco": "Turaco Dispatch Cold Store - TL",
-        "Pendekeza": "Pendekeza Dispatch Cold Store - TL"
+        "Burguret": "Burguret Graded Sold - TL",
+        "Turaco": "Turaco Graded Sold - TL",
+        "Pendekeza": "Pendekeza Graded Sold - TL"
     }
 
     source_warehouse = "Delivery Truck - TL"  # Always moving stock FROM delivery truck
