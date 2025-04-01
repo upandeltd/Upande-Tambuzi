@@ -17,6 +17,8 @@ app_include_js = "/assets/upande_tambuzi/client_scripts/fetch_item_grp_price.js"
 app_include_js = "/assets/upande_tambuzi/client_scripts/update_stock_sales_inv.js"
 app_include_js = "/assets/upande_tambuzi/client_scripts/se_rejection_reason.js"
 app_include_js = "/assets/upande_tambuzi/client_scripts/so_stock_transfer.js"
+app_include_js = ["/assets/upande_tambuzi/client_scripts/autofetch_pricelist.js"]
+
 
 # include js, css files in header of web template
 # web_include_css = "/assets/upande_tambuzi/css/upande_tambuzi.css"

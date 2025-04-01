@@ -6,6 +6,7 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "company",
   "pack_list_item",
   "naming_series",
   "amended_from"
@@ -32,12 +33,19 @@
    "print_hide": 1,
    "read_only": 1,
    "search_index": 1
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company"
   }
  ],
+ "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-02-19 12:05:51.578016",
+ "modified": "2025-04-01 00:46:35.412622",
  "modified_by": "Administrator",
  "module": "Upande Tambuzi",
  "name": "Farm Pack List",
