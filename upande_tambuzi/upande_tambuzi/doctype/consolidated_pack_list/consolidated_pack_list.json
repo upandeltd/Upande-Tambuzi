@@ -11,7 +11,8 @@
   "amended_from",
   "naming_series",
   "items",
-  "approval_status"
+  "approval_status",
+  "completion_percentage"
  ],
  "fields": [
   {
@@ -47,17 +48,16 @@
    "options": "Approved by Sales Rep\nApproved by Sales Manager\nApproved by CEO"
   },
   {
-   "fieldname": "company",
-   "fieldtype": "Link",
-   "label": "Company",
-   "options": "Company"
+   "fieldname": "completion_percentage",
+   "fieldtype": "Percent",
+   "label": "Completion Percentage"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-04-01 00:47:43.351924",
+ "modified": "2025-03-26 10:00:22.034440",
  "modified_by": "Administrator",
  "module": "Upande Tambuzi",
  "name": "Consolidated Pack List",
