@@ -182,7 +182,7 @@ scheduler_events = {
     # "all": [
     #     "upande_tambuzi.tasks.transfer_stock"
     # ],
-    # "daily": ["upande_tambuzi.tasks.transfer_stock"],
+    "daily": ["upande_tambuzi.tasks.transfer_stock"],
     #   "hourly": [
     #       "upande_tambuzi.tasks.hourly"
     #   ],
@@ -290,7 +290,7 @@ fixtures = [{
         "name", "in",
         [
             "Stock Entry Script", "Stock Entry After Save", "Scan Timestamp",
-            "Harvest Stock Entry", "Automate Rejects Material Issue"
+            "Harvest Stock Entry", "Automate Rejects Material Issue", "Create Box Labels"
         ]
     ]]
 }, {
