@@ -26,7 +26,8 @@ def add_bunch_to_farm_pack_list(farm_pack_list_doc_id, bunch_SE_name, opl_name, 
             "Bunch (5)": 5,
             "Bunch (6)": 6,
             "Bunch (10)": 10,
-            "Bunch (12)": 12
+            "Bunch (12)": 12,
+            "Bunch (25)": 25
         } 
         
         # add this to the existing number of stems
