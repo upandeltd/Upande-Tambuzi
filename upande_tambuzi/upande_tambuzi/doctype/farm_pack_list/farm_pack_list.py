@@ -189,6 +189,7 @@ def process_consolidated_pack_list(farm_pack_list, sales_order_id=None):
         cpl.custom_currency = farm_pack_doc.custom_currency
         cpl.custom_customer_address = farm_pack_doc.custom_customer_address
         cpl.custom_total_stems = total_stems
+        cpl.custom_box_label = farm_pack_doc.custom_box_label
 
         if "items" not in cpl.as_dict():
             frappe.throw("Field 'items' does not exist in CPL")
@@ -206,7 +207,8 @@ def process_consolidated_pack_list(farm_pack_list, sales_order_id=None):
                     "stem_length": item.stem_length,
                     "consolidated_pack_list_id":
                     item.consolidated_pack_list_id,
-                    "custom_number_of_stems": item.custom_number_of_stems
+                    "custom_number_of_stems": item.custom_number_of_stems,
+                    "custom_box_label": item.custom_box_label
                 })
 
         cpl.save(ignore_permissions=True)
