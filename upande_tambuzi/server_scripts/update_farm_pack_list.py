@@ -4,13 +4,12 @@ import frappe
 def add_bunch_to_farm_pack_list(farm_pack_list_doc_id, bunch_SE_name, opl_name, farm, box_id):
     try:
         order_id = opl_name
-
         stock_entry_id = bunch_SE_name
         
         order_pick_list = frappe.get_doc("Order Pick List", order_id)
         stock_entry = frappe.get_doc("Stock Entry", stock_entry_id)
 
-        source_warehouse = f"{farm} Dispatch Cold Store - TL"
+        source_warehouse = f"{farm} Graded Sold - TL"
 
         # Check if this item already exists and bunch size matches on the fpl
         # If exists and matches the preexisting uom, increment 
@@ -27,7 +26,8 @@ def add_bunch_to_farm_pack_list(farm_pack_list_doc_id, bunch_SE_name, opl_name, 
             "Bunch (5)": 5,
             "Bunch (6)": 6,
             "Bunch (10)": 10,
-            "Bunch (12)": 12
+            "Bunch (12)": 12,
+            "Bunch (25)": 25
         } 
         
         # add this to the existing number of stems
