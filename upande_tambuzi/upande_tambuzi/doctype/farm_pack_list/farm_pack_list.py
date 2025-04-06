@@ -132,6 +132,7 @@ def transfer_stock_on_cancel(doc):
 @frappe.whitelist()
 def process_consolidated_pack_list(farm_pack_list, sales_order_id=None):
     """Creates or updates Consolidated Pack List when Farm Pack List workflow status is Reviewed"""
+
     if not frappe.has_permission("Farm Pack List", "read"):
         frappe.throw("Not permitted to read Farm Pack List")
     if not frappe.has_permission("Consolidated Pack List", "write"):
@@ -146,30 +147,22 @@ def process_consolidated_pack_list(farm_pack_list, sales_order_id=None):
     if not sales_order_id:
         frappe.throw("Sales Order ID is required to process the CPL.")
 
-    related_farm_packs = frappe.get_all(
-        "Pack List Item",
-        filters={"sales_order_id": sales_order_id},
-        fields=["parent"])
-
-    # Extract unique Farm Pack List IDs
-    farm_pack_list_ids = list(
-        set(pack["parent"] for pack in related_farm_packs))
-
-    # Fetch total stems from related Farm Pack Lists
-    related_farm_pack_docs = frappe.get_all(
-        "Farm Pack List",
-        filters={"name": ["in", farm_pack_list_ids]},
-        fields=["custom_total_stems"])
-
-    # Calculate the total stems
-    total_stems = sum(fpl["custom_total_stems"]
-                      for fpl in related_farm_pack_docs)
-
     # Check for an existing Consolidated Pack List (CPL)
     existing_cpl = frappe.get_all("Consolidated Pack List",
                                   filters={"sales_order_id": sales_order_id},
                                   fields=["name"],
                                   limit=1)
+
+    # Fetch Box Labels from Sales Order Items
+    box_labels = frappe.get_all("Sales Order Item",
+                                filters={"parent": sales_order_id},
+                                fields=["item_code", "custom_box_label"])
+
+    # Create a mapping of item_code to box label for quick lookup
+    box_label_mapping = {
+        item["item_code"]: item["custom_box_label"]
+        for item in box_labels if item["custom_box_label"]
+    }
 
     try:
         if existing_cpl:
@@ -188,15 +181,21 @@ def process_consolidated_pack_list(farm_pack_list, sales_order_id=None):
         cpl.custom_customer = farm_pack_doc.custom_customer
         cpl.custom_currency = farm_pack_doc.custom_currency
         cpl.custom_customer_address = farm_pack_doc.custom_customer_address
-        cpl.custom_total_stems = total_stems
-        cpl.custom_box_label = farm_pack_doc.custom_box_label
 
         if "items" not in cpl.as_dict():
             frappe.throw("Field 'items' does not exist in CPL")
 
+        # Store existing items for total stems calculation
+        total_stems = sum(item.custom_number_of_stems for item in cpl.items)
+
         for item in farm_pack_doc.pack_list_item:
+            # Get the Box Label from Sales Order based on item_code
+            box_label = box_label_mapping.get(item.item_code,
+                                              item.custom_box_label)
+
             cpl.append(
-                "items", {
+                "items",
+                {
                     "source_warehouse": "Delivery Truck - TL",
                     "customer_id": item.customer_id,
                     "sales_order_id": item.sales_order_id,
@@ -208,8 +207,15 @@ def process_consolidated_pack_list(farm_pack_list, sales_order_id=None):
                     "consolidated_pack_list_id":
                     item.consolidated_pack_list_id,
                     "custom_number_of_stems": item.custom_number_of_stems,
-                    "custom_box_label": item.custom_box_label
+                    "custom_box_label":
+                    box_label  # Updated to fetch from Sales Order
                 })
+
+            # Update total stems count
+            total_stems += item.custom_number_of_stems
+
+        # Update total stems in CPL
+        cpl.custom_total_stems = total_stems
 
         cpl.save(ignore_permissions=True)
         frappe.db.commit()
