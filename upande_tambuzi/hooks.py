@@ -17,7 +17,7 @@ app_license = "mit"
 # As a list to make sure it does not override_class
 app_include_js = [
     "/assets/upande_tambuzi/client_scripts/fetch_item_grp_price.js",
-    "/assets/upande_tambuzi/client_scripts/update_stock_sales_inv.js", 
+    "/assets/upande_tambuzi/client_scripts/update_stock_sales_inv.js",
     "/assets/upande_tambuzi/client_scripts/se_rejection_reason.js",
     "/assets/upande_tambuzi/client_scripts/so_stock_transfer.js",
     "/assets/upande_tambuzi/client_scripts/autofetch_pricelist.js"
