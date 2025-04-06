@@ -6,7 +6,6 @@ def create_sales_invoice_from_packlist(doc, method):
     Function to create Sales Invoices from a Consolidated Pack List.
     - Handles multiple Sales Orders in one Pack List.
     - Implements error handling to prevent failures from stopping execution.
-    - Sends email notifications to customers with invoice details.
     """
 
     sales_order_ids = list(set([item.sales_order_id for item in doc.items if item.sales_order_id]))
@@ -19,7 +18,7 @@ def create_sales_invoice_from_packlist(doc, method):
 
     for sales_order_id in sales_order_ids:
         try:
-            # Fetch Sales Order
+            
             sales_order = frappe.get_doc("Sales Order", sales_order_id)
 
             # Create New Sales Invoice
@@ -38,7 +37,6 @@ def create_sales_invoice_from_packlist(doc, method):
             delivery_date = sales_order.delivery_date if sales_order.delivery_date else sales_invoice.posting_date
             sales_invoice.due_date = max(getdate(delivery_date), getdate(sales_invoice.posting_date))
 
-            # Copy Taxes from Sales Order
             sales_invoice.taxes_and_charges = sales_order.taxes_and_charges
             sales_invoice.taxes = sales_order.taxes
 
@@ -58,7 +56,6 @@ def create_sales_invoice_from_packlist(doc, method):
                     failed_invoices.append(f"Invalid quantity for item {dispatch_item.item_code} in Consolidated Pack List {doc.name}")
                     continue
 
-                # Append Item to Sales Invoice
                 sales_invoice.append("items", {
                     "item_code": dispatch_item.item_code,
                     "qty": dispatch_item.bunch_qty,
@@ -71,7 +68,6 @@ def create_sales_invoice_from_packlist(doc, method):
                     "discount_percentage": so_item.discount_percentage
                 })
 
-            # Insert & Submit Sales Invoice
             if sales_invoice.items:
                 sales_invoice.flags.ignore_permissions = True
                 sales_invoice.insert()
@@ -88,7 +84,6 @@ def create_sales_invoice_from_packlist(doc, method):
         error_message = "<br>".join(failed_invoices)
         frappe.throw(f"Some invoices failed to generate:<br>{error_message}")
 
-    # Show success message for created invoices
     if created_invoices:
         invoice_links = " | ".join(
             [f'<a href="/app/sales-invoice/{invoice}" target="_blank">{invoice}</a>' for invoice in created_invoices]
