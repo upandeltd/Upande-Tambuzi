@@ -168,6 +168,10 @@ doc_events = {
         "on_submit":
         "upande_tambuzi.server_scripts.sinv_approved_by.set_approved_by"
     },
+    "Farm Pack List": {
+        "before_cancel":
+        "upande_tambuzi.server_scripts.fpl_to_cpl_link.before_cancel"
+    }
 }
 
 # Scheduled Tasks
@@ -290,7 +294,8 @@ fixtures = [{
         "name", "in",
         [
             "Stock Entry Script", "Stock Entry After Save", "Scan Timestamp",
-            "Harvest Stock Entry", "Automate Rejects Material Issue", "Create Box Labels"
+            "Harvest Stock Entry", "Automate Rejects Material Issue",
+            "Create Box Labels"
         ]
     ]]
 }, {
