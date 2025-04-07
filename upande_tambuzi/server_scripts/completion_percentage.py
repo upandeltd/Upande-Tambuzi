@@ -1,43 +1,37 @@
-# import frappe
+import frappe
 
-# def validate_completion_percentage(doc, method):
-#     total_stems = float(doc.custom_total_stems)  # Convert to float immediately
-#     total_sales_order_qty = 0  # Initialize accumulator for total quantity
-#     sales_orders_processed = set(
-#     )  # Track processed sales orders to avoid duplicates
 
-#     # Loop through the items to calculate total sales order quantity
-#     for item in doc.items:
-#         sales_order_id = item.sales_order_id
+def validate_completion_percentage(doc, method):
+    # Calculate packed stems
+    packed_stems = float(doc.custom_total_stems or 0)
 
-#         # Skip if we've already processed this sales order
-#         if sales_order_id in sales_orders_processed:
-#             continue
+    # Total stems from sales orders
+    total_required_stems = 0
+    seen_sales_orders = set()
 
-#         # Add to processed set
-#         sales_orders_processed.add(sales_order_id)
+    for item in doc.items:
+        sales_order_id = item.sales_order_id
+        if sales_order_id and sales_order_id not in seen_sales_orders:
+            sales_order = frappe.get_doc("Sales Order", sales_order_id)
+            total_required_stems += float(sales_order.custom_total_stock_qty
+                                          or 0)
+            seen_sales_orders.add(sales_order_id)
 
-#         # Get the corresponding Sales Order
-#         sales_order = frappe.get_doc("Sales Order", sales_order_id)
+    # Calculate completion percentage
+    if total_required_stems > 0:
+        completion_percentage = (packed_stems / total_required_stems) * 100
+    else:
+        completion_percentage = 0
 
-#         # Fetch and accumulate the custom_total_stock_qty from the Sales Order
-#         total_sales_order_qty += float(sales_order.custom_total_stock_qty)
+    # ✅ Update the field on the form
+    doc.completion_percentage = completion_percentage
 
-#     # Calculate the completion percentage using totals
-#     if total_sales_order_qty > 0:
-#         completion_percentage = (total_stems / total_sales_order_qty) * 100
-#         doc.completion_percentage = completion_percentage
-#     else:
-#         doc.completion_percentage = 0
-
-#     # Log values for debugging
-#     frappe.logger().debug(f"Total stems: {total_stems}")
-#     frappe.logger().debug(f"Total sales order qty: {total_sales_order_qty}")
-#     frappe.logger().debug(
-#         f"Completion percentage: {doc.completion_percentage}")
-
-#     # Check if the completion percentage is 100%
-#     if doc.completion_percentage < 100:
-#         frappe.throw(
-#             "You cannot approve this Consolidated Pack List (CPL) because it is incomplete. Completion percentage must be 100%."
-#         )
+    # 💥 Check before approval
+    if doc.workflow_state == "Approved" and completion_percentage < 100:
+        frappe.throw(f"""
+            You cannot approve this Consolidated Pack List (CPL) because it is incomplete.<br><br>
+            Packed Stems: <b>{packed_stems}</b><br>
+            Required Stems(from Sales Order): <b>{total_required_stems}</b><br>
+            Completion: <b>{round(completion_percentage, 2)}%</b><br><br>
+            Please ensure all required stems are packed before approval.
+        """)
