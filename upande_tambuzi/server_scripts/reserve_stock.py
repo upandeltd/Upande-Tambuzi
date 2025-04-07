@@ -14,7 +14,7 @@ def reserve_stock(sales_order):
     doc = frappe.get_doc("Sales Order", sales_order)
 
     is_priority = frappe.db.get_value("Customer", doc.customer,
-                                      "priority_customer")
+                                      "custom_priority_customer")
     if not is_priority:
         frappe.throw(
             "Stock Reservation is only allowed for priority customers.")
@@ -38,7 +38,7 @@ def reserve_stock(sales_order):
         })
 
         messages.append(
-            f" {item.item_name}: {item.qty} from <b>{source_warehouse}</b> to <b>{target_warehouse}</b>"
+            f" <b>{item.item_name}: {item.stock_qty} </b> from <b>{source_warehouse}</b> to <b>{target_warehouse}</b>"
         )
 
     if not items:
@@ -86,7 +86,7 @@ def unreserve_stock(sales_order):
         })
 
         messages.append(
-            f" {item.item_name}: {item.qty} from <b>{source_warehouse}</b> to <b>{target_warehouse}</b>"
+            f" <b>{item.item_name}: {item.stock_qty} </b> from <b>{source_warehouse}</b> to <b>{target_warehouse}</b>"
         )
 
     if not items:
