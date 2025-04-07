@@ -23,10 +23,9 @@ def validate_completion_percentage(doc, method):
     else:
         completion_percentage = 0
 
-    # ✅ Update the field on the form
+    # Update the field on the form
     doc.completion_percentage = completion_percentage
 
-    # 💥 Check before approval
     if doc.workflow_state == "Approved" and completion_percentage < 100:
         frappe.throw(f"""
             You cannot approve this Consolidated Pack List (CPL) because it is incomplete.<br><br>
