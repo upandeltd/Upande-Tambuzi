@@ -1,25 +1,43 @@
 # import frappe
 
 # def validate_completion_percentage(doc, method):
-#     # Fetch the Sales Order ID from the child table
+#     total_stems = float(doc.custom_total_stems)  # Convert to float immediately
+#     total_sales_order_qty = 0  # Initialize accumulator for total quantity
+#     sales_orders_processed = set(
+#     )  # Track processed sales orders to avoid duplicates
+
+#     # Loop through the items to calculate total sales order quantity
 #     for item in doc.items:
 #         sales_order_id = item.sales_order_id
+
+#         # Skip if we've already processed this sales order
+#         if sales_order_id in sales_orders_processed:
+#             continue
+
+#         # Add to processed set
+#         sales_orders_processed.add(sales_order_id)
 
 #         # Get the corresponding Sales Order
 #         sales_order = frappe.get_doc("Sales Order", sales_order_id)
 
-#         # Fetch the custom_total_stock_qty from the Sales Order
-#         sales_order_qty = sales_order.custom_total_stock_qty
+#         # Fetch and accumulate the custom_total_stock_qty from the Sales Order
+#         total_sales_order_qty += float(sales_order.custom_total_stock_qty)
 
-#         # Calculate the total stems from the CPL item row
-#         cpl_total_stems = custom_total_stems
+#     # Calculate the completion percentage using totals
+#     if total_sales_order_qty > 0:
+#         completion_percentage = (total_stems / total_sales_order_qty) * 100
+#         doc.completion_percentage = completion_percentage
+#     else:
+#         doc.completion_percentage = 0
 
-#         # Calculate the completion percentage
-#         completion_percentage = (cpl_total_stems / sales_order_qty) * 100
+#     # Log values for debugging
+#     frappe.logger().debug(f"Total stems: {total_stems}")
+#     frappe.logger().debug(f"Total sales order qty: {total_sales_order_qty}")
+#     frappe.logger().debug(
+#         f"Completion percentage: {doc.completion_percentage}")
 
-#         # Update the completion_percentage field in the CPL
-#         item.completion_percentage = completion_percentage
-
-#     # After iterating over the items, check if the completion percentage is 100%
-#     if any(item.completion_percentage < 100 for item in doc.items):
-#         frappe.throw("You cannot approve this Consolidated Pack List (CPL) because it is incomplete. Completion percentage must be 100%.")
+#     # Check if the completion percentage is 100%
+#     if doc.completion_percentage < 100:
+#         frappe.throw(
+#             "You cannot approve this Consolidated Pack List (CPL) because it is incomplete. Completion percentage must be 100%."
+#         )
