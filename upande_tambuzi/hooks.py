@@ -161,8 +161,8 @@ doc_events = {
     "Consolidated Pack List": {
         "on_submit":
         "upande_tambuzi.server_scripts.create_sales_invoice.create_sales_invoice_from_packlist",
-        # "validate":
-        # "upande_tambuzi.server_scripts.completion_pecentage.update_cpl_progress"
+        "before_submit":
+        "upande_tambuzi.server_scripts.completion_percentage.validate_completion_percentage"
     },
     "Sales Invoice": {
         "on_submit":

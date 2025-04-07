@@ -1,25 +1,37 @@
-# import frappe
+import frappe
 
-# def validate_completion_percentage(doc, method):
-#     # Fetch the Sales Order ID from the child table
-#     for item in doc.items:
-#         sales_order_id = item.sales_order_id
 
-#         # Get the corresponding Sales Order
-#         sales_order = frappe.get_doc("Sales Order", sales_order_id)
+def validate_completion_percentage(doc, method):
+    # Calculate packed stems
+    packed_stems = float(doc.custom_total_stems or 0)
 
-#         # Fetch the custom_total_stock_qty from the Sales Order
-#         sales_order_qty = sales_order.custom_total_stock_qty
+    # Total stems from sales orders
+    total_required_stems = 0
+    seen_sales_orders = set()
 
-#         # Calculate the total stems from the CPL item row
-#         cpl_total_stems = custom_total_stems
+    for item in doc.items:
+        sales_order_id = item.sales_order_id
+        if sales_order_id and sales_order_id not in seen_sales_orders:
+            sales_order = frappe.get_doc("Sales Order", sales_order_id)
+            total_required_stems += float(sales_order.custom_total_stock_qty
+                                          or 0)
+            seen_sales_orders.add(sales_order_id)
 
-#         # Calculate the completion percentage
-#         completion_percentage = (cpl_total_stems / sales_order_qty) * 100
+    # Calculate completion percentage
+    if total_required_stems > 0:
+        completion_percentage = (packed_stems / total_required_stems) * 100
+    else:
+        completion_percentage = 0
 
-#         # Update the completion_percentage field in the CPL
-#         item.completion_percentage = completion_percentage
+    # ✅ Update the field on the form
+    doc.completion_percentage = completion_percentage
 
-#     # After iterating over the items, check if the completion percentage is 100%
-#     if any(item.completion_percentage < 100 for item in doc.items):
-#         frappe.throw("You cannot approve this Consolidated Pack List (CPL) because it is incomplete. Completion percentage must be 100%.")
+    # 💥 Check before approval
+    if doc.workflow_state == "Approved" and completion_percentage < 100:
+        frappe.throw(f"""
+            You cannot approve this Consolidated Pack List (CPL) because it is incomplete.<br><br>
+            Packed Stems: <b>{packed_stems}</b><br>
+            Required Stems(from Sales Order): <b>{total_required_stems}</b><br>
+            Completion: <b>{round(completion_percentage, 2)}%</b><br><br>
+            Please ensure all required stems are packed before approval.
+        """)
