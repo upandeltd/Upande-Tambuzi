@@ -17,7 +17,7 @@ app_license = "mit"
 # As a list to make sure it does not override_class
 app_include_js = [
     "/assets/upande_tambuzi/client_scripts/fetch_item_grp_price.js",
-    "/assets/upande_tambuzi/client_scripts/update_stock_sales_inv.js", 
+    "/assets/upande_tambuzi/client_scripts/update_stock_sales_inv.js",
     "/assets/upande_tambuzi/client_scripts/se_rejection_reason.js",
     "/assets/upande_tambuzi/client_scripts/so_stock_transfer.js",
     "/assets/upande_tambuzi/client_scripts/autofetch_pricelist.js"
@@ -161,13 +161,17 @@ doc_events = {
     "Consolidated Pack List": {
         "on_submit":
         "upande_tambuzi.server_scripts.create_sales_invoice.create_sales_invoice_from_packlist",
-        # "validate":
-        # "upande_tambuzi.server_scripts.completion_pecentage.update_cpl_progress"
+        "before_submit":
+        "upande_tambuzi.server_scripts.completion_percentage.validate_completion_percentage"
     },
     "Sales Invoice": {
         "on_submit":
         "upande_tambuzi.server_scripts.sinv_approved_by.set_approved_by"
     },
+    "Farm Pack List": {
+        "before_cancel":
+        "upande_tambuzi.server_scripts.fpl_to_cpl_link.before_cancel"
+    }
 }
 
 # Scheduled Tasks
@@ -290,7 +294,8 @@ fixtures = [{
         "name", "in",
         [
             "Stock Entry Script", "Stock Entry After Save", "Scan Timestamp",
-            "Harvest Stock Entry", "Automate Rejects Material Issue", "Create Box Labels"
+            "Harvest Stock Entry", "Automate Rejects Material Issue",
+            "Create Box Labels"
         ]
     ]]
 }, {
