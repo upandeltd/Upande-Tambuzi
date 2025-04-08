@@ -307,7 +307,9 @@ fixtures = [{
             "New Form After Save", "Remove Read Only on Field",
             "Ensure Bucket Is Scanned On Save", "Field Rejects Stock Entry",
             "Hide Filter Button", "Ensure Uppercase in Bay Field",
-            "Grading Traceability Symbols"
+            "Grading Traceability Symbols", "Set List View Limit to 500(GRADER)",
+            "Set List View Limit to 500(BUNCH)", "Set List View Limit to 500(BUCKET)",
+            "Restrict Bay to Alphabets"
         ]
     ]]
 }, {
