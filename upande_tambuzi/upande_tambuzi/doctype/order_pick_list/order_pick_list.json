@@ -15,7 +15,6 @@
   "date_created",
   "naming_series",
   "column_break_dlav",
-  "farm",
   "locations_section",
   "locations",
   "amended_from"
@@ -90,21 +89,13 @@
   {
    "fieldname": "column_break_dlav",
    "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "farm",
-   "fieldtype": "Link",
-   "in_filter": 1,
-   "in_list_view": 1,
-   "label": "Farm",
-   "options": "Farm"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-04-01 23:52:42.129305",
+ "modified": "2025-04-07 18:00:20.761357",
  "modified_by": "Administrator",
  "module": "Upande Tambuzi",
  "name": "Order Pick List",

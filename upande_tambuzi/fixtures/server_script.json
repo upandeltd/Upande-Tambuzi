@@ -66,7 +66,7 @@
   "doctype_event": "After Submit",
   "enable_rate_limit": 0,
   "event_frequency": "All",
-  "modified": "2025-04-08 17:27:53.094553",
+  "modified": "2025-03-26 16:23:28.541728",
   "module": "Upande Tambuzi",
   "name": "Automate Rejects Material Issue",
   "rate_limit_count": 5,
