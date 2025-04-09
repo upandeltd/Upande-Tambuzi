@@ -1,7 +1,7 @@
 import frappe
 
 @frappe.whitelist()
-def add_bunch_to_farm_pack_list(farm_pack_list_doc_id, bunch_SE_name, opl_name, farm, box_id):
+def add_bunch_to_farm_pack_list(farm_pack_list_doc_id, bunch_SE_name, opl_name, farm, box_id, box_label):
     try:
         order_id = opl_name
         stock_entry_id = bunch_SE_name
@@ -61,7 +61,8 @@ def add_bunch_to_farm_pack_list(farm_pack_list_doc_id, bunch_SE_name, opl_name, 
                 "customer_id": customer_id,
                 "box_id": box_id,
                 "custom_number_of_stems": bunch_stems,
-                "stem_length": stem_length
+                "stem_length": stem_length,
+                "custom_box_label": box_label
             })
         
         pack_list_doc.docstatus = 0
