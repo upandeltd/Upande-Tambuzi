@@ -6,27 +6,27 @@ from frappe.model.document import Document
 class FarmPackList(Document):
 
     def validate(self):
-        """Hook to check workflow state changes + Completion Check"""
-        # Completion check
-        packed_stems = self.custom_total_stems or 0
-        required_stems = self.custom_picked_total_stems or 0
-        completion_percentage = 0
+        #     """Hook to check workflow state changes + Completion Check"""
+        #     # Completion check
+        #     packed_stems = self.custom_total_stems or 0
+        #     required_stems = self.custom_picked_total_stems or 0
+        #     completion_percentage = 0
 
-        if required_stems > 0:
-            completion_percentage = (packed_stems / required_stems) * 100
-            self.custom_completion_percentage = completion_percentage
+        #     if required_stems > 0:
+        #         completion_percentage = (packed_stems / required_stems) * 100
+        #         self.custom_completion_percentage = completion_percentage
 
-        if completion_percentage < 100:
-            message = f"""
-            <b>You cannot approve this Farm Pack List because it is incomplete.</b><br><br>
-            Packed Stems: <b>{packed_stems}</b><br>
-            Required Stems (from Order Pick List): <b>{required_stems}</b><br>
-            Completion: <b>{round(completion_percentage, 2)}%</b><br><br>
-            Please ensure all required stems are packed before approval.
-            """
-            frappe.throw(message)
-        elif completion_percentage > 100:
-            frappe.throw("you have over packed!")
+        #     if completion_percentage < 100:
+        #         message = f"""
+        #         <b>You cannot approve this Farm Pack List because it is incomplete.</b><br><br>
+        #         Packed Stems: <b>{packed_stems}</b><br>
+        #         Required Stems (from Order Pick List): <b>{required_stems}</b><br>
+        #         Completion: <b>{round(completion_percentage, 2)}%</b><br><br>
+        #         Please ensure all required stems are packed before approval.
+        #         """
+        #         frappe.throw(message)
+        #     elif completion_percentage > 100:
+        #         frappe.throw("you have over packed!")
 
         # Workflow trigger
         if self.workflow_state == "Reviewed" and not self.is_new():
