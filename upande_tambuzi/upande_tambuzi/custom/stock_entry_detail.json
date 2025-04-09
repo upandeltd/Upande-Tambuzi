@@ -786,7 +786,11 @@
    "field_name": "allow_zero_valuation_rate",
    "idx": 0,
    "is_system_generated": 0,
+<<<<<<< HEAD
    "modified": "2025-04-08 13:51:12.549995",
+=======
+   "modified": "2025-04-02 12:43:22.941452",
+>>>>>>> 25f60ff5e5f826fd35a1c373e5a3ada697665a6a
    "modified_by": "Administrator",
    "module": null,
    "name": "Stock Entry Detail-allow_zero_valuation_rate-default",
@@ -809,7 +813,11 @@
    "field_name": "barcode",
    "idx": 0,
    "is_system_generated": 0,
+<<<<<<< HEAD
    "modified": "2025-04-08 13:51:12.591582",
+=======
+   "modified": "2025-04-02 12:43:22.956106",
+>>>>>>> 25f60ff5e5f826fd35a1c373e5a3ada697665a6a
    "modified_by": "Administrator",
    "module": null,
    "name": "Stock Entry Detail-barcode-hidden",
@@ -832,7 +840,11 @@
    "field_name": "column_break_10",
    "idx": 0,
    "is_system_generated": 0,
+<<<<<<< HEAD
    "modified": "2025-04-02 12:29:18.718687",
+=======
+   "modified": "2025-04-01 04:05:01.280408",
+>>>>>>> 25f60ff5e5f826fd35a1c373e5a3ada697665a6a
    "modified_by": "Administrator",
    "module": null,
    "name": "Stock Entry Detail-column_break_10-label",
@@ -847,6 +859,7 @@
    "_comments": null,
    "_liked_by": null,
    "_user_tags": null,
+<<<<<<< HEAD
    "creation": "2025-04-09 20:30:21.073001",
    "default_value": null,
    "doc_type": "Stock Entry Detail",
@@ -871,6 +884,9 @@
    "_liked_by": null,
    "_user_tags": null,
    "creation": "2025-04-09 20:29:40.650228",
+=======
+   "creation": "2025-04-08 17:02:17.436872",
+>>>>>>> 25f60ff5e5f826fd35a1c373e5a3ada697665a6a
    "default_value": null,
    "doc_type": "Stock Entry Detail",
    "docstatus": 0,
@@ -878,7 +894,11 @@
    "field_name": null,
    "idx": 0,
    "is_system_generated": 0,
+<<<<<<< HEAD
    "modified": "2025-04-09 20:29:40.650228",
+=======
+   "modified": "2025-04-08 17:02:17.436872",
+>>>>>>> 25f60ff5e5f826fd35a1c373e5a3ada697665a6a
    "modified_by": "Administrator",
    "module": null,
    "name": "Stock Entry Detail-main-field_order",
@@ -947,7 +967,11 @@
    "field_name": "s_warehouse",
    "idx": 0,
    "is_system_generated": 0,
+<<<<<<< HEAD
    "modified": "2025-04-08 13:51:12.666014",
+=======
+   "modified": "2025-04-02 12:43:22.983577",
+>>>>>>> 25f60ff5e5f826fd35a1c373e5a3ada697665a6a
    "modified_by": "Administrator",
    "module": null,
    "name": "Stock Entry Detail-s_warehouse-link_filters",
@@ -993,7 +1017,11 @@
    "field_name": "t_warehouse",
    "idx": 0,
    "is_system_generated": 0,
+<<<<<<< HEAD
    "modified": "2025-04-08 13:51:12.700213",
+=======
+   "modified": "2025-04-02 12:43:22.995254",
+>>>>>>> 25f60ff5e5f826fd35a1c373e5a3ada697665a6a
    "modified_by": "Administrator",
    "module": null,
    "name": "Stock Entry Detail-t_warehouse-link_filters",
@@ -1008,7 +1036,11 @@
    "_comments": null,
    "_liked_by": null,
    "_user_tags": null,
+<<<<<<< HEAD
    "creation": "2025-04-09 20:31:08.758346",
+=======
+   "creation": "2025-03-28 14:49:56.621655",
+>>>>>>> 25f60ff5e5f826fd35a1c373e5a3ada697665a6a
    "default_value": null,
    "doc_type": "Stock Entry Detail",
    "docstatus": 0,
@@ -1016,6 +1048,7 @@
    "field_name": "uom",
    "idx": 0,
    "is_system_generated": 0,
+<<<<<<< HEAD
    "modified": "2025-04-09 20:31:08.758346",
    "modified_by": "Administrator",
    "module": null,
@@ -1044,6 +1077,13 @@
    "module": null,
    "name": "Stock Entry Detail-uom-in_list_view",
    "owner": "Administrator",
+=======
+   "modified": "2025-03-28 14:49:56.621655",
+   "modified_by": "rodgers@upande.com",
+   "module": null,
+   "name": "Stock Entry Detail-uom-in_list_view",
+   "owner": "rodgers@upande.com",
+>>>>>>> 25f60ff5e5f826fd35a1c373e5a3ada697665a6a
    "property": "in_list_view",
    "property_type": "Check",
    "row_name": null,
