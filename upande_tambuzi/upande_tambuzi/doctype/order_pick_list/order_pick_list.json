@@ -95,7 +95,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-04-07 18:00:20.761357",
+ "modified": "2025-04-10 15:05:21.270217",
  "modified_by": "Administrator",
  "module": "Upande Tambuzi",
  "name": "Order Pick List",
@@ -118,5 +118,7 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "track_changes": 1,
+ "track_views": 1
 }

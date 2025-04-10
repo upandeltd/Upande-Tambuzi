@@ -45,7 +45,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-04-01 00:46:35.412622",
+ "modified": "2025-04-10 15:07:00.739142",
  "modified_by": "Administrator",
  "module": "Upande Tambuzi",
  "name": "Farm Pack List",
@@ -67,5 +67,7 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "track_changes": 1,
+ "track_views": 1
 }
