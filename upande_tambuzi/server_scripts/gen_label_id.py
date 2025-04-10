@@ -7,7 +7,7 @@ import base64
 from io import BytesIO
 
 @frappe.whitelist()
-def generate_id(no_of_labels, label_doc_name, action, variety=None,  farm=None, stem_length=None, bunch_size=None, grader=None, day_code=None):
+def generate_id(no_of_labels, label_doc_name, action, variety=None,  farm=None, stem_length=None, bunch_size=None, grader=None, day_code=None, farm_code=None):
     # Generate Bucket id
     # Encode the bucket id and variety in the qr code
     def get_next_sequence(action, increment_by=1):
@@ -137,7 +137,8 @@ def generate_id(no_of_labels, label_doc_name, action, variety=None,  farm=None, 
                 "label_print_doc": label_doc_name,
                 "bunch_size": bunch_size,
                 "stem_length": stem_length,
-                "farm": farm
+                "farm": farm,
+                "farm_code": farm_code
 
             })
             qr_doc.insert(ignore_permissions=True)
