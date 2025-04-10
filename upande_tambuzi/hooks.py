@@ -161,8 +161,8 @@ doc_events = {
     "Consolidated Pack List": {
         "on_submit":
         "upande_tambuzi.server_scripts.create_sales_invoice.create_sales_invoice_from_packlist",
-        "before_submit":
-        "upande_tambuzi.server_scripts.completion_percentage.validate_completion_percentage"
+        # "before_submit":
+        # "upande_tambuzi.server_scripts.completion_percentage.validate_completion_percentage"
     },
     "Sales Invoice": {
         "on_submit":
@@ -312,9 +312,10 @@ fixtures = [{
             "New Form After Save", "Remove Read Only on Field",
             "Ensure Bucket Is Scanned On Save", "Field Rejects Stock Entry",
             "Hide Filter Button", "Ensure Uppercase in Bay Field",
-            "Grading Traceability Symbols", "Set List View Limit to 500(GRADER)",
-            "Set List View Limit to 500(BUNCH)", "Set List View Limit to 500(BUCKET)",
-            "Restrict Bay to Alphabets"
+            "Grading Traceability Symbols",
+            "Set List View Limit to 500(GRADER)",
+            "Set List View Limit to 500(BUNCH)",
+            "Set List View Limit to 500(BUCKET)", "Restrict Bay to Alphabets"
         ]
     ]]
 }, {
