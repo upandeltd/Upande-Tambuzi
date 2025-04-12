@@ -178,17 +178,6 @@
  {
   "docstatus": 0,
   "doctype": "Client Script",
-  "dt": "Bunch QR Code",
-  "enabled": 1,
-  "modified": "2025-03-27 09:34:45.545382",
-  "module": "Upande Tambuzi",
-  "name": "Hide Filter Button",
-  "script": "frappe.listview_settings[\"Bunch QR Code\"] = {\n    onload(listview) {\n        setTimeout(() => {\n            let filter_button = $(\".filter-section .filter-selector\");\n\n            if (filter_button.length) {\n                filter_button.hide();\n            }\n        }, 500);\n        \n    }\n};",
-  "view": "List"
- },
- {
-  "docstatus": 0,
-  "doctype": "Client Script",
   "dt": "Label Print",
   "enabled": 1,
   "modified": "2025-04-09 16:05:06.453915",
@@ -206,17 +195,6 @@
   "module": null,
   "name": "Set List View Limit to 500(BUNCH)",
   "script": "frappe.listview_settings[\"Bunch QR Code\"] = {\n    refresh:  function(listview) {\n        listview.page_length = 1000;\n        listview.start = 0;\n        listview.refresh();\n    }\n};",
-  "view": "List"
- },
- {
-  "docstatus": 0,
-  "doctype": "Client Script",
-  "dt": "Grader QR Code",
-  "enabled": 1,
-  "modified": "2025-04-08 16:08:22.033556",
-  "module": "Upande Tambuzi",
-  "name": "Set List View Limit to 500(GRADER)",
-  "script": "frappe.listview_settings[\"Grader QR Code\"] = {\n    refresh:  function(listview) {\n        listview.page_length =1000;\n        listview.start = 0;\n        listview.refresh();\n    }\n};",
   "view": "List"
  },
  {
@@ -240,5 +218,38 @@
   "name": "Restrict Bay to Alphabets",
   "script": "frappe.ui.form.on('Harvest', {\n    validate: function(frm) {\n        var field_value = frm.doc.bay;\n        if (field_value) {\n            // Convert to uppercase and set it back\n            field_value = field_value.toUpperCase();\n            frm.set_value('bay', field_value);\n            \n            // Check if it contains only alphabets and spaces\n            if (!/^[A-Z\\s]+$/.test(field_value)) {\n                frappe.msgprint(__('The field {0} can only contain alphabets.'), [frm.fields_dict.bay.label]);\n                frappe.validated = false; // Prevent saving the form\n            }\n        }\n    },\n    bay: function(frm) {\n        var field_value = frm.doc.bay;\n        if (field_value) {\n            // Convert to uppercase and remove non-alphabetic characters\n            var cleaned_value = field_value.toUpperCase().replace(/[^A-Z\\s]/g, '');\n            if (field_value !== cleaned_value) {\n                frm.set_value('bay', cleaned_value);\n                frappe.show_alert('Only uppercase alphabets are allowed in this field.');\n            }\n        }\n    }\n});",
   "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Consolidated Pack List",
+  "enabled": 1,
+  "modified": "2025-04-11 12:13:25.359074",
+  "module": "Upande Tambuzi",
+  "name": "Autopopulate Sales Order ID in CPL",
+  "script": "frappe.ui.form.on('Dispatch Form Item', {\n\titems_add(frm, cdt, cdn) {\n\t\tlet row = locals[cdt][cdn];\n\t\t\n\t\tif (frm.doc.custom_sales_order_id_cpl) {\n\t\t    row.sales_order_id = frm.doc.custom_sales_order_id_cpl;\n\t\t    row.customer_id = frm.doc.custom_customer;\n\t\t    \n\t\t    frm.refresh_field('items');\n\t\t}\n\t}\n});",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Bunch QR Code",
+  "enabled": 1,
+  "modified": "2025-04-12 10:40:41.407428",
+  "module": "Upande Tambuzi",
+  "name": "Hide Filter Button 2",
+  "script": "frappe.listview_settings[\"Bunch QR Code\"] = {\n    onload(listview) {\n        setTimeout(() => {\n            let filter_button = $(\".filter-section .filter-selector\");\n            \n            if (filter_button.length) {\n                \n                filter_button.hide();\n            }\n        }, 2000);\n        \n    }\n};",
+  "view": "List"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Bucket QR Code",
+  "enabled": 1,
+  "modified": "2025-04-12 10:46:58.901316",
+  "module": "Upande Tambuzi",
+  "name": "Hide Filter Button (Bucket QR Code List) 2",
+  "script": "frappe.listview_settings['Bucket QR Code'] = {\n    onload(listview) {\n        setTimeout(() => {\n            let filter_button = $('.filter-section .filter-selector');\n            \n            if (filter_button.length) {\n                filter_button.hide();\n            }\n        }, 500);\n    }\n};",
+  "view": "List"
  }
 ]
