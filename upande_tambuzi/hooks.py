@@ -296,7 +296,8 @@ fixtures = [{
             "Stock Entry Script", "Stock Entry After Save", "Scan Timestamp",
             "Harvest Stock Entry", "Automate Rejects Material Issue",
             "Create Box Labels", "Update Grading Forecast Tracker", "Update Sales Order ID on Save",
-            "Update Forecast Tracker (During Grading)"
+            "Update Forecast Tracker (During Grading)", "Update Tracker (During Grading Cancel)", "Update Tracker (Grading Forecast)",
+            "Forecast Entry"
         ]
     ]]
 }, {
@@ -330,7 +331,8 @@ fixtures = [{
             "Scan", "Farm", "Box Label", "Box Label Item", "Label Print",
             "Bucket QR Code", "Bunch QR Code", "Grader QR Code", "Harvest",
             "Scanned Items", "Scan Check", "Scan Check List", "QR Sequence",
-            "Rejection Reason", "Grading Repack Tracker Item", "Forecast Tracker"
+            "Rejection Reason", "Grading Repack Tracker Item", "Grading Forecast Tracker",
+            "Forecast Entry"
         ]
     ]]
 }, {
