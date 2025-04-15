@@ -332,7 +332,7 @@ fixtures = [{
             "Bucket QR Code", "Bunch QR Code", "Grader QR Code", "Harvest",
             "Scanned Items", "Scan Check", "Scan Check List", "QR Sequence",
             "Rejection Reason", "Grading Repack Tracker Item", "Grading Forecast Tracker",
-            "Forecast Entry"
+            "Forecast Entry", "Forecast Entry Item"
         ]
     ]]
 }, {
