@@ -11595,12 +11595,26 @@
   "is_virtual": 0,
   "issingle": 0,
   "istable": 0,
-  "links": [],
+  "links": [
+   {
+    "custom": 0,
+    "group": null,
+    "hidden": 0,
+    "is_child_table": 0,
+    "link_doctype": "Stock Entry",
+    "link_fieldname": "custom_forecast_entry",
+    "parent": "Forecast Entry",
+    "parent_doctype": null,
+    "parentfield": "links",
+    "parenttype": "DocType",
+    "table_fieldname": null
+   }
+  ],
   "make_attachments_public": 0,
   "max_attachments": 0,
   "menu_index": null,
   "migration_hash": null,
-  "modified": "2025-04-15 21:39:14.738706",
+  "modified": "2025-04-15 21:55:11.051780",
   "module": "Upande Tambuzi",
   "name": "Forecast Entry",
   "naming_rule": "Expression",
