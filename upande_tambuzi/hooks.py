@@ -295,7 +295,9 @@ fixtures = [{
         [
             "Stock Entry Script", "Stock Entry After Save", "Scan Timestamp",
             "Harvest Stock Entry", "Automate Rejects Material Issue",
-            "Create Box Labels"
+            "Create Box Labels", "Update Grading Forecast Tracker", "Update Sales Order ID on Save",
+            "Update Forecast Tracker (During Grading)", "Update Tracker (During Grading Cancel)", "Update Tracker (Grading Forecast)",
+            "Forecast Entry"
         ]
     ]]
 }, {
@@ -311,11 +313,12 @@ fixtures = [{
             "Transfer Grading Stock", "Generate Bucket Codes", "Harvest Scan",
             "New Form After Save", "Remove Read Only on Field",
             "Ensure Bucket Is Scanned On Save", "Field Rejects Stock Entry",
-            "Hide Filter Button", "Ensure Uppercase in Bay Field",
-            "Grading Traceability Symbols",
+            "Hide Filter Button 2", "Hide Filter Button (Bucket QR Code List) 2", "Ensure Uppercase in Bay Field",
+            "Grading Traceability Symbols", "SO target warehouse Population"
             "Set List View Limit to 500(GRADER)",
             "Set List View Limit to 500(BUNCH)",
-            "Set List View Limit to 500(BUCKET)", "Restrict Bay to Alphabets"
+            "Set List View Limit to 500(BUCKET)", "Restrict Bay to Alphabets",
+            "Autopopulate Sales Order ID in CPL"
         ]
     ]]
 }, {
@@ -328,7 +331,8 @@ fixtures = [{
             "Scan", "Farm", "Box Label", "Box Label Item", "Label Print",
             "Bucket QR Code", "Bunch QR Code", "Grader QR Code", "Harvest",
             "Scanned Items", "Scan Check", "Scan Check List", "QR Sequence",
-            "Rejection Reason"
+            "Rejection Reason", "Grading Repack Tracker Item", "Grading Forecast Tracker",
+            "Forecast Entry"
         ]
     ]]
 }, {
@@ -345,11 +349,4 @@ fixtures = [{
     ]]
 }, {
     "dt": "Custom DocPerm"
-}, {
-    "dt":
-    "Report",
-    "filters": [[
-        "name", "in",
-        ["Field Rejects Report", "Packhouse Discards/Rejects Report"]
-    ]]
 }]
