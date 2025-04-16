@@ -297,7 +297,7 @@ fixtures = [{
             "Harvest Stock Entry", "Automate Rejects Material Issue",
             "Create Box Labels", "Update Grading Forecast Tracker", "Update Sales Order ID on Save",
             "Update Forecast Tracker (During Grading)", "Update Tracker (During Grading Cancel)", "Update Tracker (Grading Forecast)",
-            "Forecast Entry"
+            "Forecast Entry", "Allow Packing Of Returned Bunches"
         ]
     ]]
 }, {
@@ -314,11 +314,11 @@ fixtures = [{
             "New Form After Save", "Remove Read Only on Field",
             "Ensure Bucket Is Scanned On Save", "Field Rejects Stock Entry",
             "Hide Filter Button 2", "Hide Filter Button (Bucket QR Code List) 2", "Ensure Uppercase in Bay Field",
-            "Grading Traceability Symbols", "SO target warehouse Population"
+            "Grading Traceability Symbols", "SO target warehouse Population",
             "Set List View Limit to 500(GRADER)",
             "Set List View Limit to 500(BUNCH)",
             "Set List View Limit to 500(BUCKET)", "Restrict Bay to Alphabets",
-            "Autopopulate Sales Order ID in CPL"
+            "Autopopulate Sales Order ID in CPL", "Ensure Items are in SO Before Manually Adding (FPL)",
         ]
     ]]
 }, {
