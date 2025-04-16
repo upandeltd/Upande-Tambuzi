@@ -652,7 +652,7 @@
    "property": "search_fields",
    "property_type": "Data",
    "row_name": null,
-   "value": "sales_order,customer,date_created,farm"
+   "value": "sales_order,customer,date_created"
   },
   {
    "_assign": null,
