@@ -296,7 +296,7 @@ fixtures = [{
             "Harvest Stock Entry", "Automate Rejects Material Issue",
             "Create Box Labels", "Update Grading Forecast Tracker", "Update Sales Order ID on Save",
             "Update Forecast Tracker (During Grading)", "Update Tracker (During Grading Cancel)", "Update Tracker (Grading Forecast)",
-            "Forecast Entry"
+            "Forecast Entry", "Allow Packing Of Returned Bunches"
         ]
     ]]
 }, {
@@ -316,7 +316,7 @@ fixtures = [{
             "Set List View Limit to 500(GRADER)",
             "Set List View Limit to 500(BUNCH)",
             "Set List View Limit to 500(BUCKET)", "Restrict Bay to Alphabets",
-            "Autopopulate Sales Order ID in CPL"
+            "Autopopulate Sales Order ID in CPL", "Ensure Items are in SO Before Manually Adding (FPL)",
         ]
     ]]
 }, {
