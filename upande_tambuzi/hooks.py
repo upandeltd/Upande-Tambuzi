@@ -288,8 +288,7 @@ whitelisted_methods = {
 # }
 
 fixtures = [{
-    "dt":
-    "Server Script",
+    "dt": "Server Script",
     "filters": [[
         "name", "in",
         [
@@ -301,8 +300,7 @@ fixtures = [{
         ]
     ]]
 }, {
-    "dt":
-    "Client Script",
+    "dt": "Client Script",
     "filters": [[
         "name", "in",
         [
@@ -314,7 +312,7 @@ fixtures = [{
             "New Form After Save", "Remove Read Only on Field",
             "Ensure Bucket Is Scanned On Save", "Field Rejects Stock Entry",
             "Hide Filter Button 2", "Hide Filter Button (Bucket QR Code List) 2", "Ensure Uppercase in Bay Field",
-            "Grading Traceability Symbols", "SO target warehouse Population"
+            "Grading Traceability Symbols", "SO target warehouse Population",
             "Set List View Limit to 500(GRADER)",
             "Set List View Limit to 500(BUNCH)",
             "Set List View Limit to 500(BUCKET)", "Restrict Bay to Alphabets",
@@ -322,8 +320,7 @@ fixtures = [{
         ]
     ]]
 }, {
-    "dt":
-    "DocType",
+    "dt": "DocType",
     "filters": [[
         "name", "in",
         [
@@ -336,8 +333,7 @@ fixtures = [{
         ]
     ]]
 }, {
-    "dt":
-    "Print Format",
+    "dt": "Print Format",
     "filters": [[
         "name", "in",
         [
@@ -349,4 +345,39 @@ fixtures = [{
     ]]
 }, {
     "dt": "Custom DocPerm"
+}, {
+    "dt": "Workspace",
+    "filters": [
+        ["name", "in", ["Production Reports", "Packhouse and Sales", ]]
+    ]
+}, {
+    "dt": "Report",
+    "filters": [
+        ["name", 
+         "in", 
+         [
+            "Harvest and Field Rejects Report",
+            "Harvest by Item Group",
+            "Harvest Pick Report",
+            "Harvest Received Report",
+            "Harvest Summary by Time of Day",
+            "Harvest Totals by Variety",
+            "Available for Sale Stock Balance",
+            "Stock Sheet_Available for Sale",
+            "Stock Sheet_Ungraded",
+            "Ungraded Stock Balance",
+            "Field Rejects Report",
+            "Overall Discards and Rejects Report",
+            "Weekly Discards/Rejects Report",
+            "Harvesting Stock Entries",
+            "Grading Stock Entries",
+            "Receiving Stock Entries",
+            "Packhouse Discards or Rejects Details",
+            "Packhouse Discards or Rejects Report",
+            "Sales Invoiced Report",
+            "Sales Invoice Details",
+            "Sales Order Report",
+            "Sales per Variety Report (SO)"
+        ]]
+    ]
 }]

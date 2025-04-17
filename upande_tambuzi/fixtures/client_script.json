@@ -2,6 +2,28 @@
  {
   "docstatus": 0,
   "doctype": "Client Script",
+  "dt": "Sales Order",
+  "enabled": 1,
+  "modified": "2025-04-15 22:55:19.411971",
+  "module": "Upande Tambuzi",
+  "name": "SO target warehouse Population",
+  "script": "frappe.ui.form.on('Sales Order Item', {\n    custom_source_warehouse: function(frm, cdt, cdn) {\n        let row = locals[cdt][cdn];\n        if (!row.custom_source_warehouse) return;\n        \n        let source_warehouse = row.custom_source_warehouse;\n        let target_warehouse = null;\n        \n        // Define the warehouse mappings patterns\n        const warehouse_patterns = [\n            {\"from\": \"Grading Forecast - TL\", \"to\": \"Graded Sold - TL\"}, \n            {\"from\": \"Available for Sale - TL\", \"to\": \"Graded Sold - TL\"}, \n            {\"from\": \"Dispatch Form\", \"to\": \"Dispatch Sold\"}\n        ];\n        \n        // Try each pattern until we find a match\n        for (let pattern of warehouse_patterns) {\n            if (source_warehouse.includes(pattern.from)) {\n                target_warehouse = source_warehouse.replace(pattern.from, pattern.to);\n                break;\n            }\n        }\n        \n        if (target_warehouse) {\n            // Verify warehouse exists before setting\n            frappe.db.get_value('Warehouse', target_warehouse, 'name', (r) => {\n                if (r && r.name) {\n                    frappe.model.set_value(cdt, cdn, 'warehouse', target_warehouse);\n                    console.log(`Set warehouse to ${target_warehouse}`);\n                } else {\n                    frappe.show_alert({message:`Target warehouse '${target_warehouse}' does not exist`, indicator:'red'});\n                }\n            });\n        } else {\n            frappe.show_alert({message:`Could not determine target warehouse for '${source_warehouse}'`, indicator:'yellow'});\n        }\n    }\n});\n\n\n",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Grader QR Code",
+  "enabled": 1,
+  "modified": "2025-04-08 16:08:22.033556",
+  "module": "Upande Tambuzi",
+  "name": "Set List View Limit to 500(GRADER)",
+  "script": "frappe.listview_settings[\"Grader QR Code\"] = {\n    refresh:  function(listview) {\n        listview.page_length =1000;\n        listview.start = 0;\n        listview.refresh();\n    }\n};",
+  "view": "List"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
   "dt": "Stock Entry",
   "enabled": 1,
   "modified": "2025-03-28 12:28:32.692244",

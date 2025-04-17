@@ -1,3 +1,5 @@
+# Copyright (c) 2025, Upande Limited
+# For license information, please see license.txt
 import frappe
 from frappe.utils import getdate, today
 
