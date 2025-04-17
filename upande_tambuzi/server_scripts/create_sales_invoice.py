@@ -1,3 +1,5 @@
+# Copyright (c) 2025, Upande Limited
+# For license information, please see license.txt
 import frappe
 from frappe.utils import getdate, today
 
@@ -28,6 +30,7 @@ def create_sales_invoice_from_packlist(doc, method):
             sales_invoice.custom_destination = sales_order.custom_delivery_point
             sales_invoice.custom_consignee = sales_order.custom_consignee
             sales_invoice.custom_comment = sales_order.custom_comment
+            sales_invoice.shipping_date = sales_order.delivery_date
             sales_invoice.custom_consolidated_packlist = doc.name
             sales_invoice.set_warehouse = doc.items[0].source_warehouse if doc.items else None  
             sales_invoice.posting_date = today()
