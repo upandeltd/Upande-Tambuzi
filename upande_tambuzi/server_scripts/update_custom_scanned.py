@@ -2,7 +2,7 @@ import frappe
 
 # Custom scanned
 @frappe.whitelist()
-def update_custom_scanned(stock_entry_name, action, oplName):
+def update_custom_scanned(stock_entry_name, action, oplName = None):
     stock_entry = frappe.get_doc("Stock Entry", stock_entry_name)
 
     if stock_entry.docstatus == 1 and action == "Receiving":
