@@ -303,7 +303,12 @@ fixtures = [{
         [
             "Stock Entry Script", "Stock Entry After Save", "Scan Timestamp",
             "Harvest Stock Entry", "Automate Rejects Material Issue",
-            "Create Box Labels", "Unreserve on Workflow Approval"
+            "Create Box Labels", "Update Grading Forecast Tracker",
+            "Update Sales Order ID on Save",
+            "Update Forecast Tracker (During Grading)",
+            "Update Tracker (During Grading Cancel)",
+            "Update Tracker (Grading Forecast)", "Forecast Entry",
+            "Allow Packing Of Returned Bunches"
         ]
     ]]
 }, {
@@ -312,19 +317,33 @@ fixtures = [{
     "filters": [[
         "name", "in",
         [
-            "Qr Code gen", "Close Box Button", "Scan Via Honeywell",
-            "Scan Data Field Listener", "Scan QR Button",
-            "Populate Number of Items", "Grading Stock Entry",
-            "Field Rejects Stock Entry", "Archive Employee",
-            "Transfer Grading Stock", "Generate Bucket Codes", "Harvest Scan",
-            "New Form After Save", "Remove Read Only on Field",
-            "Ensure Bucket Is Scanned On Save", "Field Rejects Stock Entry",
-            "Hide Filter Button", "Ensure Uppercase in Bay Field",
+            "Qr Code gen",
+            "Close Box Button",
+            "Scan Via Honeywell",
+            "Scan Data Field Listener",
+            "Scan QR Button",
+            "Populate Number of Items",
+            "Grading Stock Entry",
+            "Field Rejects Stock Entry",
+            "Archive Employee",
+            "Transfer Grading Stock",
+            "Generate Bucket Codes",
+            "Harvest Scan",
+            "New Form After Save",
+            "Remove Read Only on Field",
+            "Ensure Bucket Is Scanned On Save",
+            "Field Rejects Stock Entry",
+            "Hide Filter Button 2",
+            "Hide Filter Button (Bucket QR Code List) 2",
+            "Ensure Uppercase in Bay Field",
             "Grading Traceability Symbols",
+            "SO target warehouse Population",
             "Set List View Limit to 500(GRADER)",
             "Set List View Limit to 500(BUNCH)",
-            "Set List View Limit to 500(BUCKET)", "Restrict Bay to Alphabets",
-            "Reserve Stock On Save"
+            "Set List View Limit to 500(BUCKET)",
+            "Restrict Bay to Alphabets",
+            "Autopopulate Sales Order ID in CPL",
+            "Ensure Items are in SO Before Manually Adding (FPL)",
         ]
     ]]
 }, {
@@ -337,7 +356,8 @@ fixtures = [{
             "Scan", "Farm", "Box Label", "Box Label Item", "Label Print",
             "Bucket QR Code", "Bunch QR Code", "Grader QR Code", "Harvest",
             "Scanned Items", "Scan Check", "Scan Check List", "QR Sequence",
-            "Rejection Reason"
+            "Rejection Reason", "Grading Repack Tracker Item",
+            "Grading Forecast Tracker", "Forecast Entry", "Forecast Entry Item"
         ]
     ]]
 }, {
@@ -356,9 +376,31 @@ fixtures = [{
     "dt": "Custom DocPerm"
 }, {
     "dt":
+    "Workspace",
+    "filters":
+    [["name", "in", [
+        "Production Reports",
+        "Packhouse and Sales",
+    ]]]
+}, {
+    "dt":
     "Report",
     "filters": [[
         "name", "in",
-        ["Field Rejects Report", "Packhouse Discards/Rejects Report"]
+        [
+            "Harvest and Field Rejects Report", "Harvest by Item Group",
+            "Harvest Pick Report", "Harvest Received Report",
+            "Harvest Summary by Time of Day", "Harvest Totals by Variety",
+            "Available for Sale Stock Balance",
+            "Stock Sheet_Available for Sale", "Stock Sheet_Ungraded",
+            "Ungraded Stock Balance", "Field Rejects Report",
+            "Overall Discards and Rejects Report",
+            "Weekly Discards/Rejects Report", "Harvesting Stock Entries",
+            "Grading Stock Entries", "Receiving Stock Entries",
+            "Packhouse Discards or Rejects Details",
+            "Packhouse Discards or Rejects Report", "Sales Invoiced Report",
+            "Sales Invoice Details", "Sales Order Report",
+            "Sales per Variety Report (SO)"
+        ]
     ]]
 }]

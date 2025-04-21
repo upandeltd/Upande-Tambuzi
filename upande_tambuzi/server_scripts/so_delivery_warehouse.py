@@ -7,6 +7,9 @@ def handle_sales_order_approval(doc, method):
         "Turaco Available for Sale - TL": "Turaco Graded Sold - TL",
         "Pendekeza Available for Sale - TL": "Pendekeza Graded Sold - TL",
         "Burguret Available for Sale - TL": "Burguret Graded Sold - TL",
+        "TUR Grading Forecast - TL": "Turaco Graded Sold - TL",
+        "PNDK Grading Forecast - TL": "Pendekeza Graded Sold - TL",
+        "BUR Grading Forecast - TL": "Burguret Graded Sold - TL",
     }
 
     updated = False
@@ -95,13 +98,7 @@ def handle_sales_order_approval(doc, method):
 
 
 def handle_sales_order_cancellation(doc, method):
-    warehouse_reverse_mapping = {
-        "Turaco Graded Sold - TL": "Turaco Available for Sale - TL",
-        "Pendekeza Graded Sold - TL": "Pendekeza Available for Sale - TL",
-        "Burguret Graded Sold - TL": "Burguret Available for Sale - TL",
-    }
-
-    items_details = []  # Store item details for table display
+    items_details = []
 
     if doc.docstatus == 2:
         stock_entry = frappe.new_doc("Stock Entry")
@@ -109,40 +106,37 @@ def handle_sales_order_cancellation(doc, method):
         stock_entry.sales_order = doc.name
 
         for item in doc.items:
-            if item.warehouse in warehouse_reverse_mapping:
-                stock_entry.append(
-                    "items",
-                    {
-                        "item_code": item.item_code,
-                        "qty": item.qty,
-                        "uom": item.uom,
-                        "stock_uom": item.stock_uom,
-                        "s_warehouse": item.warehouse,
-                        "t_warehouse":
-                        warehouse_reverse_mapping[item.warehouse],
-                        "stock_qty": item.stock_qty,
-                    },
-                )
+            source_warehouse = item.warehouse
+            custom_source_warehouse = item.get("custom_source_warehouse")
 
-                # Store item details for table
-                items_details.append({
-                    "item_code":
-                    item.item_code,
-                    "qty":
-                    item.qty,
-                    "uom":
-                    item.uom,
-                    "from_warehouse":
-                    item.warehouse,
-                    "to_warehouse":
-                    warehouse_reverse_mapping[item.warehouse]
-                })
+            if not source_warehouse or not custom_source_warehouse:
+                continue
+
+            stock_entry.append(
+                "items",
+                {
+                    "item_code": item.item_code,
+                    "qty": item.qty,
+                    "uom": item.uom,
+                    "stock_uom": item.stock_uom,
+                    "s_warehouse": source_warehouse,
+                    "t_warehouse": custom_source_warehouse,
+                    "stock_qty": item.stock_qty,
+                },
+            )
+
+            items_details.append({
+                "item_code": item.item_code,
+                "qty": item.qty,
+                "uom": item.uom,
+                "from_warehouse": source_warehouse,
+                "to_warehouse": custom_source_warehouse
+            })
 
         if stock_entry.items:
             stock_entry.insert()
             stock_entry.submit()
 
-            # Create formatted table message for reversal
             table_html = """
             <div style="margin-bottom: 10px;">Stock Reversal Transfer Created Successfully!</div>
             <table class="table table-bordered" style="width: 100%;">
@@ -167,16 +161,12 @@ def handle_sales_order_cancellation(doc, method):
                     </tr>
                 """
 
-            table_html += """
-                </tbody>
-            </table>
-            """
+            table_html += "</tbody></table>"
 
             frappe.msgprint(
                 table_html,
                 title="Stock Transfer Reversed After Sales Order is Cancelled",
-                indicator="blue")
-
+                indicator="blue"
+            )
         else:
-            frappe.msgprint(
-                "No valid stock transfer items found for reversal.")
+            frappe.msgprint("No valid stock transfer items found for reversal.")
