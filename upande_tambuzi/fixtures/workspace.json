@@ -1,7 +1,7 @@
 [
  {
   "charts": [],
-  "content": "[{\"id\":\"D4G5M1flOx\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Production Reports</span>\",\"col\":12}},{\"id\":\"_6Z46nAXZc\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Harvest and Field Rejects Report\",\"col\":4}},{\"id\":\"m5YtE5_UEw\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Harvest by Item Group\",\"col\":4}},{\"id\":\"UhGaQpXYQ1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Harvest Pick Report\",\"col\":4}},{\"id\":\"7S4J4yDX0Z\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Harvest Summary by Time of Day\",\"col\":4}},{\"id\":\"Fs9KkDgyPi\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Harvest Totals by Variety\",\"col\":4}},{\"id\":\"2QFiyxGxV0\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Stock Sheets</b></span>\",\"col\":12}},{\"id\":\"ITDMK1_YT1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Available for Sale Stock Balance\",\"col\":4}},{\"id\":\"zf357Xkcb1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Stock Sheet_Available for Sale\",\"col\":4}},{\"id\":\"ngliCBQlfS\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Stock Sheet_Ungraded\",\"col\":4}},{\"id\":\"Va9RkJIo8t\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Ungraded Stock Balance\",\"col\":4}},{\"id\":\"nb9-znBJdP\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Discards/Rejects</b></span>\",\"col\":12}},{\"id\":\"kSZzheOFl6\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Field Rejects Report\",\"col\":4}},{\"id\":\"XbK8GdTTVt\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Overall Discards and Rejects Report\",\"col\":4}},{\"id\":\"38u5ttJk6N\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Weekly Discards/Rejects Report\",\"col\":4}},{\"id\":\"lwF9UqTYqQ\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Stock Entry Details</b></span>\",\"col\":12}},{\"id\":\"LpWu8AF9oi\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Harvesting Stock Entries\",\"col\":4}},{\"id\":\"n7jdBZ-5xF\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Grading Stock Entries\",\"col\":4}},{\"id\":\"NSKCjGvC4i\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Receiving Stock Entries\",\"col\":4}}]",
+  "content": "[{\"id\":\"D4G5M1flOx\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Production Reports</span>\",\"col\":12}},{\"id\":\"_6Z46nAXZc\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Harvest and Field Rejects Report\",\"col\":4}},{\"id\":\"m5YtE5_UEw\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Harvest by Item Group\",\"col\":4}},{\"id\":\"UhGaQpXYQ1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Harvest Pick Report\",\"col\":4}},{\"id\":\"5ObtANzf2u\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Harvest Received Report\",\"col\":3}},{\"id\":\"7S4J4yDX0Z\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Harvest Summary by Time of Day\",\"col\":4}},{\"id\":\"Fs9KkDgyPi\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Harvest Totals by Variety\",\"col\":4}},{\"id\":\"2QFiyxGxV0\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Stock Sheets</b></span>\",\"col\":12}},{\"id\":\"ITDMK1_YT1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Available for Sale Stock Balance\",\"col\":4}},{\"id\":\"zf357Xkcb1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Stock Sheet_Available for Sale\",\"col\":4}},{\"id\":\"ngliCBQlfS\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Stock Sheet_Ungraded\",\"col\":4}},{\"id\":\"Va9RkJIo8t\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Ungraded Stock Balance\",\"col\":4}},{\"id\":\"nb9-znBJdP\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Discards/Rejects</b></span>\",\"col\":12}},{\"id\":\"kSZzheOFl6\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Field Rejects Report\",\"col\":4}},{\"id\":\"XbK8GdTTVt\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Overall Discards and Rejects Report\",\"col\":4}},{\"id\":\"38u5ttJk6N\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Weekly Discards/Rejects Report\",\"col\":4}},{\"id\":\"lwF9UqTYqQ\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Stock Entry Details</b></span>\",\"col\":12}},{\"id\":\"LpWu8AF9oi\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Harvesting Stock Entries\",\"col\":4}},{\"id\":\"n7jdBZ-5xF\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Grading Stock Entries\",\"col\":4}},{\"id\":\"NSKCjGvC4i\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Receiving Stock Entries\",\"col\":4}}]",
   "custom_blocks": [],
   "docstatus": 0,
   "doctype": "Workspace",
@@ -12,7 +12,7 @@
   "is_hidden": 0,
   "label": "Production Reports",
   "links": [],
-  "modified": "2025-04-11 13:25:37.451076",
+  "modified": "2025-04-17 08:11:48.768741",
   "module": null,
   "name": "Production Reports",
   "number_cards": [],
@@ -54,6 +54,22 @@
   ],
   "sequence_id": 4.0,
   "shortcuts": [
+   {
+    "color": "Grey",
+    "doc_view": "List",
+    "format": null,
+    "icon": null,
+    "kanban_board": null,
+    "label": "Harvest Received Report",
+    "link_to": "Harvest Received Report",
+    "parent": "Production Reports",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "restrict_to_domain": null,
+    "stats_filter": null,
+    "type": "Report",
+    "url": null
+   },
    {
     "color": "Grey",
     "doc_view": "List",
@@ -299,7 +315,7 @@
  },
  {
   "charts": [],
-  "content": "[{\"id\":\"-EpzjNHyJp\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Packhouse Reports</span>\",\"col\":12}},{\"id\":\"GPw3_1ZQyQ\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Overall Discards and Rejects Report\",\"col\":4}},{\"id\":\"cte9emeMZz\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Packhouse Discards or Rejects Details\",\"col\":4}},{\"id\":\"SEEQ2Rc-hj\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Packhouse Discards or Rejects Report\",\"col\":4}},{\"id\":\"BWVIhwfnLJ\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Sales Reports</b></span>\",\"col\":12}},{\"id\":\"wNRT_K2hxk\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Invoiced Report\",\"col\":4}},{\"id\":\"YJdeVp0CRj\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Invoice Details\",\"col\":4}},{\"id\":\"2sJXuePat_\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Order Report\",\"col\":4}},{\"id\":\"MnuZAeFPod\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales per Variety Report (SO)\",\"col\":4}}]",
+  "content": "[{\"id\":\"-EpzjNHyJp\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Packhouse Reports</span>\",\"col\":12}},{\"id\":\"GPw3_1ZQyQ\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Overall Discards and Rejects Report\",\"col\":4}},{\"id\":\"yqZcnua9n9\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Harvest Received Report\",\"col\":3}},{\"id\":\"cte9emeMZz\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Packhouse Discards or Rejects Details\",\"col\":4}},{\"id\":\"SEEQ2Rc-hj\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Packhouse Discards or Rejects Report\",\"col\":4}},{\"id\":\"BWVIhwfnLJ\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Sales Reports</b></span>\",\"col\":12}},{\"id\":\"wNRT_K2hxk\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Invoiced Report\",\"col\":4}},{\"id\":\"YJdeVp0CRj\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Invoice Details\",\"col\":4}},{\"id\":\"2sJXuePat_\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Order Report\",\"col\":4}},{\"id\":\"MnuZAeFPod\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales per Variety Report (SO)\",\"col\":4}}]",
   "custom_blocks": [],
   "docstatus": 0,
   "doctype": "Workspace",
@@ -310,7 +326,7 @@
   "is_hidden": 0,
   "label": "Packhouse and Sales",
   "links": [],
-  "modified": "2025-04-12 23:14:29.117876",
+  "modified": "2025-04-17 08:13:06.373327",
   "module": null,
   "name": "Packhouse and Sales",
   "number_cards": [],
@@ -321,6 +337,22 @@
   "roles": [],
   "sequence_id": 5.0,
   "shortcuts": [
+   {
+    "color": "Grey",
+    "doc_view": "List",
+    "format": null,
+    "icon": null,
+    "kanban_board": null,
+    "label": "Harvest Received Report",
+    "link_to": "Harvest Received Report",
+    "parent": "Packhouse and Sales",
+    "parentfield": "shortcuts",
+    "parenttype": "Workspace",
+    "restrict_to_domain": null,
+    "stats_filter": null,
+    "type": "Report",
+    "url": null
+   },
    {
     "color": "Grey",
     "doc_view": "List",
