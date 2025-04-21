@@ -14,7 +14,6 @@
   "sales_order",
   "date_created",
   "naming_series",
-  "column_break_dlav",
   "locations_section",
   "locations",
   "amended_from"
@@ -85,17 +84,13 @@
    "print_hide": 1,
    "read_only": 1,
    "search_index": 1
-  },
-  {
-   "fieldname": "column_break_dlav",
-   "fieldtype": "Column Break"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-04-10 15:05:21.270217",
+ "modified": "2025-04-17 08:21:08.588434",
  "modified_by": "Administrator",
  "module": "Upande Tambuzi",
  "name": "Order Pick List",

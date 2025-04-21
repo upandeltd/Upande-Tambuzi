@@ -149,14 +149,22 @@ app_include_js = [
 # }
 doc_events = {
     "Sales Order": {
-        "on_submit":
-        "upande_tambuzi.server_scripts.pick_list_automation.create_pick_list_for_sales_order",
+        "on_submit": [
+            #"upande_tambuzi.server_scripts.reserve_stock.unreserve_stems",
+            "upande_tambuzi.server_scripts.pick_list_automation.create_pick_list_for_sales_order"
+        ],
+        "on_update": [
+            # "upande_tambuzi.server_scripts.reserve_stock.on_sales_order_update",
+            "upande_tambuzi.server_scripts.so_delivery_warehouse.handle_sales_order_approval"
+        ],
         "before_submit":
         "upande_tambuzi.upande_tambuzi.custom.sales_order_custom.validate_customer_check_limit",
-        "on_update":
-        "upande_tambuzi.server_scripts.so_delivery_warehouse.handle_sales_order_approval",
         "on_cancel":
-        "upande_tambuzi.server_scripts.so_delivery_warehouse.handle_sales_order_cancellation"
+        "upande_tambuzi.server_scripts.so_delivery_warehouse.handle_sales_order_cancel",
+        # "on_save":
+        # "upande_tambuzi.server_scripts.reserve_stock.on_sales_order_save",
+        # "after_insert":
+        # "upande_tambuzi.server_scripts.reserve_stock.on_sales_order_created",
     },
     "Consolidated Pack List": {
         "on_submit":
@@ -295,7 +303,7 @@ fixtures = [{
         [
             "Stock Entry Script", "Stock Entry After Save", "Scan Timestamp",
             "Harvest Stock Entry", "Automate Rejects Material Issue",
-            "Create Box Labels"
+            "Create Box Labels", "Unreserve on Workflow Approval"
         ]
     ]]
 }, {
@@ -315,7 +323,8 @@ fixtures = [{
             "Grading Traceability Symbols",
             "Set List View Limit to 500(GRADER)",
             "Set List View Limit to 500(BUNCH)",
-            "Set List View Limit to 500(BUCKET)", "Restrict Bay to Alphabets"
+            "Set List View Limit to 500(BUCKET)", "Restrict Bay to Alphabets",
+            "Reserve Stock On Save"
         ]
     ]]
 }, {

@@ -240,5 +240,16 @@
   "name": "Restrict Bay to Alphabets",
   "script": "frappe.ui.form.on('Harvest', {\n    validate: function(frm) {\n        var field_value = frm.doc.bay;\n        if (field_value) {\n            // Convert to uppercase and set it back\n            field_value = field_value.toUpperCase();\n            frm.set_value('bay', field_value);\n            \n            // Check if it contains only alphabets and spaces\n            if (!/^[A-Z\\s]+$/.test(field_value)) {\n                frappe.msgprint(__('The field {0} can only contain alphabets.'), [frm.fields_dict.bay.label]);\n                frappe.validated = false; // Prevent saving the form\n            }\n        }\n    },\n    bay: function(frm) {\n        var field_value = frm.doc.bay;\n        if (field_value) {\n            // Convert to uppercase and remove non-alphabetic characters\n            var cleaned_value = field_value.toUpperCase().replace(/[^A-Z\\s]/g, '');\n            if (field_value !== cleaned_value) {\n                frm.set_value('bay', cleaned_value);\n                frappe.show_alert('Only uppercase alphabets are allowed in this field.');\n            }\n        }\n    }\n});",
   "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Sales Order",
+  "enabled": 1,
+  "modified": "2025-04-19 16:47:41.461802",
+  "module": "Upande Tambuzi",
+  "name": "Reserve Stock On Save",
+  "script": "frappe.ui.form.on('Sales Order Item', {\n    item_code: trigger_reserve_if_ready,\n    custom_source_warehouse: trigger_reserve_if_ready,\n    uom: trigger_reserve_if_ready,\n    qty: trigger_reserve_if_ready,\n    custom_box_id: trigger_reserve_if_ready,\n\n    sales_order_item_add: trigger_reserve_if_ready, // Trigger when new row is added\n});\n\nfunction trigger_reserve_if_ready(frm, cdt, cdn) {\n    const row = locals[cdt][cdn];\n\n    if (row.item_code && row.custom_source_warehouse && row.uom && row.qty && row.custom_box_id && row.stock_qty) {\n        frappe.call({\n            method: \"upande_tambuzi.server_scripts.reserve_stock.reserve_stems\",\n            args: {\n                item_code: row.item_code,\n                custom_source_warehouse: row.custom_source_warehouse,\n                stems_requested: row.stock_qty\n            },\n            callback: function (r) {\n                if (r.message) {\n                    const msg = r.message.message || \"Reservation attempted.\";\n                    frappe.msgprint({\n                        title: \"Reserve Stock: \" + row.item_code,\n                        message: msg,\n                        indicator: r.message.status === \"Reserved\" ? \"green\" : \"orange\",\n                        alert: true\n                    });\n        \n                    // Optional: Set reserve status field if you use one\n                    frappe.model.set_value(cdt, cdn, \"custom_reserve_status\", r.message.status);\n                    frappe.model.set_value(cdt, cdn, \"custom_reserved_qty\", r.message.reserved_qty);\n                }\n            }\n        });\n\n    }\n}\n",
+  "view": "Form"
  }
 ]
