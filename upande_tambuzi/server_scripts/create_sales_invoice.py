@@ -73,6 +73,7 @@ def create_sales_invoice_from_packlist(doc, method):
                 })
 
             if sales_invoice.items:
+                sales_invoice.db_set("custom_cpl_status", "CPL Active")
                 sales_invoice.flags.ignore_permissions = True
                 sales_invoice.insert()
                 # sales_invoice.submit()

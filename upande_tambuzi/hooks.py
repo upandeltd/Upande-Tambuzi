@@ -166,11 +166,18 @@ doc_events = {
     },
     "Sales Invoice": {
         "on_submit":
-        "upande_tambuzi.server_scripts.sinv_approved_by.set_approved_by"
-    },
+        "upande_tambuzi.server_scripts.sinv_approved_by.set_approved_by",
+        "on_cancel":
+        "upande_tambuzi.server_scripts.events.on_sales_invoice_cancel"
+                },
     "Farm Pack List": {
         "before_cancel":
         "upande_tambuzi.server_scripts.fpl_to_cpl_link.before_cancel"
+    },
+
+    "Consolidated Pack List": {
+        "on_cancel":
+        "upande_tambuzi.server_scripts.events.on_cpl_cancel"
     }
 }
 
