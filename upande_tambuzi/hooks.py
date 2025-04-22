@@ -161,6 +161,9 @@ doc_events = {
     "Consolidated Pack List": {
         "on_submit":
         "upande_tambuzi.server_scripts.create_sales_invoice.create_sales_invoice_from_packlist",
+        "on_cancel":
+        "upande_tambuzi.server_scripts.events.on_cpl_cancel"
+
         # "before_submit":
         # "upande_tambuzi.server_scripts.completion_percentage.validate_completion_percentage"
     },
@@ -173,11 +176,6 @@ doc_events = {
     "Farm Pack List": {
         "before_cancel":
         "upande_tambuzi.server_scripts.fpl_to_cpl_link.before_cancel"
-    },
-
-    "Consolidated Pack List": {
-        "on_cancel":
-        "upande_tambuzi.server_scripts.events.on_cpl_cancel"
     }
 }
 

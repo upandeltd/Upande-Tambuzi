@@ -26,6 +26,8 @@ def create_sales_invoice_from_packlist(doc, method):
             # Create New Sales Invoice
             sales_invoice = frappe.new_doc("Sales Invoice")
             sales_invoice.customer = sales_order.customer
+            sales_invoice.currency = sales_order.currency
+            sales_invoice.selling_price_list = sales_order.selling_price_list
             sales_invoice.custom_shipping_agent = sales_order.custom_shipping_agent
             sales_invoice.custom_destination = sales_order.custom_delivery_point
             sales_invoice.custom_consignee = sales_order.custom_consignee
@@ -73,7 +75,8 @@ def create_sales_invoice_from_packlist(doc, method):
                 })
 
             if sales_invoice.items:
-                sales_invoice.db_set("custom_cpl_status", "CPL Active")
+                
+                sales_invoice.custom_cpl_status = "CPL Active"
                 sales_invoice.flags.ignore_permissions = True
                 sales_invoice.insert()
                 # sales_invoice.submit()
@@ -93,4 +96,4 @@ def create_sales_invoice_from_packlist(doc, method):
         invoice_links = " | ".join(
             [f'<a href="/app/sales-invoice/{invoice}" target="_blank">{invoice}</a>' for invoice in created_invoices]
         )
-        frappe.msgprint(f"Sales Invoices Successfully Created: {invoice_links}", title="Sales Invoice", indicator="green")
+        frappe.msgprint(f"Sales Invoice Created Successfully: {invoice_links}", title="Sales Invoice", indicator="green")
