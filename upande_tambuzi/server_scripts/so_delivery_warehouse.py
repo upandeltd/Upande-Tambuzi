@@ -7,9 +7,9 @@ def handle_sales_order_approval(doc, method):
         "Turaco Available for Sale - TL": "Turaco Graded Sold - TL",
         "Pendekeza Available for Sale - TL": "Pendekeza Graded Sold - TL",
         "Burguret Available for Sale - TL": "Burguret Graded Sold - TL",
-        "Turaco Grading Forecast - TL": "Turaco Graded Sold - TL",
-        "Pendekeza Grading Forecast - TL": "Pendekeza Graded Sold - TL",
-        "Burguret Grading Forecast - TL": "Burguret Graded Sold - TL",
+        "TUR Grading Forecast - TL": "Turaco Graded Sold - TL",
+        "PNDK Grading Forecast - TL": "Pendekeza Graded Sold - TL",
+        "BUR Grading Forecast - TL": "Burguret Graded Sold - TL",
     }
 
     updated = False
