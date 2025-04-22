@@ -32,6 +32,7 @@ def create_sales_invoice_from_packlist(doc, method):
             sales_invoice.custom_comment = sales_order.custom_comment
             sales_invoice.shipping_date = sales_order.delivery_date
             sales_invoice.custom_consolidated_packlist = doc.name
+            sales_invoice.custom_so = doc.custom_sales_order_id_cpl
             sales_invoice.set_warehouse = doc.items[0].source_warehouse if doc.items else None  
             sales_invoice.posting_date = today()
             sales_invoice.update_stock = 1
@@ -72,6 +73,7 @@ def create_sales_invoice_from_packlist(doc, method):
                 })
 
             if sales_invoice.items:
+                sales_invoice.db_set("custom_cpl_status", "CPL Active")
                 sales_invoice.flags.ignore_permissions = True
                 sales_invoice.insert()
                 # sales_invoice.submit()
