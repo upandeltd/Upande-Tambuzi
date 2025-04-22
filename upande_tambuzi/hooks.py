@@ -288,64 +288,65 @@ whitelisted_methods = {
 # }
 
 fixtures = [{
-#     "dt": "Server Script",
-#     "filters": [[
-#         "name", "in",
-#         [
-#             "Stock Entry Script", "Stock Entry After Save", "Scan Timestamp",
-#             "Harvest Stock Entry", "Automate Rejects Material Issue",
-#             "Create Box Labels", "Update Grading Forecast Tracker", "Update Sales Order ID on Save",
-#             "Update Forecast Tracker (During Grading)", "Update Tracker (During Grading Cancel)", "Update Tracker (Grading Forecast)",
-#             "Forecast Entry", "Allow Packing Of Returned Bunches"
-#         ]
-#     ]]
-# }, {
-#     "dt": "Client Script",
-#     "filters": [[
-#         "name", "in",
-#         [
-#             "Qr Code gen", "Close Box Button", "Scan Via Honeywell",
-#             "Scan Data Field Listener", "Scan QR Button",
-#             "Populate Number of Items", "Grading Stock Entry",
-#             "Field Rejects Stock Entry", "Archive Employee",
-#             "Transfer Grading Stock", "Generate Bucket Codes", "Harvest Scan",
-#             "New Form After Save", "Remove Read Only on Field",
-#             "Ensure Bucket Is Scanned On Save", "Field Rejects Stock Entry",
-#             "Hide Filter Button 2", "Hide Filter Button (Bucket QR Code List) 2", "Ensure Uppercase in Bay Field",
-#             "Grading Traceability Symbols", "SO target warehouse Population",
-#             "Set List View Limit to 500(GRADER)",
-#             "Set List View Limit to 500(BUNCH)",
-#             "Set List View Limit to 500(BUCKET)", "Restrict Bay to Alphabets",
-#             "Autopopulate Sales Order ID in CPL", "Ensure Items are in SO Before Manually Adding (FPL)",
-#         ]
-#     ]]
-# }, {
-#     "dt": "DocType",
-#     "filters": [[
-#         "name", "in",
-#         [
-#             "Scan Location", "QR Code", "Packing List", "Pack List Item",
-#             "Scan", "Farm", "Box Label", "Box Label Item", "Label Print",
-#             "Bucket QR Code", "Bunch QR Code", "Grader QR Code", "Harvest",
-#             "Scanned Items", "Scan Check", "Scan Check List", "QR Sequence",
-#             "Rejection Reason", "Grading Repack Tracker Item", "Grading Forecast Tracker",
-#             "Forecast Entry", "Forecast Entry Item"
-#         ]
-#     ]]
-# }, {
-#     "dt": "Print Format",
-#     "filters": [[
-#         "name", "in",
-#         [
-#             "QR Code Only", "Box Label", "Harvest Label",
-#             "Grader QR Print Format", "Bunch QR Code",
-#             "Trial Bunch Print Format", "Grader QR Print format 2",
-#             "Harvest Label 2"
-#         ]
-#     ]]
-# }, {
-#     "dt": "Custom DocPerm"
-# }, {
+    "dt": "Server Script",
+    "filters": [[
+        "name", "in",
+        [
+            "Stock Entry Script", "Stock Entry After Save", "Scan Timestamp",
+            "Harvest Stock Entry", "Automate Rejects Material Issue",
+            "Create Box Labels", "Update Grading Forecast Tracker", "Update Sales Order ID on Save",
+            "Update Forecast Tracker (During Grading)", "Update Tracker (During Grading Cancel)", "Update Tracker (Grading Forecast)",
+            "Forecast Entry", "Allow Packing Of Returned Bunches"
+        ]
+    ]]
+}, {
+    "dt": "Client Script",
+    "filters": [[
+        "name", "in",
+        [
+            "Qr Code gen", "Close Box Button", "Scan Via Honeywell",
+            "Scan Data Field Listener", "Scan QR Button",
+            "Populate Number of Items", "Grading Stock Entry",
+            "Field Rejects Stock Entry", "Archive Employee",
+            "Transfer Grading Stock", "Generate Bucket Codes", "Harvest Scan",
+            "New Form After Save", "Remove Read Only on Field",
+            "Ensure Bucket Is Scanned On Save", "Field Rejects Stock Entry",
+            "Hide Filter Button 2", "Hide Filter Button (Bucket QR Code List) 2", "Ensure Uppercase in Bay Field",
+            "Grading Traceability Symbols", "SO target warehouse Population",
+            "Set List View Limit to 500(GRADER)",
+            "Set List View Limit to 500(BUNCH)",
+            "Set List View Limit to 500(BUCKET)", "Restrict Bay to Alphabets",
+            "Autopopulate Sales Order ID in CPL", "Ensure Items are in SO Before Manually Adding (FPL)",
+            "Autopopulate Sales Order ID in FPL"
+        ]
+    ]]
+}, {
+    "dt": "DocType",
+    "filters": [[
+        "name", "in",
+        [
+            "Scan Location", "QR Code", "Packing List", "Pack List Item",
+            "Scan", "Farm", "Box Label", "Box Label Item", "Label Print",
+            "Bucket QR Code", "Bunch QR Code", "Grader QR Code", "Harvest",
+            "Scanned Items", "Scan Check", "Scan Check List", "QR Sequence",
+            "Rejection Reason", "Grading Repack Tracker Item", "Grading Forecast Tracker",
+            "Forecast Entry", "Forecast Entry Item"
+        ]
+    ]]
+}, {
+    "dt": "Print Format",
+    "filters": [[
+        "name", "in",
+        [
+            "QR Code Only", "Box Label", "Harvest Label",
+            "Grader QR Print Format", "Bunch QR Code",
+            "Trial Bunch Print Format", "Grader QR Print format 2",
+            "Harvest Label 2"
+        ]
+    ]]
+}, {
+    "dt": "Custom DocPerm"
+}, {
     "dt": "Workspace",
     "filters": [
         ["name", "in", ["Production Reports", "Packhouse and Sales", ]]
