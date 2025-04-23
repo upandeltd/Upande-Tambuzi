@@ -1546,11 +1546,11 @@
   "javascript": null,
   "json": null,
   "letter_head": "Tambuzi",
-  "modified": "2025-04-12 14:54:33.575745",
+  "modified": "2025-04-17 16:23:15.357224",
   "module": "Accounts",
   "name": "Sales Invoiced Report",
   "prepared_report": 0,
-  "query": "SELECT\r\n    si.customer AS \"Customer:Link/Customer:200\",\r\n    c.territory AS \"Country:Link/Territory:180\",\r\n    si.posting_date AS \"Invoice Date:Date:110\",\r\n    si.name AS \"Sales Invoice:Link/Sales Invoice:150\",\r\n    si.workflow_state AS \"Status:Data:80\",\r\n    si.custom_consolidated_packlist AS \"Cons. Pack List:Link/Consolidated Pack List:150\",\r\n    SUM(sii.qty * sii.conversion_factor) AS \"Stems:Int:70\",\r\n    si.base_net_total AS \"Amt Pre Tax (KES):Currency:130\",\r\n    si.base_total AS \"Amount (KES):Currency:130\"\r\nFROM\r\n    `tabSales Invoice` si\r\nJOIN\r\n    `tabSales Invoice Item` sii ON sii.parent = si.name\r\nJOIN\r\n    `tabCustomer` c ON c.name = si.customer\r\nWHERE\r\n    si.docstatus = 1\r\n    AND si.posting_date >= %(from_date)s\r\n    AND si.posting_date <= %(to_date)s\r\nGROUP BY\r\n    si.customer, c.territory, si.posting_date, si.name\r\nORDER BY\r\n    si.customer, si.posting_date, si.name;",
+  "query": "SELECT\n    si.customer AS \"Customer:Link/Customer:200\",\n    c.territory AS \"Country:Link/Territory:180\",\n    si.posting_date AS \"Invoice Date:Date:110\",\n    si.name AS \"SINV ID:Link/Sales Invoice:150\",\n    si.workflow_state AS \"SINV Status:Data:105\",\n    si.custom_consolidated_packlist AS \"CPL ID:Link/Consolidated Pack List:150\",\n    cpl.workflow_state AS \"CPL Status:Data:100\",\n    si.base_net_total AS \"Amt P.Tax KES:Currency:130\",\n    si.base_total AS \"Amt A.Tax KE):Currency:130\",\n    SUM(sii.qty * sii.conversion_factor) AS \"Stems_Inv:Int:100\",\n    dfi_sum.total_stems AS \"Stems_CPL:Int:100\",\n    SUM(sii.qty * sii.conversion_factor) - dfi_sum.total_stems AS \"Stems_VAR:Int:100\"\nFROM\n    `tabSales Invoice` si\nJOIN\n    `tabSales Invoice Item` sii ON sii.parent = si.name\nJOIN\n    `tabCustomer` c ON c.name = si.customer\nJOIN\n    `tabConsolidated Pack List` cpl ON si.custom_consolidated_packlist = cpl.name\nJOIN\n    (\n        SELECT \n            parent, \n            SUM(custom_number_of_stems) AS total_stems\n        FROM \n            `tabDispatch Form Item`\n        GROUP BY \n            parent\n    ) dfi_sum ON dfi_sum.parent = cpl.name\nWHERE\n    si.docstatus IN (0, 1)\n    AND si.posting_date >= %(from_date)s\n    AND si.posting_date <= %(to_date)s\nGROUP BY\n    si.customer, c.territory, si.posting_date, si.name, si.workflow_state, \n    si.base_net_total, si.base_total, si.custom_consolidated_packlist, \n    cpl.workflow_state, dfi_sum.total_stems\nORDER BY\n    si.customer, si.posting_date, si.name;",
   "ref_doctype": "Sales Invoice",
   "reference_report": null,
   "report_name": "Sales Invoiced Report",
@@ -2312,6 +2312,165 @@
     "parentfield": "roles",
     "parenttype": "Report",
     "role": "Harvest User"
+   }
+  ],
+  "timeout": 0
+ },
+ {
+  "add_total_row": 1,
+  "add_translate_data": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [
+   {
+    "default": "Today",
+    "fieldname": "from_date",
+    "fieldtype": "Date",
+    "label": "From Date",
+    "mandatory": 0,
+    "options": null,
+    "parent": "Harvest Received Report",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   },
+   {
+    "default": "Today",
+    "fieldname": "to_date",
+    "fieldtype": "Date",
+    "label": "To Date",
+    "mandatory": 0,
+    "options": null,
+    "parent": "Harvest Received Report",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   },
+   {
+    "default": "Burguret",
+    "fieldname": "farm",
+    "fieldtype": "Link",
+    "label": "Farm",
+    "mandatory": 0,
+    "options": "Farm",
+    "parent": "Harvest Received Report",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   }
+  ],
+  "is_standard": "No",
+  "javascript": null,
+  "json": "{\"columns\":[{\"fieldtype\":\"Link\",\"options\":\"Item Group\",\"width\":160,\"label\":\"Item Group\",\"fieldname\":\"item_group\",\"id\":\"item_group\",\"name\":\"Item Group\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Link\",\"options\":\"Item\",\"width\":200,\"label\":\"Item Code\",\"fieldname\":\"item_code\",\"id\":\"item_code\",\"name\":\"Item Code\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Link\",\"options\":\"Farm\",\"width\":100,\"label\":\"Farm\",\"fieldname\":\"farm\",\"id\":\"farm\",\"name\":\"Farm\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Link\",\"options\":\"Warehouse\",\"width\":100,\"label\":\"Block\",\"fieldname\":\"block\",\"id\":\"block\",\"name\":\"Block\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Data\",\"width\":60,\"label\":\"Bay\",\"fieldname\":\"bay\",\"id\":\"bay\",\"name\":\"Bay\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Int\",\"width\":95,\"label\":\"Good Pick\",\"fieldname\":\"good_pick\",\"id\":\"good_pick\",\"name\":\"Good Pick\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Int\",\"width\":90,\"label\":\"Rejected\",\"fieldname\":\"rejected\",\"id\":\"rejected\",\"name\":\"Rejected\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Int\",\"width\":90,\"label\":\"Total\",\"fieldname\":\"total\",\"id\":\"total\",\"name\":\"Total\",\"editable\":false,\"compareValue\":null},{\"fieldtype\":\"Select\",\"width\":180,\"label\":\"Rejection Reason\",\"fieldname\":\"rejection_reason\",\"id\":\"rejection_reason\",\"name\":\"Rejection Reason\",\"editable\":false,\"compareValue\":null}],\"filters\":{\"from_date\":\"2025-04-16\",\"to_date\":\"2025-04-16\",\"farm\":\"Burguret\"}}",
+  "letter_head": "Tambuzi",
+  "modified": "2025-04-16 22:32:51.492054",
+  "module": "Stock",
+  "name": "Harvest Received Report",
+  "prepared_report": 0,
+  "query": "SELECT\r\n    tw.custom_farm AS \"Farm:Link/Farm:90\",\r\n    se.custom_greenhouse AS \"Block:Link/Warehouse:140\",\r\n    UPPER(se.custom_block__bed_number) AS \"Bay:Data:60\",\r\n    i.item_group AS \"Item Group:Link/Item Group:160\",\r\n    sed.item_code AS \"Item Code:Link/Item:200\",\r\n    SUM(CASE WHEN se.stock_entry_type = 'Harvesting' THEN sed.qty ELSE 0 END) AS \"Good Pick:Int:95\",\r\n    SUM(CASE WHEN se.stock_entry_type = 'Receiving' THEN sed.qty ELSE 0 END) AS \"Received:Int:90\",\r\n    SUM(CASE WHEN se.stock_entry_type = 'Harvesting' THEN sed.qty ELSE 0 END)-\r\n        SUM(CASE WHEN se.stock_entry_type = 'Receiving' THEN sed.qty ELSE 0 END) AS \"Variance:Int:85\"\r\n    -- SUM(CASE WHEN se.stock_entry_type = 'Receiving' THEN sed.qty ELSE 0 END)*100/\r\n        -- SUM(CASE WHEN se.stock_entry_type = 'Harvesting' THEN sed.qty ELSE 0 END) AS \"Completion:Percent:90\"\r\nFROM\r\n    `tabStock Entry` se\r\nJOIN\r\n    `tabStock Entry Detail` sed ON sed.parent = se.name\r\nJOIN\r\n    `tabItem` i ON sed.item_code = i.item_code\r\nLEFT JOIN\r\n    `tabWarehouse` tw ON sed.t_warehouse = tw.name    \r\nWHERE\r\n    se.docstatus = 1\r\n    AND se.posting_date BETWEEN %(from_date)s AND %(to_date)s\r\n    AND tw.custom_farm = %(farm)s\r\n    AND se.stock_entry_type IN (\"Receiving\", \"Harvesting\")\r\nGROUP BY\r\n    tw.custom_farm,\r\n    se.custom_greenhouse, \r\n    UPPER(se.custom_block__bed_number),\r\n    i.item_group,\r\n    sed.item_code\r\nORDER BY \r\n    tw.custom_farm, \r\n    se.custom_greenhouse, \r\n    UPPER(se.custom_block__bed_number), \r\n    i.item_group, \r\n    sed.item_code;",
+  "ref_doctype": "Stock Entry",
+  "reference_report": "",
+  "report_name": "Harvest Received Report",
+  "report_script": null,
+  "report_type": "Query Report",
+  "roles": [
+   {
+    "parent": "Harvest Received Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock Manager"
+   },
+   {
+    "parent": "Harvest Received Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock User"
+   },
+   {
+    "parent": "Harvest Received Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Manufacturing Manager"
+   },
+   {
+    "parent": "Harvest Received Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Manufacturing User"
+   },
+   {
+    "parent": "Harvest Received Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Agronomist Clerk"
+   },
+   {
+    "parent": "Harvest Received Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Production Manager"
+   },
+   {
+    "parent": "Harvest Received Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Harvest Manager"
+   },
+   {
+    "parent": "Harvest Received Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Harvest User"
+   },
+   {
+    "parent": "Harvest Received Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Packing Supervisor"
+   },
+   {
+    "parent": "Harvest Received Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Pendekeza Packhouse Manager"
+   },
+   {
+    "parent": "Harvest Received Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Assistant Packhouse Manager"
+   },
+   {
+    "parent": "Harvest Received Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Turacco Packhouse Manager"
+   },
+   {
+    "parent": "Harvest Received Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Sales Representative"
+   },
+   {
+    "parent": "Harvest Received Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Tambuzi Trainer"
+   },
+   {
+    "parent": "Harvest Received Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Sales Manager"
+   },
+   {
+    "parent": "Harvest Received Report",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "CEO"
    }
   ],
   "timeout": 0
