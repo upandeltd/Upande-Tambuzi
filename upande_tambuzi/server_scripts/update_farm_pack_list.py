@@ -43,7 +43,7 @@ def add_bunch_to_farm_pack_list(farm_pack_list_doc_id, bunch_SE_name, opl_name, 
         item_found = False
 
         for item in pack_list_doc.pack_list_item:
-            if item.item_code == item_code and item.bunch_uom == uom and item.box_id == box_id:
+            if item.item_code == item_code and item.bunch_uom == uom and item.box_id == box_id and item.custom_opl_id == order_id:
                 item.bunch_qty += 1
                 item.custom_number_of_stems += bunch_stems
 
@@ -62,7 +62,8 @@ def add_bunch_to_farm_pack_list(farm_pack_list_doc_id, bunch_SE_name, opl_name, 
                 "box_id": box_id,
                 "custom_number_of_stems": bunch_stems,
                 "stem_length": stem_length,
-                "custom_box_label": box_label
+                "custom_box_label": box_label,
+                "custom_opl_id": order_id,
             })
         
         pack_list_doc.docstatus = 0

@@ -161,13 +161,18 @@ doc_events = {
     "Consolidated Pack List": {
         "on_submit":
         "upande_tambuzi.server_scripts.create_sales_invoice.create_sales_invoice_from_packlist",
+        "on_cancel":
+        "upande_tambuzi.server_scripts.events.on_cpl_cancel"
+
         # "before_submit":
         # "upande_tambuzi.server_scripts.completion_percentage.validate_completion_percentage"
     },
     "Sales Invoice": {
         "on_submit":
-        "upande_tambuzi.server_scripts.sinv_approved_by.set_approved_by"
-    },
+        "upande_tambuzi.server_scripts.sinv_approved_by.set_approved_by",
+        "on_cancel":
+        "upande_tambuzi.server_scripts.events.on_sales_invoice_cancel"
+                },
     "Farm Pack List": {
         "before_cancel":
         "upande_tambuzi.server_scripts.fpl_to_cpl_link.before_cancel"
@@ -288,19 +293,19 @@ whitelisted_methods = {
 # }
 
 fixtures = [{
-    "dt":
-    "Server Script",
+    "dt": "Server Script",
     "filters": [[
         "name", "in",
         [
             "Stock Entry Script", "Stock Entry After Save", "Scan Timestamp",
             "Harvest Stock Entry", "Automate Rejects Material Issue",
-            "Create Box Labels"
+            "Create Box Labels", "Update Grading Forecast Tracker", "Update Sales Order ID on Save",
+            "Update Forecast Tracker (During Grading)", "Update Tracker (During Grading Cancel)", "Update Tracker (Grading Forecast)",
+            "Forecast Entry", "Allow Packing Of Returned Bunches"
         ]
     ]]
 }, {
-    "dt":
-    "Client Script",
+    "dt": "Client Script",
     "filters": [[
         "name", "in",
         [
@@ -311,16 +316,16 @@ fixtures = [{
             "Transfer Grading Stock", "Generate Bucket Codes", "Harvest Scan",
             "New Form After Save", "Remove Read Only on Field",
             "Ensure Bucket Is Scanned On Save", "Field Rejects Stock Entry",
-            "Hide Filter Button", "Ensure Uppercase in Bay Field",
-            "Grading Traceability Symbols",
+            "Hide Filter Button 2", "Hide Filter Button (Bucket QR Code List) 2", "Ensure Uppercase in Bay Field",
+            "Grading Traceability Symbols", "SO target warehouse Population",
             "Set List View Limit to 500(GRADER)",
             "Set List View Limit to 500(BUNCH)",
-            "Set List View Limit to 500(BUCKET)", "Restrict Bay to Alphabets"
+            "Set List View Limit to 500(BUCKET)", "Restrict Bay to Alphabets",
+            "Autopopulate Sales Order ID in CPL", "Ensure Items are in SO Before Manually Adding (FPL)",
         ]
     ]]
 }, {
-    "dt":
-    "DocType",
+    "dt": "DocType",
     "filters": [[
         "name", "in",
         [
@@ -328,12 +333,12 @@ fixtures = [{
             "Scan", "Farm", "Box Label", "Box Label Item", "Label Print",
             "Bucket QR Code", "Bunch QR Code", "Grader QR Code", "Harvest",
             "Scanned Items", "Scan Check", "Scan Check List", "QR Sequence",
-            "Rejection Reason"
+            "Rejection Reason", "Grading Repack Tracker Item", "Grading Forecast Tracker",
+            "Forecast Entry", "Forecast Entry Item"
         ]
     ]]
 }, {
-    "dt":
-    "Print Format",
+    "dt": "Print Format",
     "filters": [[
         "name", "in",
         [
@@ -343,13 +348,42 @@ fixtures = [{
             "Harvest Label 2"
         ]
     ]]
-}, {
+}, 
+{
     "dt": "Custom DocPerm"
 }, {
-    "dt":
-    "Report",
-    "filters": [[
-        "name", "in",
-        ["Field Rejects Report", "Packhouse Discards/Rejects Report"]
-    ]]
+    "dt": "Workspace",
+    "filters": [
+        ["name", "in", ["Production Reports", "Packhouse and Sales", ]]
+    ]
+}, {
+    "dt": "Report",
+    "filters": [
+        ["name", 
+         "in", 
+         [
+            "Harvest and Field Rejects Report",
+            "Harvest by Item Group",
+            "Harvest Pick Report",
+            "Harvest Received Report",
+            "Harvest Summary by Time of Day",
+            "Harvest Totals by Variety",
+            "Available for Sale Stock Balance",
+            "Stock Sheet_Available for Sale",
+            "Stock Sheet_Ungraded",
+            "Ungraded Stock Balance",
+            "Field Rejects Report",
+            "Overall Discards and Rejects Report",
+            "Weekly Discards/Rejects Report",
+            "Harvesting Stock Entries",
+            "Grading Stock Entries",
+            "Receiving Stock Entries",
+            "Packhouse Discards or Rejects Details",
+            "Packhouse Discards or Rejects Report",
+            "Sales Invoiced Report",
+            "Sales Invoice Details",
+            "Sales Order Report",
+            "Sales per Variety Report (SO)"
+        ]]
+    ]
 }]
