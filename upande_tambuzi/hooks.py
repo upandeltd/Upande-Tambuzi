@@ -169,8 +169,7 @@ doc_events = {
     "Consolidated Pack List": {
         "on_submit":
         "upande_tambuzi.server_scripts.create_sales_invoice.create_sales_invoice_from_packlist",
-        "on_cancel":
-        "upande_tambuzi.server_scripts.events.on_cpl_cancel"
+        "on_cancel": "upande_tambuzi.server_scripts.events.on_cpl_cancel"
 
         # "before_submit":
         # "upande_tambuzi.server_scripts.completion_percentage.validate_completion_percentage"
@@ -180,7 +179,7 @@ doc_events = {
         "upande_tambuzi.server_scripts.sinv_approved_by.set_approved_by",
         "on_cancel":
         "upande_tambuzi.server_scripts.events.on_sales_invoice_cancel"
-                },
+    },
     "Farm Pack List": {
         "before_cancel":
         "upande_tambuzi.server_scripts.fpl_to_cpl_link.before_cancel"
@@ -313,7 +312,7 @@ fixtures = [{
             "Update Forecast Tracker (During Grading)",
             "Update Tracker (During Grading Cancel)",
             "Update Tracker (Grading Forecast)", "Forecast Entry",
-            "Allow Packing Of Returned Bunches"
+            "Allow Packing Of Returned Bunches", "FPL Block New Version"
         ]
     ]]
 }, {
@@ -349,6 +348,7 @@ fixtures = [{
             "Restrict Bay to Alphabets",
             "Autopopulate Sales Order ID in CPL",
             "Ensure Items are in SO Before Manually Adding (FPL)",
+            "Authorise Under Pack Button in FPL",
         ]
     ]]
 }, {
@@ -377,8 +377,7 @@ fixtures = [{
             "Harvest Label 2"
         ]
     ]]
-}, 
-{
+}, {
     "dt": "Custom DocPerm"
 }, {
     "dt":

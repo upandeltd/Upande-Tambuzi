@@ -226,5 +226,24 @@
   "reference_doctype": "Order Pick List",
   "script": "stock_entries = frappe.get_all(\"Stock Entry\", filters={\"custom_opl_scanned\": doc.name}, fields=[\"name\"])\n\nfor entry in stock_entries:\n    se_doc = frappe.get_doc(\"Stock Entry\", entry.name)\n\n    if se_doc.docstatus == 1:\n        se_doc.db_set(\"custom_scanned_packing\", 0)\n",
   "script_type": "DocType Event"
+ },
+ {
+  "allow_guest": 0,
+  "api_method": null,
+  "cron_format": null,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Server Script",
+  "doctype_event": "Before Save",
+  "enable_rate_limit": 0,
+  "event_frequency": "All",
+  "modified": "2025-04-24 09:36:43.167482",
+  "module": "Upande Tambuzi",
+  "name": "FPL Block New Version",
+  "rate_limit_count": 5,
+  "rate_limit_seconds": 86400,
+  "reference_doctype": "Farm Pack List",
+  "script": "# Server Script: Farm Pack List Validation\n# DocType: Farm Pack List\n# Event: Before Save\n# Script Type: Server\n\n# Calculate completion percentage\npacked_stems = int(doc.custom_total_stems or 0)\nrequired_stems = int(doc.custom_picked_total_stems or 0)\ncompletion_percentage = 0\n\nif required_stems > 0:\n    completion_percentage = (packed_stems / required_stems) * 100\n    doc.custom_completion_percentage = completion_percentage\n\n# Validate when moving from Draft to Pending Order Review\nif doc.workflow_state == \"Pending Order Review\" and doc.get_doc_before_save().workflow_state == \"Draft\":\n    if completion_percentage < 100:\n        # Check if this was initiated via the Authorize Under Pack button\n        # We'll identify this by the presence of the under_pack_reason\n        if not doc.custom_under_pack_reason:\n            message = f\"\"\"\n                <b>This Farm Pack List cannot be sent for review before all ordered stems are packed.</b><br><br>\n                Packed Stems: <b>{packed_stems}</b><br>\n                Required Stems (from Order Pick List): <b>{required_stems}</b><br>\n                Packing Completion: <b>{round(completion_percentage, 2)}%</b><br><br>\n                If you cannot complete this packing, please add an Under Pack Reason and use the \"Authorise Under Pack\" button.\n                \"\"\"\n            frappe.throw(message)\n    elif completion_percentage > 100:\n        frappe.throw(\"You have over packed!\")\n\n# Validate when moving from Pending Order Review to Reviewed\nelif doc.workflow_state == \"Reviewed\" and doc.get_doc_before_save().workflow_state == \"Pending Order Review\":\n    if completion_percentage < 100:\n        # Check if this has been approved via our custom function\n        comments = frappe.get_all(\"Comment\", \n            filters={\n                \"reference_doctype\": \"Farm Pack List\",\n                \"reference_name\": doc.name,\n                \"content\": [\"like\", \"%Under Pack approved by%\"]\n            },\n            fields=[\"name\"]\n        )\n        \n        # If no approval comments exist, block the action\n        if not comments:\n            message = f\"\"\"\n                <b>You cannot approve this under-packed Farm Pack List without proper authorization.</b><br><br>\n                Packed Stems: <b>{packed_stems}</b><br>\n                Required Stems (from Order Pick List): <b>{required_stems}</b><br>\n                Completion: <b>{round(completion_percentage, 2)}%</b><br><br>\n                This document requires approval using the \"Approve Under Pack\" button by a Sales Manager.\n                \"\"\"\n            frappe.throw(message)",
+  "script_type": "DocType Event"
  }
 ]
