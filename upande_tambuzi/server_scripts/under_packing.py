@@ -80,6 +80,6 @@ def reject_under_pack(doc_name):
 
     doc = frappe.get_doc("Farm Pack List", doc_name)
 
-    doc.db_set('workflow_state', 'Rejected', update_modified=True)
+    doc.db_set('workflow_state', 'Draft', update_modified=True)
 
     return True
