@@ -2,10 +2,11 @@ import frappe
 
 
 @frappe.whitelist()
-def reserve_stems(item_code, custom_source_warehouse, stems_requested):
+def reserve_stems(item_code, custom_source_warehouse, stems_requested,
+                  sales_order_item):
     stems_requested = int(stems_requested)
 
-    # Determine destination: Graded Reserve warehouse
+    # Destination warehouse (Reserve)
     farm = custom_source_warehouse.split(" ")[0]
     graded_reserve_warehouse = f"{farm} Graded Reserve - TL"
 
@@ -34,77 +35,99 @@ def reserve_stems(item_code, custom_source_warehouse, stems_requested):
             "warehouse": custom_source_warehouse
         }, "reserved_qty", bin_data.reserved_qty + stems_to_reserve)
 
+        # Create stock entry
+        if sales_order_item and not sales_order_item.startswith("new-"):
+            # Cancel existing stock entries
+            cancel_stock_entry_for_sales_order_item(sales_order_item)
+
+            # Create new stock entry
+            stock_entry_name = create_stock_entry(
+                item_code=item_code,
+                source_warehouse=custom_source_warehouse,
+                target_warehouse=graded_reserve_warehouse,
+                qty=stems_to_reserve,
+                sales_order_item=sales_order_item)
+            if stock_entry_name:
+                frappe.msgprint(
+                    f"Stock Entry {stock_entry_name} created for {item_code}")
+
     return {
         "reserved_qty":
         stems_to_reserve,
         "status":
         "Reserved" if stems_to_reserve > 0 else "Insufficient Stock",
         "message":
-        f"{'Reserved' if stems_to_reserve > 0 else 'Could not reserve'} {stems_to_reserve} stems for {item_code} from {custom_source_warehouse}."
+        f"{'Reserved' if stems_to_reserve > 0 else 'Could not reserve'} {stems_to_reserve} stems for {item_code}."
     }
 
 
-# @frappe.whitelist()
-# def unreserve_on_row_delete(item_code, custom_source_warehouse, reserved_qty):
-#     reserved_qty = int(reserved_qty)
+def create_stock_entry(item_code, source_warehouse, target_warehouse, qty,
+                       sales_order_item):
+    if not frappe.db.exists("Sales Order Item", sales_order_item):
+        return None
+    try:
+        stock_entry = frappe.new_doc("Stock Entry")
+        stock_entry.purpose = "Material Transfer"
+        stock_entry.stock_entry_type = "Material Transfer"
+        stock_entry.from_warehouse = source_warehouse
+        stock_entry.to_warehouse = target_warehouse
+        stock_entry.custom_sales_order_item = sales_order_item
+        stock_entry.append(
+            "items", {
+                "item_code":
+                item_code,
+                "qty":
+                qty,
+                "s_warehouse":
+                source_warehouse,
+                "t_warehouse":
+                target_warehouse,
+                "basic_rate":
+                frappe.get_value("Item", item_code, "valuation_rate") or 0
+            })
+        stock_entry.insert()
+        stock_entry.submit()
+        frappe.db.commit()
+        return stock_entry.name
+    except Exception as e:
+        frappe.log_error(f"Error creating stock entry: {str(e)}",
+                         "Stock Entry Creation")
+        return None
 
-#     if not item_code or not custom_source_warehouse:
-#         return {
-#             "status": "Error",
-#             "message": "Missing item_code or custom_source_warehouse."
-#         }
 
-#     bin_data = frappe.get_value("Bin", {
-#         "item_code": item_code,
-#         "warehouse": custom_source_warehouse
-#     }, ["reserved_qty"],
-#                                 as_dict=True)
+@frappe.whitelist()
+def cancel_stock_entry_for_sales_order_item(sales_order_item):
+    if not sales_order_item or sales_order_item.startswith("new-"):
+        return 0
 
-#     if not bin_data:
-#         return {
-#             "status":
-#             "Not Found",
-#             "message":
-#             f"No bin record found for {item_code} in {custom_source_warehouse}."
-#         }
+    stock_entries = frappe.get_all("Stock Entry",
+                                   filters={
+                                       "custom_sales_order_item":
+                                       sales_order_item,
+                                       "docstatus": 1
+                                   },
+                                   pluck="name")
 
-#     new_reserved_qty = max(0, bin_data.reserved_qty - reserved_qty)
+    cancelled_count = 0
+    for se_name in stock_entries:
+        try:
+            se = frappe.get_doc("Stock Entry", se_name)
+            se.cancel()
+            cancelled_count += 1
+        except Exception as e:
+            frappe.log_error(
+                f"Failed to cancel Stock Entry {se_name}: {str(e)}")
 
-#     frappe.db.set_value("Bin", {
-#         "item_code": item_code,
-#         "warehouse": custom_source_warehouse
-#     }, "reserved_qty", new_reserved_qty)
+    return cancelled_count
 
-#     return {
-#         "status": "Unreserved",
-#         "message":
-#         f"Unreserved {reserved_qty} stems for {item_code} from {custom_source_warehouse}.",
-#         "new_reserved_qty": new_reserved_qty
-#     }
 
-# def on_sales_order_item_delete(doc, method):
-#     """Handle unreserving when a Sales Order Item is deleted"""
-#     try:
-#         if doc.item_code and hasattr(
-#                 doc, 'custom_source_warehouse') and hasattr(
-#                     doc, 'custom_reserved_qty'
-#                 ) and doc.custom_source_warehouse and doc.custom_reserved_qty:
-#             # Call your existing function
-#             result = unreserve_on_row_delete(
-#                 item_code=doc.item_code,
-#                 custom_source_warehouse=doc.custom_source_warehouse,
-#                 reserved_qty=doc.custom_reserved_qty)
-#             # Log the action
-#             frappe.logger().info(
-#                 f"Unreserved {doc.custom_reserved_qty} of {doc.item_code} from {doc.custom_source_warehouse}"
-#             )
-#             frappe.logger().info(f"Result: {result}")
-#     except Exception as e:
-#         frappe.logger().error(f"Error in unreserve on delete: {str(e)}")
-
-#     frappe.msgprint(
-#         f"Unreserved {doc.custom_reserved_qty} of {doc.item_code} from {doc.custom_source_warehouse}"
-#     )
+@frappe.whitelist()
+def delete_reservation_and_stock_entry(sales_order_item):
+    """Used when deleting a Sales Order Item"""
+    if not sales_order_item or sales_order_item.startswith("new-"):
+        return
+    cancel_stock_entry_for_sales_order_item(sales_order_item)
+    # TODO: Optionally unreserve stock here if you want
 
 
 @frappe.whitelist()
