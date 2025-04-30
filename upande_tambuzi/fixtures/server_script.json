@@ -226,5 +226,43 @@
   "reference_doctype": "Order Pick List",
   "script": "stock_entries = frappe.get_all(\"Stock Entry\", filters={\"custom_opl_scanned\": doc.name}, fields=[\"name\"])\n\nfor entry in stock_entries:\n    se_doc = frappe.get_doc(\"Stock Entry\", entry.name)\n\n    if se_doc.docstatus == 1:\n        se_doc.db_set(\"custom_scanned_packing\", 0)\n",
   "script_type": "DocType Event"
+ },
+ {
+  "allow_guest": 0,
+  "api_method": null,
+  "cron_format": null,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Server Script",
+  "doctype_event": "Before Submit",
+  "enable_rate_limit": 0,
+  "event_frequency": "All",
+  "modified": "2025-04-24 15:11:30.790753",
+  "module": "Upande Tambuzi",
+  "name": "Lock Dates On Submit of Sales Invoice",
+  "rate_limit_count": 5,
+  "rate_limit_seconds": 86400,
+  "reference_doctype": "Sales Invoice",
+  "script": "if frappe.db.exists(\"Sales Invoice\", doc.name):\n    inv_doc = frappe.get_doc(\n        \"Sales Invoice\",\n        doc.name,\n    )\n    \n    original_posting_date = inv_doc.get(\"posting_date\")\n    original_posting_time = inv_doc.get(\"posting_time\")\n    original_due_date = inv_doc.get(\"due_date\")\n    \n\n    if inv_doc:\n        \n        if original_posting_date:\n            doc.posting_date = original_posting_date\n\n        if original_posting_time:\n            doc.posting_time = original_posting_time\n\n        if original_due_date:\n            doc.due_date = original_due_date\n",
+  "script_type": "DocType Event"
+ },
+ {
+  "allow_guest": 0,
+  "api_method": null,
+  "cron_format": null,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Server Script",
+  "doctype_event": "Before Insert",
+  "enable_rate_limit": 0,
+  "event_frequency": "All",
+  "modified": "2025-04-30 13:07:57.630604",
+  "module": "Upande Tambuzi",
+  "name": "Validate unique bucket ID",
+  "rate_limit_count": 5,
+  "rate_limit_seconds": 86400,
+  "reference_doctype": "Stock Entry",
+  "script": "if doc.stock_entry_type == \"Harvesting\":\n    if not doc.custom_bucket_id:\n        frappe.throw(f\"Bucket ID needed for {doc.stock_entry_type} Stock Entry\")\n        \n\n    if doc.get(\"__islocal\") or doc.has_value_changed(\"custom_bucket_id\"):\n        existing = frappe.db.sql(\"\"\"\n            SELECT name FROM `tabStock Entry` \n            WHERE custom_bucket_id = %s AND name != %s\n        \"\"\", (doc.custom_bucket_id, doc.name or \"\"), as_dict=1)\n    \n        if existing:\n            frappe.throw(f\"The Bucket ID '{doc.custom_bucket_id}' is already in use. Please choose a unique value.\")\n    \n    \n    \nelif doc.stock_entry_type == \"Receiving\" or doc.stock_entry_type == \"Receiving Quarantined\":\n    if not doc.custom_received_bucket_id:\n        frappe.throw(f\"Bucket ID needed for {doc.stock_entry_type} Stock Entry\")\n        \n    if doc.get(\"__islocal\") or doc.has_value_changed(\"custom_received_bucket_id\"):\n        existing = frappe.db.sql(\"\"\"\n            SELECT name FROM `tabStock Entry` \n            WHERE custom_received_bucket_id = %s AND name != %s\n        \"\"\", (doc.custom_received_bucket_id, doc.name or \"\"), as_dict=1)\n    \n        if existing:\n            frappe.throw(f\"The Bucket ID '{doc.custom_received_bucket_id}' is already in use. Please choose a unique value.\")",
+  "script_type": "DocType Event"
  }
 ]

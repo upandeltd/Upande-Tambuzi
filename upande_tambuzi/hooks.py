@@ -301,7 +301,8 @@ fixtures = [{
             "Harvest Stock Entry", "Automate Rejects Material Issue",
             "Create Box Labels", "Update Grading Forecast Tracker", "Update Sales Order ID on Save",
             "Update Forecast Tracker (During Grading)", "Update Tracker (During Grading Cancel)", "Update Tracker (Grading Forecast)",
-            "Forecast Entry", "Allow Packing Of Returned Bunches"
+            "Forecast Entry", "Allow Packing Of Returned Bunches", "Lock Dates On Submit of Sales Invoice",
+            "Validate unique bucket ID"
         ]
     ]]
 }, {
