@@ -14,7 +14,6 @@
   "sales_order",
   "date_created",
   "naming_series",
-  "column_break_dlav",
   "locations_section",
   "locations",
   "amended_from"
@@ -85,10 +84,6 @@
    "print_hide": 1,
    "read_only": 1,
    "search_index": 1
-  },
-  {
-   "fieldname": "column_break_dlav",
-   "fieldtype": "Column Break"
   }
  ],
  "grid_page_length": 50,
@@ -203,5 +198,7 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": []
+ "states": [],
+ "track_changes": 1,
+ "track_views": 1
 }
