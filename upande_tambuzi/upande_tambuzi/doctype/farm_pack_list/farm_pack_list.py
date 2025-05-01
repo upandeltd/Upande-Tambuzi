@@ -202,6 +202,7 @@ def process_consolidated_pack_list(farm_pack_list, sales_order_id=None):
         cpl.custom_customer = farm_pack_doc.custom_customer
         cpl.custom_currency = farm_pack_doc.custom_currency
         cpl.custom_customer_address = farm_pack_doc.custom_customer_address
+        #cpl.custom_sales_order = farm_pack_doc.custom_sales_order
 
         if "items" not in cpl.as_dict():
             frappe.throw("Field 'items' does not exist in CPL")
@@ -215,8 +216,7 @@ def process_consolidated_pack_list(farm_pack_list, sales_order_id=None):
                                               item.custom_box_label)
 
             cpl.append(
-                "items",
-                {
+                "items", {
                     "source_warehouse": "Delivery Truck - TL",
                     "customer_id": item.customer_id,
                     "sales_order_id": item.sales_order_id,
@@ -228,8 +228,7 @@ def process_consolidated_pack_list(farm_pack_list, sales_order_id=None):
                     "consolidated_pack_list_id":
                     item.consolidated_pack_list_id,
                     "custom_number_of_stems": item.custom_number_of_stems,
-                    "custom_box_label":
-                    box_label  # Updated to fetch from Sales Order
+                    "custom_box_label": box_label
                 })
 
             # Update total stems count

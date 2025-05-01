@@ -149,24 +149,36 @@ app_include_js = [
 # }
 doc_events = {
     "Sales Order": {
-        "on_submit":
-        "upande_tambuzi.server_scripts.pick_list_automation.create_pick_list_for_sales_order",
+        "on_submit": [
+            #"upande_tambuzi.server_scripts.reserve_stock.unreserve_stems",
+            "upande_tambuzi.server_scripts.pick_list_automation.create_pick_list_for_sales_order"
+        ],
+        "on_update": [
+            # "upande_tambuzi.server_scripts.reserve_stock.on_sales_order_update",
+            "upande_tambuzi.server_scripts.so_delivery_warehouse.handle_sales_order_approval"
+        ],
         "before_submit":
         "upande_tambuzi.upande_tambuzi.custom.sales_order_custom.validate_customer_check_limit",
-        "on_update":
-        "upande_tambuzi.server_scripts.so_delivery_warehouse.handle_sales_order_approval",
         "on_cancel":
-        "upande_tambuzi.server_scripts.so_delivery_warehouse.handle_sales_order_cancellation"
+        "upande_tambuzi.server_scripts.so_delivery_warehouse.handle_sales_order_cancel",
+        # "on_save":
+        # "upande_tambuzi.server_scripts.reserve_stock.on_sales_order_save",
+        # "after_insert":
+        # "upande_tambuzi.server_scripts.reserve_stock.on_sales_order_created",
     },
     "Consolidated Pack List": {
         "on_submit":
         "upande_tambuzi.server_scripts.create_sales_invoice.create_sales_invoice_from_packlist",
+        "on_cancel": "upande_tambuzi.server_scripts.events.on_cpl_cancel"
+
         # "before_submit":
         # "upande_tambuzi.server_scripts.completion_percentage.validate_completion_percentage"
     },
     "Sales Invoice": {
         "on_submit":
-        "upande_tambuzi.server_scripts.sinv_approved_by.set_approved_by"
+        "upande_tambuzi.server_scripts.sinv_approved_by.set_approved_by",
+        "on_cancel":
+        "upande_tambuzi.server_scripts.events.on_sales_invoice_cancel"
     },
     "Farm Pack List": {
         "before_cancel":
@@ -295,7 +307,12 @@ fixtures = [{
         [
             "Stock Entry Script", "Stock Entry After Save", "Scan Timestamp",
             "Harvest Stock Entry", "Automate Rejects Material Issue",
-            "Create Box Labels"
+            "Create Box Labels", "Update Grading Forecast Tracker",
+            "Update Sales Order ID on Save",
+            "Update Forecast Tracker (During Grading)",
+            "Update Tracker (During Grading Cancel)",
+            "Update Tracker (Grading Forecast)", "Forecast Entry",
+            "Allow Packing Of Returned Bunches", "FPL Block New Version"
         ]
     ]]
 }, {
@@ -304,18 +321,34 @@ fixtures = [{
     "filters": [[
         "name", "in",
         [
-            "Qr Code gen", "Close Box Button", "Scan Via Honeywell",
-            "Scan Data Field Listener", "Scan QR Button",
-            "Populate Number of Items", "Grading Stock Entry",
-            "Field Rejects Stock Entry", "Archive Employee",
-            "Transfer Grading Stock", "Generate Bucket Codes", "Harvest Scan",
-            "New Form After Save", "Remove Read Only on Field",
-            "Ensure Bucket Is Scanned On Save", "Field Rejects Stock Entry",
-            "Hide Filter Button", "Ensure Uppercase in Bay Field",
+            "Qr Code gen",
+            "Close Box Button",
+            "Scan Via Honeywell",
+            "Scan Data Field Listener",
+            "Scan QR Button",
+            "Populate Number of Items",
+            "Grading Stock Entry",
+            "Field Rejects Stock Entry",
+            "Archive Employee",
+            "Transfer Grading Stock",
+            "Generate Bucket Codes",
+            "Harvest Scan",
+            "New Form After Save",
+            "Remove Read Only on Field",
+            "Ensure Bucket Is Scanned On Save",
+            "Field Rejects Stock Entry",
+            "Hide Filter Button 2",
+            "Hide Filter Button (Bucket QR Code List) 2",
+            "Ensure Uppercase in Bay Field",
             "Grading Traceability Symbols",
+            "SO target warehouse Population",
             "Set List View Limit to 500(GRADER)",
             "Set List View Limit to 500(BUNCH)",
-            "Set List View Limit to 500(BUCKET)", "Restrict Bay to Alphabets"
+            "Set List View Limit to 500(BUCKET)",
+            "Restrict Bay to Alphabets",
+            "Autopopulate Sales Order ID in CPL",
+            "Ensure Items are in SO Before Manually Adding (FPL)",
+            "Authorise Under Pack Button in FPL",
         ]
     ]]
 }, {
@@ -328,7 +361,8 @@ fixtures = [{
             "Scan", "Farm", "Box Label", "Box Label Item", "Label Print",
             "Bucket QR Code", "Bunch QR Code", "Grader QR Code", "Harvest",
             "Scanned Items", "Scan Check", "Scan Check List", "QR Sequence",
-            "Rejection Reason"
+            "Rejection Reason", "Grading Repack Tracker Item",
+            "Grading Forecast Tracker", "Forecast Entry", "Forecast Entry Item"
         ]
     ]]
 }, {
@@ -347,9 +381,31 @@ fixtures = [{
     "dt": "Custom DocPerm"
 }, {
     "dt":
+    "Workspace",
+    "filters":
+    [["name", "in", [
+        "Production Reports",
+        "Packhouse and Sales",
+    ]]]
+}, {
+    "dt":
     "Report",
     "filters": [[
         "name", "in",
-        ["Field Rejects Report", "Packhouse Discards/Rejects Report"]
+        [
+            "Harvest and Field Rejects Report", "Harvest by Item Group",
+            "Harvest Pick Report", "Harvest Received Report",
+            "Harvest Summary by Time of Day", "Harvest Totals by Variety",
+            "Available for Sale Stock Balance",
+            "Stock Sheet_Available for Sale", "Stock Sheet_Ungraded",
+            "Ungraded Stock Balance", "Field Rejects Report",
+            "Overall Discards and Rejects Report",
+            "Weekly Discards/Rejects Report", "Harvesting Stock Entries",
+            "Grading Stock Entries", "Receiving Stock Entries",
+            "Packhouse Discards or Rejects Details",
+            "Packhouse Discards or Rejects Report", "Sales Invoiced Report",
+            "Sales Invoice Details", "Sales Order Report",
+            "Sales per Variety Report (SO)"
+        ]
     ]]
 }]
