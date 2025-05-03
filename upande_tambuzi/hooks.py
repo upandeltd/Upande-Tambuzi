@@ -312,7 +312,8 @@ fixtures = [{
             "Update Forecast Tracker (During Grading)",
             "Update Tracker (During Grading Cancel)",
             "Update Tracker (Grading Forecast)", "Forecast Entry",
-            "Allow Packing Of Returned Bunches", "FPL Block New Version"
+            "Allow Packing Of Returned Bunches", "FPL Block New Version", "Lock Dates On Submit of Sales Invoice",
+            "Validate unique bucket ID"
         ]
     ]]
 }, {
@@ -349,6 +350,7 @@ fixtures = [{
             "Autopopulate Sales Order ID in CPL",
             "Ensure Items are in SO Before Manually Adding (FPL)",
             "Authorise Under Pack Button in FPL",
+            "Autopopulate Sales Order ID in FPL"
         ]
     ]]
 }, {

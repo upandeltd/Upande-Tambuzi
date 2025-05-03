@@ -16,13 +16,15 @@ def create_stock_entry(stock_entry_data):
     harvester = stock_entry_data.get("harvester")
     greenhouse = stock_entry_data.get("greenhouse")
     block__bed_number = stock_entry_data.get("block__bed_number")
-    
+    bucket_id = stock_entry_data.get("bucket_id")
+ 
     stock_entry.stock_entry_type = stock_entry_type 
 
     stock_entry.custom_greenhouse = greenhouse
     stock_entry.custom_harvester = harvester
     stock_entry.custom_grower = grower
     stock_entry.custom_block__bed_number = block__bed_number
+    stock_entry.custom_received_bucket_id = bucket_id
 
     stock_entry.append("items", {
         "item_code": variety,
