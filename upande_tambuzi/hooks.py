@@ -161,10 +161,10 @@ doc_events = {
         "upande_tambuzi.upande_tambuzi.custom.sales_order_custom.validate_customer_check_limit",
         "on_cancel":
         "upande_tambuzi.server_scripts.so_delivery_warehouse.handle_sales_order_cancellation",
-    },
-    "Sales Order Item": {
-        "on_trash":
-        "upande_tambuzi.server_scripts.reserve_stock.on_sales_order_item_delete",
+        # "on_save":
+        # "upande_tambuzi.server_scripts.reserve_stock.on_sales_order_save",
+        # "after_insert":
+        # "upande_tambuzi.server_scripts.reserve_stock.on_sales_order_created",
     },
     "Consolidated Pack List": {
         "on_submit":
@@ -312,7 +312,9 @@ fixtures = [{
             "Update Forecast Tracker (During Grading)",
             "Update Tracker (During Grading Cancel)",
             "Update Tracker (Grading Forecast)", "Forecast Entry",
-            "Allow Packing Of Returned Bunches", "FPL Block New Version"
+            "Allow Packing Of Returned Bunches", "FPL Block New Version",
+            "Lock Dates On Submit of Sales Invoice",
+            "Validate unique bucket ID"
         ]
     ]]
 }, {
@@ -321,34 +323,24 @@ fixtures = [{
     "filters": [[
         "name", "in",
         [
-            "Qr Code gen",
-            "Close Box Button",
-            "Scan Via Honeywell",
-            "Scan Data Field Listener",
-            "Scan QR Button",
-            "Populate Number of Items",
-            "Grading Stock Entry",
-            "Field Rejects Stock Entry",
-            "Archive Employee",
-            "Transfer Grading Stock",
-            "Generate Bucket Codes",
-            "Harvest Scan",
-            "New Form After Save",
-            "Remove Read Only on Field",
-            "Ensure Bucket Is Scanned On Save",
-            "Field Rejects Stock Entry",
+            "Qr Code gen", "Close Box Button", "Scan Via Honeywell",
+            "Scan Data Field Listener", "Scan QR Button",
+            "Populate Number of Items", "Grading Stock Entry",
+            "Field Rejects Stock Entry", "Archive Employee",
+            "Transfer Grading Stock", "Generate Bucket Codes", "Harvest Scan",
+            "New Form After Save", "Remove Read Only on Field",
+            "Ensure Bucket Is Scanned On Save", "Field Rejects Stock Entry",
             "Hide Filter Button 2",
             "Hide Filter Button (Bucket QR Code List) 2",
-            "Ensure Uppercase in Bay Field",
-            "Grading Traceability Symbols",
+            "Ensure Uppercase in Bay Field", "Grading Traceability Symbols",
             "SO target warehouse Population",
             "Set List View Limit to 500(GRADER)",
             "Set List View Limit to 500(BUNCH)",
-            "Set List View Limit to 500(BUCKET)",
-            "Restrict Bay to Alphabets",
+            "Set List View Limit to 500(BUCKET)", "Restrict Bay to Alphabets",
             "Autopopulate Sales Order ID in CPL",
             "Ensure Items are in SO Before Manually Adding (FPL)",
             "Authorise Under Pack Button in FPL",
+            "Autopopulate Sales Order ID in FPL"
         ]
     ]]
 }, {
