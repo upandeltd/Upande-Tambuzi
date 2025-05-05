@@ -160,7 +160,7 @@ doc_events = {
         "before_submit":
         "upande_tambuzi.upande_tambuzi.custom.sales_order_custom.validate_customer_check_limit",
         "on_cancel":
-        "upande_tambuzi.server_scripts.so_delivery_warehouse.handle_sales_order_cancel",
+        "upande_tambuzi.server_scripts.so_delivery_warehouse.handle_sales_order_cancellation",
         # "on_save":
         # "upande_tambuzi.server_scripts.reserve_stock.on_sales_order_save",
         # "after_insert":
