@@ -83,3 +83,82 @@ def reject_under_pack(doc_name):
     doc.db_set('workflow_state', 'Draft', update_modified=True)
 
     return True
+
+
+# Added Under Pack Cancel Button - Here's the function for the api call
+@frappe.whitelist()
+def transfer_stock_on_cancel(docname):
+    """Transfers stock from Delivery Truck back to source warehouse when Farm Pack List is cancelled."""
+
+    # Get the document from the name
+    doc = frappe.get_doc("Farm Pack List", docname)
+
+    if not doc.pack_list_item:
+        frappe.throw("No items in Farm Pack List to transfer.")
+
+    target_warehouses = [
+        "Burguret Graded Sold - TL", "Turaco Graded Sold - TL",
+        "Pendekeza Graded Sold - TL"
+    ]
+
+    source_warehouse = "Delivery Truck - TL"
+
+    if not frappe.db.exists("Warehouse", source_warehouse):
+        frappe.throw(f"Source Warehouse '{source_warehouse}' does not exist.")
+
+    stock_entry = frappe.new_doc("Stock Entry")
+    stock_entry.stock_entry_type = "Material Transfer"
+    stock_entry.farm_pack_list = doc.name
+
+    for item in doc.pack_list_item:
+        target_warehouse = item.source_warehouse
+
+        # Validate if target warehouse is one of the allowed warehouses
+        if target_warehouse not in target_warehouses:
+            frappe.throw(
+                f"Invalid target warehouse '{target_warehouse}'. Expected: " +
+                ", ".join(target_warehouses))
+
+        if not frappe.db.exists("Warehouse", target_warehouse):
+            frappe.throw(
+                f"Target Warehouse '{target_warehouse}' does not exist.")
+
+        # Add items to the Stock Entry
+        stock_entry.append(
+            "items", {
+                "s_warehouse": source_warehouse,
+                "t_warehouse": target_warehouse,
+                "item_code": item.item_code,
+                "qty": item.bunch_qty,
+                "uom": item.bunch_uom,
+                "stock_uom": item.bunch_uom,
+            })
+
+    stock_entry.save(ignore_permissions=True)
+    stock_entry.submit()
+
+    # Update workflow state to "Cancelled" instead of changing docstatus directly
+    doc.db_set('workflow_state', 'Cancelled', update_modified=True)
+
+    # Add a comment for audit trail
+    frappe.get_doc({
+        "doctype":
+        "Comment",
+        "comment_type":
+        "Info",
+        "reference_doctype":
+        "Farm Pack List",
+        "reference_name":
+        docname,
+        "content":
+        f"Farm Pack List is cancelled via the 'Under Pack Cancel button' by {frappe.session.user}"
+    }).insert(ignore_permissions=True)
+
+    frappe.msgprint(
+        f"Stock Transfer Created from {source_warehouse} to {target_warehouse} Successfully!",
+        alert=True,
+        indicator="green",
+        wide=True,
+    )
+
+    return True
