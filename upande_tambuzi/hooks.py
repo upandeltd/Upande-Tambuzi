@@ -350,7 +350,8 @@ fixtures = [{
             "Autopopulate Sales Order ID in CPL",
             "Ensure Items are in SO Before Manually Adding (FPL)",
             "Authorise Under Pack Button in FPL",
-            "Autopopulate Sales Order ID in FPL"
+            "Autopopulate Sales Order ID in FPL",
+            "Amount Calc Based on IGP"
         ]
     ]]
 }, {

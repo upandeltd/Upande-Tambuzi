@@ -4,6 +4,17 @@
   "doctype": "Client Script",
   "dt": "Sales Order",
   "enabled": 1,
+  "modified": "2025-05-05 11:51:49.561691",
+  "module": null,
+  "name": "Amount Calc Based on IGP",
+  "script": "frappe.ui.form.on('Sales Order Item', {\n    custom_length(frm, cdt, cdn) {\n        let row = frappe.get_doc(cdt, cdn);\n        // if (row.item_group && row.custom_length) {\n        //     frappe.call({\n        //         method: 'get_item_group_price',\n        //         args: {\n        //             item_group: row.item_group,\n        //             length: row.custom_length,\n        //             currency: frm.doc.currency\n        //         },\n        //         callback: function(r) {\n                    \n        frappe.model.set_value(cdt, cdn, 'rate', 0);\n        frappe.model.set_value(cdt, cdn, 'stock_uom_rate', 0);\n        frappe.model.set_value(cdt, cdn, 'amount', 0);\n        frappe.msgprint(`No price found for this customer's currency or the selected item. Please set a price to proceed!`);\n    \n        //         }\n        //     });\n        // }\n    },\n    \n    item_code(frm, cdt, cdn) {\n        let row = frappe.get_doc(cdt, cdn);\n\n        setTimeout(function() {\n            frappe.model.set_value(cdt, cdn, 'rate', 0);\n            frappe.model.set_value(cdt, cdn, 'stock_uom_rate', 0);\n            frappe.model.set_value(cdt, cdn, 'amount', 0);\n            frappe.msgprint(`No price found for this customer's currency or the selected item. Please set a price to proceed!`);\n            \n            // Also make amount field editable\n            cur_frm.fields_dict.items.grid.toggle_enable(\"amount\", true);\n        }, 300);\n    }\n    \n});\n\nfrappe.ui.form.on(\"Sales Order\", {\n    refresh: function(frm) {\n        frm.fields_dict.items.grid.toggle_enable(\"amount\", true);\n    },\n    \n    onload: function(frm) {\n        // Ensure price list doesn't affect anything\n        frm.set_value('ignore_pricing_rule', 1);\n        \n        // Make amount field editable\n        frm.fields_dict.items.grid.toggle_enable(\"amount\", true);\n    }\n});\n",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Sales Order",
+  "enabled": 1,
   "modified": "2025-04-17 10:48:45.348655",
   "module": "Upande Tambuzi",
   "name": "SO target warehouse Population",
