@@ -166,7 +166,7 @@ def handle_sales_order_cancellation(doc, method):
             frappe.msgprint(
                 table_html,
                 title="Stock Transfer Reversed After Sales Order is Cancelled",
-                indicator="blue"
-            )
+                indicator="blue")
         else:
-            frappe.msgprint("No valid stock transfer items found for reversal.")
+            frappe.msgprint(
+                "No valid stock transfer items found for reversal.")

@@ -150,7 +150,6 @@ app_include_js = [
 doc_events = {
     "Sales Order": {
         "on_submit": [
-            #"upande_tambuzi.server_scripts.reserve_stock.on_sales_order_approved",
             "upande_tambuzi.server_scripts.pick_list_automation.create_pick_list_for_sales_order"
         ],
         "on_update": [
@@ -160,7 +159,7 @@ doc_events = {
         "before_submit":
         "upande_tambuzi.upande_tambuzi.custom.sales_order_custom.validate_customer_check_limit",
         "on_cancel":
-        "upande_tambuzi.server_scripts.so_delivery_warehouse.handle_sales_order_cancel",
+        "upande_tambuzi.server_scripts.so_delivery_warehouse.handle_sales_order_cancellation",
         "on_save":
         "upande_tambuzi.server_scripts.reserve_stock.reserve_stems",
         # "after_insert":
@@ -340,8 +339,8 @@ fixtures = [{
             "Autopopulate Sales Order ID in CPL",
             "Ensure Items are in SO Before Manually Adding (FPL)",
             "Authorise Under Pack Button in FPL",
-            "Autopopulate Sales Order ID in FPL",
-            "Amount Calc Based on IGP", "Under Pack Cancel Button"
+            "Autopopulate Sales Order ID in FPL", "Amount Calc Based on IGP",
+            "Under Pack Cancel Button"
         ]
     ]]
 }, {
