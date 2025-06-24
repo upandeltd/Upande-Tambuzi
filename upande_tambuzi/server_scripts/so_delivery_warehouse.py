@@ -27,7 +27,8 @@ def handle_sales_order_approval(doc, method):
             "Delivery warehouse updated based on Source Warehouse.")
 
     # Create Stock Entry for Transfer
-    if doc.docstatus == 1:
+    # if doc.docstatus == 1:
+    if doc.workflow_state == "Pending Approval":
         stock_entry = frappe.new_doc("Stock Entry")
         stock_entry.stock_entry_type = "Material Transfer"
         stock_entry.sales_order = doc.name
@@ -100,7 +101,9 @@ def handle_sales_order_approval(doc, method):
 def handle_sales_order_cancellation(doc, method):
     items_details = []
 
-    if doc.docstatus == 2:
+    # Check if sales order is cancelled OR workflow state is "Rejected"
+    if doc.docstatus == 2 or doc.workflow_state == "Rejected":
+
         stock_entry = frappe.new_doc("Stock Entry")
         stock_entry.stock_entry_type = "Material Transfer"
         stock_entry.sales_order = doc.name
@@ -163,10 +166,12 @@ def handle_sales_order_cancellation(doc, method):
 
             table_html += "</tbody></table>"
 
-            frappe.msgprint(
-                table_html,
-                title="Stock Transfer Reversed After Sales Order is Cancelled",
-                indicator="blue")
+            # Update message based on the trigger
+            title_message = "Stock Transfer Reversed After Sales Order is Cancelled"
+            if doc.workflow_state == "Rejected":
+                title_message = "Stock Transfer Reversed After Sales Order is Rejected"
+
+            frappe.msgprint(table_html, title=title_message, indicator="blue")
         else:
             frappe.msgprint(
                 "No valid stock transfer items found for reversal.")
