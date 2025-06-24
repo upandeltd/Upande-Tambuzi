@@ -2,6 +2,28 @@
  {
   "docstatus": 0,
   "doctype": "Client Script",
+  "dt": "Farm Pack List",
+  "enabled": 1,
+  "modified": "2025-04-22 13:51:10.478883",
+  "module": "Upande Tambuzi",
+  "name": "Autopopulate Sales Order ID in FPL",
+  "script": "frappe.ui.form.on('Dispatch Form Item', {\n\tpack_list_item_add(frm, cdt, cdn) {\n\t\tlet row = locals[cdt][cdn];\n\t\t\n\t\tif (frm.doc.custom_sales_order) {\n\t\t    row.sales_order_id = frm.doc.custom_sales_order;\n\t\t    row.customer_id = frm.doc.custom_customer;\n\t\t    \n\t\t    frm.refresh_field('pack_list_item');\n\t\t}\n\t}\n});\n\n",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Farm Pack List",
+  "enabled": 0,
+  "modified": "2025-05-22 16:18:48.712980",
+  "module": "Upande Tambuzi",
+  "name": "Under Pack Cancel Button",
+  "script": "frappe.ui.form.on('Farm Pack List', {\n    refresh: function(frm) {\n        if(frm.doc.workflow_state === \"Reviewed\") {\n            frm.add_custom_button(__('Under Pack Cancel'), function() {\n                // Show a confirmation dialog before proceeding\n                frappe.confirm(\n                    'Are you sure you want to cancel an Under Packed Farm Pack List?',\n                    function() {\n                        // Disable the button immediately to prevent double-clicks\n                        frm.remove_custom_button('Under Pack Cancel');\n            \n                        frappe.call({\n                            method: \"upande_tambuzi.server_scripts.under_packing.transfer_stock_on_cancel\",\n                            args: {\n                                docname: frm.doc.name\n                            },\n                            freeze: true,\n                            freeze_message: __(\"Processing Under Pack Cancel...\"),\n                            callback: function(r) {\n                                if(r.message) {\n                                    frappe.show_alert({\n                                        message: __('Under Pack Cancel processed successfully'),\n                                        indicator: 'green'\n                                    }, 5);\n                                    frm.reload_doc();\n                                }\n                            }\n                        });\n                    },\n                    function() {\n                        // User cancelled, do nothing\n                    }\n                );\n            }).addClass('btn-danger');\n        }\n    }\n});",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
   "dt": "Sales Order",
   "enabled": 1,
   "modified": "2025-04-17 10:48:45.348655",
@@ -294,6 +316,17 @@
   "module": "Upande Tambuzi",
   "name": "Authorise Under Pack Button in FPL",
   "script": "frappe.ui.form.on('Farm Pack List', {\n    refresh: function(frm) {\n        // Check if document is in Draft state and is underpacked\n        if (frm.doc.workflow_state === 'Draft' && frm.doc.custom_completion_percentage < 100) {\n            // Add the \"Authorise Under Pack\" button\n            frm.add_custom_button(__('Authorise Under Pack'), function() {\n                // Check if Under Pack Reason is provided\n                if (!frm.doc.custom_under_pack_reason || frm.doc.custom_under_pack_reason.trim() === '') {\n                    frappe.throw(__('Please provide a reason for under packing before requesting authorization'));\n                    return;\n                }\n                // Call server method to request authorization\n                frappe.call({\n                    method: 'upande_tambuzi.server_scripts.under_packing.request_under_pack_authorization',\n                    args: {\n                        'doc_name': frm.doc.name\n                    },\n                    callback: function(r) {\n                        if (r.message) {\n                            frappe.show_alert({\n                                message: __('Under Pack Authorization Requested Successfully'),\n                                indicator: 'green'\n                            }, 5);\n                            frm.reload_doc();\n                        }\n                    }\n                });\n            }).addClass('btn-primary');\n        }\n\n        // For Sales Manager - Show dropdown button if authorization is pending\n        if (frm.doc.workflow_state === 'Pending Order Review' && frm.doc.custom_completion_percentage < 100 && frappe.user.has_role('Sales Manager')) {\n            // Create a dropdown button \"Under Packed\"\n            frm.add_custom_button(__(''), function() {\n                // This is a placeholder function since we'll be using the dropdown functionality\n            }, __('Under Packed Button')).addClass('btn-primary');\n\n            // Add \"Approve Under Pack\" option to the dropdown\n            frm.add_custom_button(__('Approve Under Pack'), function() {\n                frappe.call({\n                    method: 'upande_tambuzi.server_scripts.under_packing.approve_under_pack',\n                    args: {\n                        'doc_name': frm.doc.name\n                    },\n                    callback: function(r) {\n                        if (r.message) {\n                            frappe.show_alert({\n                                message: __('Under Pack Approved Successfully'),\n                                indicator: 'green'\n                            }, 5);\n                            frm.reload_doc();\n                        }\n                    }\n                });\n            }, __('Under Packed Button'));\n\n            // Add \"Reject Under Pack\" option to the dropdown\n            frm.add_custom_button(__('Reject Under Pack'), function() {\n                frappe.call({\n                    method: 'upande_tambuzi.server_scripts.under_packing.reject_under_pack',\n                    args: {\n                        'doc_name': frm.doc.name\n                    },\n                    callback: function(r) {\n                        if (r.message) {\n                            frappe.show_alert({\n                                message: __('Under Pack Rejected'),\n                                indicator: 'red'\n                            }, 5);\n                            frm.reload_doc();\n                        }\n                    }\n                });\n            }, __('Under Packed Button'));\n        }\n    }\n});",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Item",
+  "enabled": 1,
+  "modified": "2025-06-24 13:24:15.467325",
+  "module": "Upande Tambuzi",
+  "name": "Flowers in Prod Calculations",
+  "script": "frappe.ui.form.on('Item', {\n    custom_plant_count: function (frm) {\n        calculate_in_prod(frm);\n    },\n    custom_young_plants: function (frm) {\n        calculate_in_prod(frm);\n    }\n});\n\nfunction calculate_in_prod(frm) {\n    const plantCount = frm.doc.custom_plant_count || 0;\n    const youngPlants = frm.doc.custom_young_plants || 0;\n    frm.set_value('custom_in_prod', plantCount - youngPlants);\n}\n",
   "view": "Form"
  }
 ]
