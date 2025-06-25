@@ -137,34 +137,4 @@
 #         stock_entry.insert(ignore_permissions=True)
 #         stock_entry.submit()
 #     except Exception as e:
-#         frappe.log_error(
-#             f"Failed to create unreservation Stock Entry for Sales Order {sales_order}: {str(e)}"
-#         )
-#         frappe.throw(f"Failed to unreserve stock: {str(e)}")
-
-#     frappe.msgprint(
-#         msg=
-#         f"Stock Unreserved Successfully in Stock Entry: <a href='/app/stock-entry/{stock_entry.name}'>{stock_entry.name}</a><br>"
-#         + "<br>".join(messages),
-#         title="Stock Unreservation",
-#         indicator="green")
-
-# def on_sales_order_save(doc, method):
-#     """Hook to create stock entry when sales order is saved."""
-#     if doc.workflow_state == "Draft":
-#         create_or_update_stock_entry(doc.name)
-
-# def on_sales_order_update(doc, method):
-#     """Hook to update stock entry when sales order is updated in draft."""
-#     if doc.docstatus == 0:  # Draft
-#         create_or_update_stock_entry(doc.name, is_draft=True)
-
-# def on_sales_order_approved(doc, method):
-#     """Hook to unreserve stock when sales order is approved and submitted."""
-#     if doc.workflow_state == "Approved":
-#         try:
-#             unreserve_stock(doc.name)
-#         except Exception as e:
-#             frappe.log_error(
-#                 f"Unreservation failed for Sales Order {doc.name}: {str(e)}")
-#             frappe.throw(f"Failed to unreserve stock: {str(e)}")
+#         frappe.logger().error(f"Error in unreserve on delete: {str(e)}")
