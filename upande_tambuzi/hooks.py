@@ -400,7 +400,7 @@ fixtures = [{
             "Packhouse Discards or Rejects Details",
             "Packhouse Discards or Rejects Report", "Sales Invoiced Report",
             "Sales Invoice Details", "Sales Order Report",
-            "Sales per Variety Report (SO)"
+            "Sales per Variety Report (SO)", "Daily Sales Ops Summary"
         ]
     ]]
 }]
