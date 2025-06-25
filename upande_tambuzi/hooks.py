@@ -162,7 +162,7 @@ doc_events = {
         "on_cancel":
         "upande_tambuzi.server_scripts.so_delivery_warehouse.handle_sales_order_cancellation",
         "on_save": [
-            "upande_tambuzi.server_scripts.reserve_stock.reserve_stems",
+            # "upande_tambuzi.server_scripts.reserve_stock.reserve_stems",
         ]
 
         # "after_insert":
