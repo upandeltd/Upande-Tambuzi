@@ -2486,5 +2486,140 @@
    }
   ],
   "timeout": 0
+ },
+ {
+  "add_total_row": 1,
+  "add_translate_data": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [
+   {
+    "default": "Today",
+    "fieldname": "from_date",
+    "fieldtype": "Date",
+    "label": "From Date",
+    "mandatory": 0,
+    "options": null,
+    "parent": "Daily Sales Ops Summary",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   },
+   {
+    "default": "Today",
+    "fieldname": "to_date",
+    "fieldtype": "Date",
+    "label": "To Date",
+    "mandatory": 0,
+    "options": null,
+    "parent": "Daily Sales Ops Summary",
+    "parentfield": "filters",
+    "parenttype": "Report",
+    "wildcard_filter": 0
+   }
+  ],
+  "is_standard": "No",
+  "javascript": null,
+  "json": null,
+  "letter_head": "Tambuzi",
+  "modified": "2025-06-23 18:22:22.706995",
+  "module": "Selling",
+  "name": "Daily Sales Ops Summary",
+  "prepared_report": 0,
+  "query": "SELECT\r\n so.name AS 'Sales Order ID',\r\n DATE(so.creation) AS 'SO Date',\r\n DATE_FORMAT(so.creation, '%H:%i') AS 'SO Time',\r\n so.customer AS 'Customer',\r\n wh.custom_farm AS 'Farm',\r\n soi.item_code AS 'Item Code',\r\n CASE WHEN soi.item_group = 'Herbs and Foliage' THEN 'Herbs' ELSE 'Roses' END AS 'Crop',\r\n IFNULL(packed_data.parent_fpl, 'No FPL') AS 'FPL ID',\r\n IFNULL(DATE_FORMAT(packed_data.fpl_time, '%H:%i'), '00:00:00') AS 'FPL Time',\r\n IFNULL(ordered_data.Ordered, 0) AS 'Stems Ordered',\r\n IFNULL(packed_data.Packed, 0) AS 'Stems Packed',\r\n CASE WHEN ordered_data.Ordered = 0 THEN 0 ELSE \r\n    ROUND(packed_data.Packed / ordered_data.Ordered * 100, 2) END AS 'Fulfillment Rate'\r\n\r\nFROM `tabSales Order` AS so\r\nJOIN `tabSales Order Item` AS soi ON soi.parent = so.name\r\nLEFT JOIN `tabWarehouse` wh ON wh.name = soi.warehouse\r\n\r\n-- Aggregating Ordered stems by distinct variety\r\nLEFT JOIN (\r\n  SELECT parent, warehouse, item_code, SUM(stock_qty) AS Ordered\r\n  FROM `tabSales Order Item`\r\n  GROUP BY parent, warehouse, item_code\r\n) AS ordered_data\r\n  ON ordered_data.item_code = soi.item_code AND ordered_data.parent = so.name AND ordered_data.warehouse = soi.warehouse\r\n\r\n-- Aggregating Packed stems by distinct variety\r\nLEFT JOIN (\r\n  SELECT\r\n    sales_order_id AS parent_so,\r\n    parent AS parent_fpl,\r\n    fpl.creation AS 'fpl_time',\r\n    source_warehouse,\r\n    item_code,\r\n    SUM(custom_number_of_stems) AS Packed\r\n  FROM `tabDispatch Form Item` dfi\r\n  JOIN `tabFarm Pack List` AS fpl\r\n    ON fpl.name = dfi.parent\r\n  WHERE fpl.docstatus = 1\r\n  GROUP BY dfi.sales_order_id, dfi.parent, source_warehouse, dfi.item_code\r\n) AS packed_data\r\n  ON packed_data.parent_so = so.name AND packed_data.item_code = soi.item_code AND packed_data.source_warehouse = soi.warehouse\r\n\r\nWHERE\r\n    so.workflow_state = 'Approved'\r\n    AND se.posting_date BETWEEN %(from_date)s AND %(to_date)s\r\nGROUP BY so.name, wh.custom_farm, soi.item_code\r\nORDER BY so.name, wh.custom_farm, soi.item_code;",
+  "ref_doctype": "Sales Order",
+  "reference_report": null,
+  "report_name": "Daily Sales Ops Summary",
+  "report_script": null,
+  "report_type": "Query Report",
+  "roles": [
+   {
+    "parent": "Daily Sales Ops Summary",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock User"
+   },
+   {
+    "parent": "Daily Sales Ops Summary",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Accounts User"
+   },
+   {
+    "parent": "Daily Sales Ops Summary",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Sales User"
+   },
+   {
+    "parent": "Daily Sales Ops Summary",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Sales Manager"
+   },
+   {
+    "parent": "Daily Sales Ops Summary",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Sales Representative"
+   },
+   {
+    "parent": "Daily Sales Ops Summary",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Tambuzi Trainer"
+   },
+   {
+    "parent": "Daily Sales Ops Summary",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "CEO"
+   },
+   {
+    "parent": "Daily Sales Ops Summary",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Accounts Manager"
+   },
+   {
+    "parent": "Daily Sales Ops Summary",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "AR Accountant"
+   },
+   {
+    "parent": "Daily Sales Ops Summary",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Credit Controller"
+   },
+   {
+    "parent": "Daily Sales Ops Summary",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Sales Master Manager"
+   },
+   {
+    "parent": "Daily Sales Ops Summary",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Burguret Packhouse Manager"
+   },
+   {
+    "parent": "Daily Sales Ops Summary",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Pendekeza Packhouse Manager"
+   },
+   {
+    "parent": "Daily Sales Ops Summary",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Turacco Packhouse Manager"
+   }
+  ],
+  "timeout": 0
  }
 ]
