@@ -38,7 +38,8 @@ def process_failed_to_fly(cpl_name):
                         "item_code": item_row.item_code,
                         "s_warehouse": "Delivery Truck - TL",
                         "t_warehouse": "Failed to Fly - TL",
-                        "qty": item_row.custom_number_of_stems,
+                        "transfer_qty": item_row.custom_number_of_stems,
+                        "qty": item_row.bunch_qty,
                         "uom": item_row.bunch_uom,
                     })
 
