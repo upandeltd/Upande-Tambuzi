@@ -10,6 +10,7 @@ def handle_sales_order_approval(doc, method):
         "TUR Grading Forecast - TL": "Turaco Graded Sold - TL",
         "PNDK Grading Forecast - TL": "Pendekeza Graded Sold - TL",
         "BUR Grading Forecast - TL": "Burguret Graded Sold - TL",
+        "Failed to Fly - TL": "Burguret Graded Sold - TL"
     }
 
     updated = False
@@ -28,7 +29,7 @@ def handle_sales_order_approval(doc, method):
 
     # Create Stock Entry for Transfer
     if doc.docstatus == 1:
-    # if doc.workflow_state == "Pending Approval":
+        # if doc.workflow_state == "Pending Approval":
         stock_entry = frappe.new_doc("Stock Entry")
         stock_entry.stock_entry_type = "Material Transfer"
         stock_entry.sales_order = doc.name
@@ -103,7 +104,7 @@ def handle_sales_order_cancellation(doc, method):
 
     # Check if sales order is cancelled OR workflow state is "Rejected"
     if doc.docstatus == 2:
-    # or doc.workflow_state == "Rejected":
+        # or doc.workflow_state == "Rejected":
 
         stock_entry = frappe.new_doc("Stock Entry")
         stock_entry.stock_entry_type = "Material Transfer"
@@ -176,8 +177,7 @@ def handle_sales_order_cancellation(doc, method):
             frappe.msgprint(
                 table_html,
                 title="Stock Transfer Reversed after Sales Order is Cancelled",
-                indicator="blue"
-            )
+                indicator="blue")
 
         else:
             frappe.msgprint(
