@@ -162,7 +162,7 @@ doc_events = {
         "on_cancel":
         "upande_tambuzi.server_scripts.so_delivery_warehouse.handle_sales_order_cancellation",
         "on_save": [
-            "upande_tambuzi.server_scripts.reserve_stock.reserve_stems",
+            # "upande_tambuzi.server_scripts.reserve_stock.reserve_stems",
         ]
 
         # "after_insert":
@@ -343,7 +343,7 @@ fixtures = [{
             "Ensure Items are in SO Before Manually Adding (FPL)",
             "Authorise Under Pack Button in FPL",
             "Autopopulate Sales Order ID in FPL", "Under Pack Cancel Button",
-            "Flowers in Prod Calculations"
+            "Flowers in Prod Calculations", "Failed to Fly"
         ]
     ]]
 }, {
